@@ -5,7 +5,7 @@ void main() {
   ItemType items = [];
 
   //User Module
-  print('\n\n\nAre you an admin or a customer');
+  customDisplay('Are you an admin or a customer');
   print(
     "Press \'a\'  if you are admin OR  '\c\' if you are a customer  OR \'enter\' to exit",
   );
@@ -16,7 +16,7 @@ void main() {
     if (user case 'a') {
       //Admin Module
       adminModule(items, user);
-      print('Are you an admin or a customer');
+      customDisplay('Are you an admin or a customer');
       print(
         "Press \'a\'  if you are admin OR  '\c\' if you are a customer  OR \'enter\'",
       );
@@ -24,7 +24,7 @@ void main() {
     } else if (user case 'c') {
       // Customer Module
       customerModule(items, user);
-      print('Are you an admin or a customer');
+      customDisplay('Are you an admin or a customer');
       print(
         "Press \'a\'  if you are admin OR  '\c\' if you are a customer  OR \'enter\'",
       );
@@ -32,7 +32,7 @@ void main() {
     }
   }
 
-  print("See you later!!!!");
+  customDisplay("See you later!!!!");
 }
 
 void customerModule(ItemType items, String user) {
@@ -73,9 +73,10 @@ void customerModule(ItemType items, String user) {
 }
 
 void adminModule(ItemType items, String user) {
-  print(
-    "\n\n\nWelcome Admin!!\n\n\n What would you like to do ?"
-        .padLeft(8),
+  customDisplay(
+    "Welcome Admin!!",
+    8,
+    " What would you like to do ?",
   );
 
   showMenu(user);
@@ -96,9 +97,9 @@ void adminModule(ItemType items, String user) {
         break;
       default:
         {
-          print(
-            '\n\n\nInvalid option pressed. Please enter the valid option from below :)'
-                .padLeft(8),
+          customDisplay(
+            'Invalid option pressed. Please enter the valid option from below :)',
+            8,
           );
           showMenu(user);
         }
@@ -111,13 +112,13 @@ void adminModule(ItemType items, String user) {
 void addItem(ItemType items) {
   //Input : Taking input to add an item
   //Exception : Need to handle exception when inputting the item's details
-  print("\n\n\nPlease enter the item name".padLeft(8));
+  customDisplay("Please enter the item name", 8);
   String itemName = stdin.readLineSync() ?? 'item';
 
-  print("\n\n\nPlease enter the item quantity".padLeft(8));
+  customDisplay("Please enter the item quantity", 8);
   int itemQuantity = int.parse(stdin.readLineSync() ?? '0');
 
-  print("\n\n\nPlease enter the price".padLeft(8));
+  customDisplay("Please enter the price", 8);
   double itemPrice = double.parse(
     stdin.readLineSync() ?? '0.0',
   );
@@ -130,9 +131,10 @@ void addItem(ItemType items) {
   });
 
   //CTA : Ending add items operation
-  print(
-    "\n\n\nYour item has been added successfully\n\n\n Press the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "Your item has been added successfully",
+    8,
+    "Press the options for your next desired operation",
   );
 }
 
@@ -141,9 +143,9 @@ void deleteItems(ItemType items) {
   //Exception : Need to handle exception when taking the input to delete an item
 
   //Input the item name that needs to be deleted
-  print(
-    "\n\n\nPlease enter the name of an item that you want to delete"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the name of an item that you want to delete",
+    8,
   );
   String? removeItemName = stdin.readLineSync();
 
@@ -152,9 +154,10 @@ void deleteItems(ItemType items) {
   );
 
   //CTA : Ending delete operation
-  print(
-    "\n\n\nYour item has been deleted successfully\n\n\n Press the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "Your item has been deleted successfully",
+    8,
+    " Press the options for your next desired operation",
   );
 }
 
@@ -163,25 +166,25 @@ void updateItem(ItemType items) {
   // Exception : Need to handle exception when taking the input to update the item
 
   //Input the item name that needs to be updated
-  print(
-    "\n\n\nPlease enter the item you want to update"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the item you want to update",
+    8,
   );
   String updateName = stdin.readLineSync()!;
 
   //Input value to update item quantity
-  print(
-    "\n\n\nPlease enter the new value for the quantity"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the new value for the quantity",
+    8,
   );
   int updateQuantity = int.parse(
     stdin.readLineSync() ?? '0',
   );
 
   //Input value to update item price
-  print(
-    "\n\n\nPlease enter the new value for the price"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the new value for the price",
+    8,
   );
   int updatePrice = int.parse(
     stdin.readLineSync() ?? '0.0',
@@ -204,9 +207,10 @@ void updateItem(ItemType items) {
   items[index] = updateItem;
 
   //CTA : Ending update operation
-  print(
-    "\n\n\nYour item has been updated successfully\n\n\n Press the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "Your item has been updated successfully",
+    8,
+    " Press the options for your next desired operation",
   );
 }
 
@@ -225,9 +229,9 @@ void getAllItems(ItemType items) {
 void addItemsToCart(ItemType items, ItemType cartItems) {
   // Input: Taking input for buying an item
   // Exception : Need to handle exception when taking the input to buy an item
-  print(
-    "\n\n\nPlease enter the item name you want to buy"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the item name you want to buy",
+    8,
   );
   String? itemNameToBuy = stdin.readLineSync();
 
@@ -267,9 +271,10 @@ void addItemsToCart(ItemType items, ItemType cartItems) {
   }
 
   //CTA : Ending the buy operation
-  print(
-    "\n\n\nYou have added an item to the cart.\n\n\n Press the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "You have added an item to the cart.",
+    8,
+    " Press the options for your next desired operation",
   );
 }
 
@@ -348,9 +353,9 @@ void removeItemFromCart(
   //Exception : Need to handle exception when taking the input to remove an item from the cart
 
   //Input the item name that needs to be removed from the cart
-  print(
-    "\n\n\nPlease enter the name of an item that you want to remove from the cart"
-        .padLeft(8),
+  customDisplay(
+    "Please enter the name of an item that you want to remove from the cart",
+    8,
   );
   String? removeCartItemName = stdin.readLineSync();
 
@@ -398,9 +403,10 @@ void removeItemFromCart(
   }
 
   //CTA : Ending removing operation
-  print(
-    "\n\n\nYou have removed an item from your cart \n\n\n Press the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "You have removed an item from your cart",
+    8,
+    "Press the options for your next desired operation",
   );
 }
 
@@ -412,9 +418,9 @@ void getAllCartItems(cartItems) {
   print(cartItems);
 
   //CTA : Ending getting all cart items operation
-  print(
-    "\n\n\nPress the options for your next desired operation"
-        .padLeft(8),
+  customDisplay(
+    "Press the options for your next desired operation",
+    8,
   );
 }
 
@@ -434,4 +440,18 @@ void showMenu(String user) {
     print("4. Read all items , Press \'r'\' ");
     print("5. Exit, Press \'q\'");
   }
+}
+
+void customDisplay(
+  String content1, [
+  int padding = 0,
+  String content2 = '',
+]) {
+  print(
+    "\n\n\n$content1 ${switch (content2 != '') {
+          true => '\n\n\n',
+          _ => '',
+        }} $content2"
+        .padLeft(padding),
+  );
 }
