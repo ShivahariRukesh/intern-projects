@@ -9,6 +9,7 @@ class ProductsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
+      childAspectRatio: 0.6,
       mainAxisSpacing: 20,
       crossAxisSpacing: 20,
 

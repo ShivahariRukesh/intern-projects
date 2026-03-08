@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_catalog/components/products_grid_view.dart';
+import 'package:product_catalog/screens/product_search.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -55,6 +56,16 @@ class Home extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ProductsGridView(),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.brown,
+        child: Icon(Icons.search, color: Colors.yellow),
+
+        onPressed: () => showSearch(
+          context: context,
+          delegate: ProductSearch(),
+        ),
       ),
     ));
   }
