@@ -1,14 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:product_catalog/components/products_grid_view.dart';
+import 'package:product_catalog/models/product_model.dart';
 import 'package:product_catalog/screens/product_search.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({super.key});
+
   @override
+  State<StatefulWidget> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  String? sortDropDownValue = 'Price';
+  List<Product> productResults = products;
+
   Widget build(BuildContext context) {
     return (Scaffold(
       appBar: AppBar(
-        title: Text("Products"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text("Products"),
+            SizedBox(width: 20),
+            DropdownButton<String>(
+              value: sortDropDownValue,
+              underline: SizedBox(),
+              items: ["Name", "Price", "Quantity"]
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  sortDropDownValue = value;
+                  productResults =
+                      ProductResults.manipulateResult(
+                        value!.toLowerCase(),
+                      );
+                });
+              },
+            ),
+          ],
+        ),
         backgroundColor: const Color.fromARGB(
           255,
           128,
@@ -16,6 +52,7 @@ class Home extends StatelessWidget {
           67,
         ),
       ),
+
       drawer: Drawer(
         backgroundColor: const Color.fromARGB(
           255,
@@ -55,17 +92,25 @@ class Home extends StatelessWidget {
 
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ProductsGridView(),
+        child: ProductsGridView(products: productResults),
       ),
-
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.brown,
         child: Icon(Icons.search, color: Colors.yellow),
 
-        onPressed: () => showSearch(
-          context: context,
-          delegate: ProductSearch(),
-        ),
+        onPressed: () async {
+          final searchedResult = await showSearch(
+            context: context,
+            delegate: ProductSearch(),
+          );
+          if (searchedResult != null) {
+            setState(() {
+              productResults = [searchedResult];
+            });
+          }
+        },
       ),
     ));
   }

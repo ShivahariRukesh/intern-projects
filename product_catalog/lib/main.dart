@@ -3,6 +3,10 @@ import 'package:product_catalog/screens/home.dart';
 
 void main() {
   runApp(
-    MaterialApp(title: 'Product Catalog', home: Home()),
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Product Catalog',
+      home: Home(),
+    ),
   );
 }

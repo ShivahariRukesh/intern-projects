@@ -30,7 +30,9 @@ class ProductSearch extends SearchDelegate {
           leading: Icon(Icons.notification_add_outlined),
           title: Text(products[index].name),
           trailing: Icon(Icons.next_plan_outlined),
-          onTap: () => debugPrint(products[index].name),
+          onTap: () {
+            close(context, products[index]);
+          },
         );
       },
     );
@@ -38,24 +40,19 @@ class ProductSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<Product> searchedResult = query != ''
-        ? products
-              .where(
-                (product) => product.name
-                    .toLowerCase()
-                    .contains(query.toLowerCase()),
-              )
-              .toList()
-        : [];
+    List<Product> searchedResult = NameSearch()
+        .searchProducts(query);
+
     return ListView.builder(
       itemCount: searchedResult.length,
       itemBuilder: (context, index) {
         return ListTile(
           title: Text(searchedResult[index].name),
           trailing: Icon(Icons.next_plan),
-          onTap: () => debugPrint(
-            "Result is clicked ${searchedResult[index].name}",
-          ),
+          onTap: () {
+            debugPrint("Tapped ${searchedResult[index]}");
+            close(context, searchedResult[index]);
+          },
         );
       },
     );
