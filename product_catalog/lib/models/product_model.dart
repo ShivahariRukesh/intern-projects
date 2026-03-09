@@ -1,8 +1,11 @@
-// import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
+
+//Searchable Interface
 abstract class Searchable {
   List<Product> searchProducts(String name);
 }
 
+//Sortable Interface
 abstract class Sortable {
   List<Product> sortProducts(
     List<Product> products, [
@@ -10,6 +13,7 @@ abstract class Sortable {
   ]);
 }
 
+//NameSearch Class Implementing Searchable Interface
 class NameSearch implements Searchable {
   @override
   List<Product> searchProducts(String productName) {
@@ -27,6 +31,7 @@ class NameSearch implements Searchable {
   }
 }
 
+//PriceSort Class Implementing Sortable Interface
 class PriceSort implements Sortable {
   @override
   List<Product> sortProducts(
@@ -43,6 +48,7 @@ class PriceSort implements Sortable {
   }
 }
 
+//QuantitySort Class Implementing Sortable Interface
 class QuantitySort implements Sortable {
   @override
   List<Product> sortProducts(
@@ -59,6 +65,7 @@ class QuantitySort implements Sortable {
   }
 }
 
+//NameSort Class Implementing Sortable Interface
 class NameSort implements Sortable {
   @override
   List<Product> sortProducts(
@@ -75,6 +82,7 @@ class NameSort implements Sortable {
   }
 }
 
+//Product Class
 abstract class Product {
   final String? imageUrl;
   final String name;
@@ -94,12 +102,13 @@ abstract class Product {
   }
 
   void display() {
-    print("$name : $price");
+    debugPrint("$name : $price");
   }
 
   void displayProductType();
 }
 
+//Instrument Class Extending Product
 class Instrument extends Product {
   Instrument({
     super.imageUrl,
@@ -110,10 +119,11 @@ class Instrument extends Product {
 
   @override
   void displayProductType() {
-    print("Soulful Instrument");
+    debugPrint("Soulful Instrument");
   }
 }
 
+//Mobile Class Extending Product
 class Mobile extends Product {
   Mobile({
     super.imageUrl,
@@ -124,78 +134,121 @@ class Mobile extends Product {
 
   @override
   void displayProductType() {
-    print("Mobile Accessories");
+    debugPrint("Mobile Accessories");
   }
 }
 
+//ProductResults class to manipulate the product into the filtered or sorted product results
+class ProductResults {
+  // static List<Product> manipulateResult(
+  //   String type, [
+  //   bool isAscending = true,
+  // ]) {
+  //   switch (type) {
+  //     case "name":
+  //       return NameSort().sortProducts(
+  //         products,
+  //         isAscending,
+  //       );
+  //     case "price":
+  //       return PriceSort().sortProducts(
+  //         products,
+  //         isAscending,
+  //       );
+  //     case "quantity":
+  //       return QuantitySort().sortProducts(
+  //         products,
+  //         isAscending,
+  //       );
+  //     default:
+  //       return products;
+  //   }
+  // }
+
+  static List<Product> filterProducts(
+    List<Product> productList, {
+    Set<String> selectedTypes = const {},
+    double? minPrice,
+    double? maxPrice,
+  }) {
+    var gg = productList.where((product) {
+      // Type filter
+      final typeMatch =
+          selectedTypes.isEmpty ||
+          (selectedTypes.contains('Instrument') &&
+              product is Instrument) ||
+          (selectedTypes.contains('Mobile') &&
+              product is Mobile);
+
+      // Price filter
+      final priceMatch =
+          (minPrice == null || product.price >= minPrice) &&
+          (maxPrice == null || product.price <= maxPrice);
+
+      return typeMatch && priceMatch;
+    }).toList();
+    return gg;
+  }
+
+  static List<Product> sortProducts(
+    String sortLabel, [
+    bool isAscending = true,
+    List<Product>? productList,
+  ]) {
+    final list = productList ?? products;
+    switch (sortLabel) {
+      case "name":
+        return NameSort().sortProducts(list, isAscending);
+      case "price":
+        return PriceSort().sortProducts(list, isAscending);
+      case "quantity":
+        return QuantitySort().sortProducts(
+          list,
+          isAscending,
+        );
+      default:
+        return list;
+    }
+  }
+}
+
+//Manual entry of products list
 List<Product> products = [
   Instrument(
-    imageUrl:
-        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+    imageUrl: 'assets/images/guitar.jpg',
     name: 'Guitar',
     price: 5000,
     quantity: 2,
   ),
   Instrument(
-    imageUrl: '',
+    imageUrl: 'assets/images/keyboard.jpeg',
     name: 'Keyboard',
     price: 9000,
     quantity: 5,
   ),
   Instrument(
-    imageUrl: '',
+    imageUrl: 'assets/images/violin.webp',
     name: 'Violin',
     price: 3000,
     quantity: 2,
   ),
 
   Mobile(
-    imageUrl: '',
+    imageUrl: 'assets/images/iphone15.jpg',
     name: 'Iphone 15',
-    price: 45000,
+    price: 100000,
     quantity: 3,
   ),
   Mobile(
-    imageUrl: '',
-    name: 'Iphone 17',
-    price: 65000,
+    imageUrl: 'assets/images/iphone17pro.jpg',
+    name: 'Iphone 17 Pro',
+    price: 200000,
     quantity: 4,
   ),
   Mobile(
-    imageUrl: '',
-    name: 'Samsung',
-    price: 30000,
+    imageUrl: 'assets/images/samsungs25ultra.jpg',
+    name: 'Samsung S25 Ultra',
+    price: 180000,
     quantity: 8,
   ),
 ];
-
-// void main() {
-class ProductResults {
-  static List<Product> manipulateResult(String type) {
-    switch (type) {
-      case "name":
-        return NameSort().sortProducts(products);
-      case "price":
-        return PriceSort().sortProducts(products);
-
-      case "quantity":
-        return QuantitySort().sortProducts(products);
-      default:
-        return products;
-    }
-  }
-}
-
-
-
-  // print(PriceSort().sortProducts(products, true));
-
-  // print(NameSort().sortProducts(products));
-  // print(QuantitySort().sortProducts(products));
-
-  // for (Product product in sortedProducts.sortByPrice(
-  //   products,
-  // )) {
-  //   print(product);
-  // }
-// }
