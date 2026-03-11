@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? sortDropDownValue = 'Price';
+  String sortDropDownValue = 'Price';
   List<Product> productResults = products;
   bool isAscending = true;
 
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
                   } else {
                     isAscending = true;
                   }
-                  sortDropDownValue = value;
+                  sortDropDownValue = value!;
                   productResults =
                       ProductResults.sortProducts(
                         value!.toLowerCase(),
