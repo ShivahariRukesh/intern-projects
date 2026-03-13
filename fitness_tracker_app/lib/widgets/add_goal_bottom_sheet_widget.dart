@@ -19,6 +19,9 @@ class _AddGoalBottomSheetWidgetState
   final TextEditingController _goalTargetController =
       TextEditingController();
 
+  String? _goalTitleError;
+  String? _goalTypeError;
+  String? _goalTargetError;
   String _goalUnit = "unit";
 
   void onChangeGoalType(String? value) {
@@ -35,13 +38,38 @@ class _AddGoalBottomSheetWidgetState
   }
 
   void _onAddGoalSubmit() {
-    addGoal(
-      _goalTitleController.text,
-      _goalTypeController.text.toLowerCase(),
-      num.tryParse(_goalTargetController.text)!,
-    );
+    setState(() {
+      _goalTitleError = null;
+      _goalTypeError = null;
+      _goalTargetError = null;
 
-    Navigator.pop(context, goalList);
+      // Require goal target
+      if (_goalTargetController.text.isEmpty) {
+        _goalTargetError = "Goal target is required";
+      }
+
+      // Require goal title
+      if (_goalTitleController.text.isEmpty) {
+        _goalTitleError = "Goal title is required";
+      }
+
+      // Require goal type
+      if (_goalTypeController.text.isEmpty) {
+        _goalTypeError = "Please select goal type";
+      }
+
+      //Submit the values if all of the fields are entered
+      if (_goalTypeError == null &&
+          _goalTitleError == null &&
+          _goalTargetError == null) {
+        addGoal(
+          _goalTitleController.text,
+          _goalTypeController.text.toLowerCase(),
+          num.tryParse(_goalTargetController.text)!,
+        );
+        Navigator.pop(context, goalList);
+      }
+    });
   }
 
   @override
@@ -52,13 +80,36 @@ class _AddGoalBottomSheetWidgetState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text("Add Your New Goal, Champ!"),
+          Text(
+            "Add Your New Goal",
+            style: TextStyle(fontSize: 25),
+          ),
+          Text(
+            "Fields marked with (*) are meant to be required",
+            style: TextStyle(
+              color: const Color.fromARGB(
+                255,
+                135,
+                55,
+                149,
+              ),
+            ),
+          ),
           TextField(
             controller: _goalTitleController,
             decoration: InputDecoration(
-              hintText: "Write a title for your goal",
+              prefixIcon: Icon(Icons.note_add),
+              hintText: "Write a title for your goal *",
             ),
           ),
+          if (_goalTitleError != null)
+            Text(
+              _goalTitleError!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
 
           DropdownMenu(
             controller: _goalTypeController,
@@ -76,6 +127,14 @@ class _AddGoalBottomSheetWidgetState
                 )
                 .toList(),
           ),
+          if (_goalTypeError != null)
+            Text(
+              _goalTypeError!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
           TextField(
             keyboardType:
                 _goalTypeController.text == "DURATION"
@@ -94,9 +153,18 @@ class _AddGoalBottomSheetWidgetState
             ],
             controller: _goalTargetController,
             decoration: InputDecoration(
+              prefixIcon: Icon(Icons.track_changes),
               hintText: "Your target ($_goalUnit)",
             ),
           ),
+          if (_goalTargetError != null)
+            Text(
+              _goalTargetError!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
 
           OutlinedButton(
             onPressed: _onAddGoalSubmit,
@@ -105,5 +173,14 @@ class _AddGoalBottomSheetWidgetState
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _goalTargetController.dispose();
+    _goalTitleController.dispose();
+    _goalTypeController.dispose();
   }
 }
