@@ -33,6 +33,10 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   listTileTheme: ListTileThemeData(
     tileColor: AppColor.lightThemeSecondaryColor,
     textColor: AppColor.lightThemePrimaryColor,
+    iconColor: AppColor.lightThemePrimaryColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
   ),
 );
 
@@ -49,5 +53,9 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   listTileTheme: ListTileThemeData(
     tileColor: AppColor.darkThemeSecondaryColor,
     textColor: AppColor.darkThemePrimaryColor,
+    iconColor: AppColor.darkThemePrimaryColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
   ),
 );
