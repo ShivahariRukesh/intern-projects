@@ -1,6 +1,6 @@
-import 'package:fitness_tracker_app/models/workout_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fitness_tracker_app/models/workout_model.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
   const WorkoutFormWidget({super.key});
@@ -21,121 +21,231 @@ class _WorkoutFormWidgetState
   final TextEditingController _workoutTypeController =
       TextEditingController();
 
+  String? _durationError;
+  String? _distanceError;
+  String? _calorieError;
+  String? _workoutError;
+
   void submitWorkoutForm() {
     setState(() {
-      addWorkout(
-        _workoutTypeController.text,
-        int.tryParse(_durationTextController.text)!,
-        double.tryParse(_calorieTextController.text)!,
-        double.tryParse(_distanceTextController.text),
-      );
+      _durationError = null;
+      _calorieError = null;
+      _workoutError = null;
+
+      // Require workout
+      if (_workoutTypeController.text.isEmpty) {
+        _workoutError = "Please select a workout";
+      }
+
+      // Require duration
+      if (_durationTextController.text.isEmpty) {
+        _durationError = "Duration is required";
+      }
+
+      // Require calories
+      if (_calorieTextController.text.isEmpty) {
+        _calorieError = "Calories are required";
+      }
+
+      // If all required fields are filled
+      if (_workoutError == null &&
+          _durationError == null &&
+          _calorieError == null) {
+        addWorkout(
+          _workoutTypeController.text.toLowerCase(),
+          int.parse(_durationTextController.text),
+          double.parse(_calorieTextController.text),
+          _distanceTextController.text.isEmpty
+              ? 0
+              : double.parse(_distanceTextController.text),
+        );
+
+        // Clear inputs
+        _workoutTypeController.clear();
+        _durationTextController.clear();
+        _distanceTextController.clear();
+        _calorieTextController.clear();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Workout submitted!'),
+          ),
+        );
+      }
     });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _durationTextController.text = "0";
-  //   _distanceTextController.text = "0.0";
-  //   _calorieTextController.text = "0.0";
-  //   _workoutTypeController.text = "";
-  // }
+  @override
+  void dispose() {
+    _durationTextController.dispose();
+    _distanceTextController.dispose();
+    _calorieTextController.dispose();
+    _workoutTypeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        // color:
-      ),
       height: 400,
-      width: 300,
+      width: 400,
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DropdownMenu(
-            onSelected: (String? value) =>
-                _workoutTypeController.text = value ?? "",
-            controller: _workoutTypeController,
-            hintText: "Select Your Workout",
-            dropdownMenuEntries: WorkoutEnum.values
-                .map(
-                  (workout) => DropdownMenuEntry(
-                    value: workout.name,
-                    label: workout.name.toUpperCase(),
-                  ),
-                )
-                .toList(),
-          ),
-
-          //Wrap it up in reusable widget
-          TextField(
-            controller: _durationTextController,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: InputDecoration(
-              label: Text("Enter the duration"),
-              hintText: "In Min",
-            ),
-          ),
-
-          TextField(
-            controller: _distanceTextController,
-            keyboardType:
-                const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(
-                // Allows digits and one decimal point only
-                RegExp(r'^\d*\.?\d*'),
-              ),
-            ],
-            decoration: InputDecoration(
-              label: Text("Enter the distance"),
-              hintText: "In km",
-            ),
-          ),
-
-          TextField(
-            controller: _calorieTextController,
-            keyboardType:
-                const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-            inputFormatters: [
-              // Allows digits and one decimal point only
-              FilteringTextInputFormatter.allow(
-                RegExp(r'^\d*\.?\d*'),
-              ),
-            ],
-            decoration: InputDecoration(
-              label: Text("Enter the calorie"),
-              hintText: "In kCal",
-            ),
-          ),
-
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: () => submitWorkoutForm(),
-
-                child: Text("Submit"),
+              Text(
+                "Fields marked with (*) are meant to be required",
+                style: TextStyle(
+                  color: const Color.fromARGB(
+                    255,
+                    135,
+                    55,
+                    149,
+                  ),
+                ),
               ),
+              DropdownMenu(
+                width: 250,
+                controller: _workoutTypeController,
+                hintText: "Select Your Workout *",
+                onSelected: (String? value) =>
+                    _workoutTypeController.text =
+                        value ?? "",
+                dropdownMenuEntries: WorkoutEnum.values
+                    .map(
+                      (workout) => DropdownMenuEntry(
+                        value: workout.name.toUpperCase(),
+                        label: workout.name.toUpperCase(),
+                      ),
+                    )
+                    .toList(),
+              ),
+              if (_workoutError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    _workoutError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
             ],
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _durationTextController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.timer_outlined),
+                  labelText: "Enter the duration *",
+                  suffixText: "minutes",
+                ),
+              ),
+              if (_durationError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    _durationError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _distanceTextController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d*\.?\d*'),
+                  ),
+                ],
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.straighten_outlined,
+                  ),
+                  labelText: "Enter the distance",
+                  suffixText: "km",
+                ),
+              ),
+              if (_distanceError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    _distanceError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _calorieTextController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d*\.?\d*'),
+                  ),
+                ],
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.local_fire_department_outlined,
+                  ),
+                  labelText: "Enter the calorie *",
+                  suffixText: "kCal",
+                ),
+              ),
+              if (_calorieError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    _calorieError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          Center(
+            child: ElevatedButton(
+              onPressed: submitWorkoutForm,
+              child: const Text("Submit"),
+            ),
           ),
         ],
       ),
     );
-  }
-
-  //Remove controllers from the cache when this widget is disposed
-  @override
-  void dispose() {
-    super.dispose();
-    _durationTextController.dispose();
-    _distanceTextController.dispose();
-    _calorieTextController.dispose();
   }
 }
