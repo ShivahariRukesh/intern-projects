@@ -155,6 +155,7 @@ class _AddGoalBottomSheetWidgetState
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.track_changes),
               hintText: "Your target ($_goalUnit)",
+              suffixText: _goalUnit
             ),
           ),
           if (_goalTargetError != null)
