@@ -1,3 +1,5 @@
+import 'package:fitness_tracker_app/models/goal_model.dart';
+
 enum WorkoutEnum { pullup, jogging }
 
 abstract class WorkoutModel {
@@ -58,4 +60,7 @@ void addWorkout(
   };
 
   workoutList.add(newWorkout);
+
+  //Change the state of the goal as new workout has been added
+  changeGoalState();
 }
