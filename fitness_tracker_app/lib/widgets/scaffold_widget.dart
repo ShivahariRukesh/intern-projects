@@ -4,7 +4,7 @@ List routes = [
   {
     "name": 'Dashboard',
     "route": '/dashboard',
-    "icon": Icon(Icons.home),
+    "icon": Icon(Icons.grid_view_rounded),
   },
   {
     "name": 'Log',
