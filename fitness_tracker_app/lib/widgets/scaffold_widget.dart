@@ -43,7 +43,8 @@ class ScaffoldWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: ClipOval(
-          child: Image.asset('assets/images/fitness_logo.webp',
+          child: Image.asset(
+            'assets/images/fitness_logo.webp',
             color: const Color.fromARGB(255, 223, 210, 210),
             colorBlendMode: BlendMode.modulate,
           ),
