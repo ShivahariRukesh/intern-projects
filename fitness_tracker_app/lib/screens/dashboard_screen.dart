@@ -27,7 +27,6 @@ class DashboardScreen extends StatelessWidget {
             const DashboardRecordWidget(),
             const SizedBox(height: 20),
 
-            // Big background style text
             Container(
               alignment: Alignment.center,
               height: 120,
@@ -54,8 +53,8 @@ class DashboardScreen extends StatelessWidget {
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        "Start tracking your workouts and build your fitness streak 💪",
-                        style: TextStyle(fontSize: 16),
+                        "Start tracking your workouts and build your fitness streak",
+                        style: TextStyle(fontSize: 14),
                       ),
                     ),
                   ],

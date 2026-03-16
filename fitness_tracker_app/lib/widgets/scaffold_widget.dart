@@ -42,8 +42,15 @@ class ScaffoldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: ClipOval(
+          child: Image.asset('assets/images/fitness_logo.webp',
+            color: const Color.fromARGB(255, 223, 210, 210),
+            colorBlendMode: BlendMode.modulate,
+          ),
+        ),
         title: Text(title),
         actions: actions ?? [],
+        elevation: 3,
       ),
       body: body,
 
