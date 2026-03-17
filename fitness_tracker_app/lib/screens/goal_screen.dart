@@ -1,4 +1,5 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
+import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:fitness_tracker_app/widgets/add_goal_bottom_sheet_widget.dart';
 import 'package:fitness_tracker_app/widgets/goal_list_widget.dart';
 import 'package:fitness_tracker_app/widgets/scaffold_widget.dart';
@@ -12,7 +13,9 @@ class GoalScreen extends StatefulWidget {
 }
 
 class _GoalScreenState extends State<GoalScreen> {
-  var _goalList = goalList;
+  // var _goalList = goalList;
+  var _goalList = fitnessService.goals;
+
   void onGoalBottomSheet(BuildContext context) async {
     var resp = await showModalBottomSheet(
       context: context,
@@ -20,7 +23,8 @@ class _GoalScreenState extends State<GoalScreen> {
           AddGoalBottomSheetWidget(),
     );
     setState(() {
-      _goalList = goalList;
+      // _goalList = goalList;
+      _goalList = fitnessService.goals;
     });
   }
 
@@ -28,7 +32,8 @@ class _GoalScreenState extends State<GoalScreen> {
   Widget build(BuildContext context) {
     return ScaffoldWidget(
       title: "Goals",
-      body: goalList.isNotEmpty
+      // body: goalList.isNotEmpty
+      body: fitnessService.goals.isNotEmpty
           ? GoalListWidget(goalList: _goalList)
           : Center(child: Text("Goals not yet created")),
 

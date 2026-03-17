@@ -1,4 +1,5 @@
 import 'package:fitness_tracker_app/models/workout_model.dart';
+import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:flutter/material.dart';
 
 class HistoryListWidget extends StatelessWidget {
@@ -11,11 +12,14 @@ class HistoryListWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
-        itemCount: workoutList.length,
+        // itemCount: workoutList.length,
+        itemCount: fitnessService.workouts.length,
+
         separatorBuilder: (context, index) =>
             const SizedBox(height: 12),
         itemBuilder: (context, index) {
-          final workout = workoutList[index];
+          // final workout = workoutList[index];
+          final workout = fitnessService.workouts[index];
 
           return Container(
             decoration: BoxDecoration(

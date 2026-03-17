@@ -1,6 +1,8 @@
+import 'package:fitness_tracker_app/models/workout_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fitness_tracker_app/models/workout_model.dart';
+// import 'package:fitness_tracker_app/models/workout_model.dart';
+import 'package:fitness_tracker_app/services/fitness_manager.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
   const WorkoutFormWidget({super.key});
@@ -51,7 +53,15 @@ class _WorkoutFormWidgetState
       if (_workoutError == null &&
           _durationError == null &&
           _calorieError == null) {
-        addWorkout(
+        // addWorkout(
+        //   _workoutTypeController.text.toLowerCase(),
+        //   int.parse(_durationTextController.text),
+        //   double.parse(_calorieTextController.text),
+        //   _distanceTextController.text.isEmpty
+        //       ? 0
+        //       : double.parse(_distanceTextController.text),
+        // );
+        fitnessService.addWorkout(
           _workoutTypeController.text.toLowerCase(),
           int.parse(_durationTextController.text),
           double.parse(_calorieTextController.text),

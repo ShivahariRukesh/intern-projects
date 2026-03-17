@@ -1,4 +1,5 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
+import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -62,12 +63,26 @@ class _AddGoalBottomSheetWidgetState
       if (_goalTypeError == null &&
           _goalTitleError == null &&
           _goalTargetError == null) {
-        addGoal(
-          _goalTitleController.text,
-          _goalTypeController.text.toLowerCase(),
-          num.tryParse(_goalTargetController.text)!,
+        // addGoal(
+        //   _goalTitleController.text,
+        //   _goalTypeController.text.toLowerCase(),
+        //   num.tryParse(_goalTargetController.text)!,
+        // );
+
+        fitnessService.addGoal(
+          GoalModel(
+            _goalTitleController.text,
+            _goalTypeController.text.toLowerCase() ==
+                    "calorie"
+                ? GoalType.calorie
+                : _goalTypeController.text.toLowerCase() ==
+                      "distance"
+                ? GoalType.distance
+                : GoalType.duration,
+            num.tryParse(_goalTargetController.text)!,
+          ),
         );
-        Navigator.pop(context, goalList);
+        Navigator.pop(context, fitnessService.goals);
       }
     });
   }
@@ -118,7 +133,8 @@ class _AddGoalBottomSheetWidgetState
             onSelected: (String? value) =>
                 onChangeGoalType(value),
 
-            dropdownMenuEntries: GoalTypeEnum.values
+            // dropdownMenuEntries: GoalTypeEnum.values
+            dropdownMenuEntries: GoalType.values
                 .map(
                   (workout) => DropdownMenuEntry(
                     value: workout.name,
@@ -155,7 +171,7 @@ class _AddGoalBottomSheetWidgetState
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.track_changes),
               hintText: "Your target ($_goalUnit)",
-              suffixText: _goalUnit
+              suffixText: _goalUnit,
             ),
           ),
           if (_goalTargetError != null)
