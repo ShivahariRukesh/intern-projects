@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const darkThemePrimaryColor = Colors.white;
+  static const darkThemePrimaryColor = Color.fromARGB(
+    255,
+    178,
+    156,
+    45,
+  );
   static const darkThemeSecondaryColor = Color.fromARGB(
     255,
     89,
@@ -22,6 +27,11 @@ class AppColor {
 }
 
 final ThemeData lightTheme = ThemeData.light().copyWith(
+  primaryColor: AppColor.lightThemePrimaryColor,
+
+  colorScheme: ThemeData.light().colorScheme.copyWith(
+    secondary: AppColor.lightThemeSecondaryColor,
+  ),
   bottomNavigationBarTheme:
       const BottomNavigationBarThemeData(
         selectedItemColor: AppColor.lightThemePrimaryColor,
@@ -41,6 +51,11 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
 );
 
 final ThemeData darkTheme = ThemeData.dark().copyWith(
+  primaryColor: AppColor.darkThemePrimaryColor,
+
+  colorScheme: ThemeData.dark().colorScheme.copyWith(
+    secondary: AppColor.darkThemeSecondaryColor,
+  ),
   bottomNavigationBarTheme:
       const BottomNavigationBarThemeData(
         backgroundColor: AppColor.darkThemeBackgroundColor,
