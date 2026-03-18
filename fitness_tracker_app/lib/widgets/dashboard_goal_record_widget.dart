@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_app/controllers/goal_controller.dart';
 import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,7 @@ class DashboardGoalRecordWidget extends StatelessWidget {
     int? acc,
     goal,
   ) {
-    if (goal.calculateProgressFraction(
-          fitnessService.workouts,
-        ) ==
-        1) {
+    if (goalController.getProgressFraction(goal) == 1) {
       return (acc as int) + 1;
     } else {
       return acc;

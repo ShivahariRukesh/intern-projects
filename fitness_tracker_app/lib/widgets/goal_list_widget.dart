@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_app/controllers/goal_controller.dart';
 import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:flutter/material.dart';
@@ -84,10 +85,8 @@ class GoalListWidget extends StatelessWidget {
                 Column(
                   children: [
                     LinearProgressIndicator(
-                      // value: goal.progress ?? 0,
-                      value: goal.calculateProgressFraction(
-                        fitnessService.workouts,
-                      ),
+                      value: goalController
+                          .getProgressFraction(goal),
                       minHeight: 8,
                       borderRadius: BorderRadius.circular(
                         10,
@@ -99,8 +98,7 @@ class GoalListWidget extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        // "${goal.progress > 1 ? 100 : ((goal.progress * 100) as num).toStringAsFixed(0)}%",
-                        "${goal.calculateProgressFraction(fitnessService.workouts) > 1 ? 100 : ((goal.calculateProgressFraction(fitnessService.workouts) * 100) as num).toStringAsFixed(0)}%",
+                        "${goalController.getProgressFraction(goal) > 1 ? 100 : ((goalController.getProgressFraction(goal) * 100) as num).toStringAsFixed(0)}%",
                         style: theme.textTheme.bodySmall,
                       ),
                     ),
