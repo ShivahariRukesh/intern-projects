@@ -13,7 +13,6 @@ class GoalScreen extends StatefulWidget {
 }
 
 class _GoalScreenState extends State<GoalScreen> {
-  // var _goalList = goalList;
   var _goalList = fitnessService.goals;
 
   void onGoalBottomSheet(BuildContext context) async {
@@ -23,7 +22,6 @@ class _GoalScreenState extends State<GoalScreen> {
           AddGoalBottomSheetWidget(),
     );
     setState(() {
-      // _goalList = goalList;
       _goalList = fitnessService.goals;
     });
   }
@@ -32,7 +30,7 @@ class _GoalScreenState extends State<GoalScreen> {
   Widget build(BuildContext context) {
     return ScaffoldWidget(
       title: "Goals",
-      // body: goalList.isNotEmpty
+
       body: fitnessService.goals.isNotEmpty
           ? GoalListWidget(goalList: _goalList)
           : Center(child: Text("Goals not yet created")),

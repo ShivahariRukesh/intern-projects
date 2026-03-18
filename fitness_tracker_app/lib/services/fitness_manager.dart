@@ -1,6 +1,5 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/models/workout_model.dart';
-import 'package:flutter/widgets.dart';
 
 class FitnessManager {
   final List<WorkoutModel> _workouts = [];
@@ -9,10 +8,6 @@ class FitnessManager {
   List<WorkoutModel> get workouts =>
       List.unmodifiable(_workouts);
   List<GoalModel> get goals => List.unmodifiable(_goals);
-
-  // void addWorkout(WorkoutModel workout) {
-  //   _workouts.add(workout);
-  // }
 
   void addWorkout(
     String type,

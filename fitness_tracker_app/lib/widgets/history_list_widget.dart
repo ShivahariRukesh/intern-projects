@@ -12,13 +12,11 @@ class HistoryListWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
-        // itemCount: workoutList.length,
         itemCount: fitnessService.workouts.length,
 
         separatorBuilder: (context, index) =>
             const SizedBox(height: 12),
         itemBuilder: (context, index) {
-          // final workout = workoutList[index];
           final workout = fitnessService.workouts[index];
 
           return Container(

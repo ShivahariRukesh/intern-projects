@@ -63,12 +63,6 @@ class _AddGoalBottomSheetWidgetState
       if (_goalTypeError == null &&
           _goalTitleError == null &&
           _goalTargetError == null) {
-        // addGoal(
-        //   _goalTitleController.text,
-        //   _goalTypeController.text.toLowerCase(),
-        //   num.tryParse(_goalTargetController.text)!,
-        // );
-
         fitnessService.addGoal(
           GoalModel(
             _goalTitleController.text,

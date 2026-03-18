@@ -42,7 +42,6 @@ class GoalListWidget extends StatelessWidget {
 
                     Expanded(
                       child: Text(
-                        // goal.goalTitle
                         goal.title,
                         style: theme.textTheme.titleMedium,
                       ),
@@ -58,10 +57,6 @@ class GoalListWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          // goal.goalType
-                          //     .toString()
-                          //     .split('.')
-                          //     .last,
                           goal.type
                               .toString()
                               .split('.')

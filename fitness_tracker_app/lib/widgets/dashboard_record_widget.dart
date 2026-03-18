@@ -1,5 +1,4 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/models/workout_model.dart';
 import 'package:fitness_tracker_app/services/fitness_manager.dart';
 import 'package:fitness_tracker_app/widgets/dashboard_stats_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class DashboardRecordWidget extends StatelessWidget {
         crossAxisCount: 2,
         children: [
           DashboardStatsCardWidget(
-            // value: workoutList.length.toString(),
             value: fitnessService.workouts.length
                 .toString(),
 
@@ -27,7 +25,6 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            // value: getTotalMeasurement("duration"),
             value: fitnessService
                 .getTotalMetric(GoalType.duration)
                 .toString(),
@@ -37,7 +34,6 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            // value: getTotalMeasurement("distance"),
             value: fitnessService
                 .getTotalMetric(GoalType.distance)
                 .toString(),
@@ -47,7 +43,6 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            // value: getTotalMeasurement("calorie"),
             value: fitnessService
                 .getTotalMetric(GoalType.calorie)
                 .toString(),
