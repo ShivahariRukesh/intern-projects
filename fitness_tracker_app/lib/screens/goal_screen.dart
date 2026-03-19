@@ -1,5 +1,4 @@
-import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:fitness_tracker_app/widgets/add_goal_bottom_sheet_widget.dart';
 import 'package:fitness_tracker_app/widgets/goal_list_widget.dart';
 import 'package:fitness_tracker_app/widgets/scaffold_widget.dart';

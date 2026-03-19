@@ -1,6 +1,5 @@
-import 'package:fitness_tracker_app/controllers/goal_controller.dart';
 import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 
 class GoalListWidget extends StatelessWidget {

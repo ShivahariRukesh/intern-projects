@@ -1,5 +1,5 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

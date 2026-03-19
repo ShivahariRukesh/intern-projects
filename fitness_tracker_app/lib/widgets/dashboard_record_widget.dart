@@ -1,5 +1,5 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:fitness_tracker_app/widgets/dashboard_stats_card_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            value: fitnessService
+            value: goalController
                 .getTotalMetric(GoalType.duration)
                 .toString(),
             icon: Icons.timer_outlined,
@@ -34,7 +34,7 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            value: fitnessService
+            value: goalController
                 .getTotalMetric(GoalType.distance)
                 .toString(),
             icon: Icons.straighten_outlined,
@@ -43,7 +43,7 @@ class DashboardRecordWidget extends StatelessWidget {
           ),
 
           DashboardStatsCardWidget(
-            value: fitnessService
+            value: goalController
                 .getTotalMetric(GoalType.calorie)
                 .toString(),
             icon: Icons.local_fire_department_outlined,

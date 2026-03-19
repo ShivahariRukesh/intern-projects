@@ -1,4 +1,5 @@
 import 'package:fitness_tracker_app/models/workout_model.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fitness_tracker_app/services/fitness_manager.dart';
@@ -52,8 +53,20 @@ class _WorkoutFormWidgetState
       if (_workoutError == null &&
           _durationError == null &&
           _calorieError == null) {
-        fitnessService.addWorkout(
-          _workoutTypeController.text.toLowerCase(),
+        // fitnessService.addWorkout(
+        //   _workoutTypeController.text.toLowerCase(),
+        //   int.parse(_durationTextController.text),
+        //   double.parse(_calorieTextController.text),
+        //   _distanceTextController.text.isEmpty
+        //       ? 0
+        //       : double.parse(_distanceTextController.text),
+        // );
+
+        workoutController.addWorkout(
+          _workoutTypeController.text.toLowerCase() ==
+                  "pullup"
+              ? WorkoutType.pullup
+              : WorkoutType.jogging,
           int.parse(_durationTextController.text),
           double.parse(_calorieTextController.text),
           _distanceTextController.text.isEmpty
@@ -115,7 +128,7 @@ class _WorkoutFormWidgetState
                 onSelected: (String? value) =>
                     _workoutTypeController.text =
                         value ?? "",
-                dropdownMenuEntries: WorkoutEnum.values
+                dropdownMenuEntries: WorkoutType.values
                     .map(
                       (workout) => DropdownMenuEntry(
                         value: workout.name.toUpperCase(),

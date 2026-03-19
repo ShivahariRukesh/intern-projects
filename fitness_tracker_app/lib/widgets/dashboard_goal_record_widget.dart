@@ -1,5 +1,4 @@
-import 'package:fitness_tracker_app/controllers/goal_controller.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

@@ -1,25 +1,47 @@
-import 'package:fitness_tracker_app/models/goal_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import '../models/goal_model.dart';
+import '../services/fitness_manager.dart';
 
 class GoalController {
+  final FitnessManager fitnessManager;
+
+  GoalController(this.fitnessManager);
+
   double getProgressFraction(GoalModel goal) {
-    double totalValue = fitnessService.workouts.fold(0.0, (
+    double total = fitnessManager.workouts.fold(0.0, (
       sum,
       workout,
     ) {
       switch (goal.type) {
         case GoalType.duration:
-          return sum + workout.duration.toDouble();
-        case GoalType.distance:
-          return sum + (workout.distanceCovered ?? 0.0);
+          return sum + workout.duration;
+
         case GoalType.calorie:
           return sum + workout.caloriesBurnt;
+
+        case GoalType.distance:
+          return sum + workout.getDistance();
       }
     });
 
     if (goal.target <= 0) return 0.0;
-    return (totalValue / goal.target).clamp(0.0, 1.0);
+    return (total / goal.target).clamp(0.0, 1.0);
+  }
+
+  double getTotalMetric(GoalType type) {
+    return fitnessManager.workouts.fold(0.0, (
+      sum,
+      workout,
+    ) {
+      switch (type) {
+        case GoalType.duration:
+          return sum + workout.duration;
+
+        case GoalType.calorie:
+          return sum + workout.caloriesBurnt;
+
+        case GoalType.distance:
+          return sum + workout.getDistance();
+      }
+    });
   }
 }
-
-GoalController goalController = GoalController();

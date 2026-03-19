@@ -1,5 +1,5 @@
 import 'package:fitness_tracker_app/models/workout_model.dart';
-import 'package:fitness_tracker_app/services/fitness_manager.dart';
+import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 
 class HistoryListWidget extends StatelessWidget {
@@ -59,14 +59,15 @@ class HistoryListWidget extends StatelessWidget {
 
                     const SizedBox(width: 20),
 
-                    if (workout.distanceCovered !=
-                        null) ...[
+                    if (workout is Jogging)
+                    // if (workout.distance != null)
+                    ...[
                       const Icon(
                         Icons.straighten_outlined,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
-                      Text("${workout.distanceCovered} km"),
+                      Text("${workout.distance} km"),
                     ],
                   ],
                 ),

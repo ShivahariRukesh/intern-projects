@@ -1,34 +1,38 @@
-enum WorkoutEnum { jogging, pullup }
+enum WorkoutType { jogging, pullup }
 
 abstract class WorkoutModel {
   final int duration;
   final double caloriesBurnt;
-  final double? distanceCovered;
 
   WorkoutModel({
     required this.duration,
     required this.caloriesBurnt,
-    this.distanceCovered,
   });
+
+  double getDistance() => 0.0;
 }
 
 class Jogging extends WorkoutModel {
+  final double distance;
+
   Jogging({
     required int duration,
     required double caloriesBurnt,
-    required double distance,
+    required this.distance,
   }) : super(
          duration: duration,
          caloriesBurnt: caloriesBurnt,
-         distanceCovered: distance,
        );
+
+  @override
+  double getDistance() => distance;
 
   @override
   String toString() => "Jogging";
 }
 
-class Pushup extends WorkoutModel {
-  Pushup({
+class Pullup extends WorkoutModel {
+  Pullup({
     required int duration,
     required double caloriesBurnt,
   }) : super(
@@ -37,5 +41,5 @@ class Pushup extends WorkoutModel {
        );
 
   @override
-  String toString() => "Pushup";
+  String toString() => "Pullup";
 }
