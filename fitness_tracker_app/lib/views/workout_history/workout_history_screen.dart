@@ -1,5 +1,5 @@
-import 'package:fitness_tracker_app/widgets/history_list_widget.dart';
-import 'package:fitness_tracker_app/widgets/scaffold_widget.dart';
+import 'package:fitness_tracker_app/views/workout_history/widgets/history_list_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutHistoryScreen extends StatelessWidget {

@@ -1,9 +1,9 @@
-import 'package:fitness_tracker_app/screens/workout_log_screen.dart';
+import 'package:fitness_tracker_app/views/workout_log/workout_log_screen.dart';
 import 'package:fitness_tracker_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:fitness_tracker_app/screens/dashboard_screen.dart';
-import 'package:fitness_tracker_app/screens/goal_screen.dart';
-import 'package:fitness_tracker_app/screens/workout_history_screen.dart';
+import 'package:fitness_tracker_app/views/dashboard/dashboard_screen.dart';
+import 'package:fitness_tracker_app/views/goal/goal_screen.dart';
+import 'package:fitness_tracker_app/views/workout_history/workout_history_screen.dart';
 
 class FitnessTrackerApp extends StatefulWidget {
   const FitnessTrackerApp({super.key});

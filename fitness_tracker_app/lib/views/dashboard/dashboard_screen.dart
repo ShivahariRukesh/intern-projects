@@ -1,6 +1,6 @@
-import 'package:fitness_tracker_app/widgets/dashboard_goal_record_widget.dart';
-import 'package:fitness_tracker_app/widgets/dashboard_record_widget.dart';
-import 'package:fitness_tracker_app/widgets/scaffold_widget.dart';
+import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_goal_record_widget.dart';
+import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_record_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {

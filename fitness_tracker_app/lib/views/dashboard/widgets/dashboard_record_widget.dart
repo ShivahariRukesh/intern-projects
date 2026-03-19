@@ -1,6 +1,6 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
-import 'package:fitness_tracker_app/widgets/dashboard_stats_card_widget.dart';
+import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_stats_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class DashboardRecordWidget extends StatelessWidget {
