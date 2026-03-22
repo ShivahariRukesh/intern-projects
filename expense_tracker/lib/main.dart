@@ -1,5 +1,5 @@
-import 'package:expense_tracker/providers/counter_provider.dart';
-import 'package:expense_tracker/screens/home_screen.dart';
+import 'package:expense_tracker/ui/expense/view_models/expense_view_model.dart';
+import 'package:expense_tracker/ui/expense/widgets/expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CounterProvider(0),
+          create: (context) => ExpenseViewModel(),
         ),
       ],
       child: mainExpenseTracker(),
@@ -18,6 +18,9 @@ void main() {
 
 MaterialApp mainExpenseTracker() {
   return const MaterialApp(
-    home: Scaffold(body: HomeScreen()),
+    home: Scaffold(
+      body: ExpenseScreen(),
+      backgroundColor: Color.fromARGB(66, 237, 237, 237),
+    ),
   );
 }
