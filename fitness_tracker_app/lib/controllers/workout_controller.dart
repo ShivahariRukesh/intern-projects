@@ -30,6 +30,31 @@ class WorkoutController {
             caloriesBurnt: calories,
           ),
         );
+
+      case WorkoutType.situp:
+        fitnessManager.addWorkout(
+          Situp(
+            duration: duration,
+            caloriesBurnt: calories,
+          ),
+        );
+
+      case WorkoutType.plank:
+        fitnessManager.addWorkout(
+          Plank(
+            duration: duration,
+            caloriesBurnt: calories,
+          ),
+        );
+
+      case WorkoutType.climbing:
+        fitnessManager.addWorkout(
+          Climbing(
+            duration: duration,
+            caloriesBurnt: calories,
+            distance: distance ?? 0,
+          ),
+        );
         break;
     }
   }
