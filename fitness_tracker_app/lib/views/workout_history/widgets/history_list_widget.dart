@@ -29,12 +29,16 @@ class HistoryListWidget extends StatelessWidget {
                 horizontal: 16,
                 vertical: 8,
               ),
-              leading: const CircleAvatar(
-                child: Icon(Icons.fitness_center),
+              leading: CircleAvatar(
+                backgroundColor: theme.colorScheme.surface,
+                child: Icon(
+                  Icons.fitness_center,
+                  color: theme.primaryColor,
+                ),
               ),
               title: Text(
                 workout.toString(),
-                style: theme.textTheme.titleMedium,
+                style: theme.textTheme.displayMedium,
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 6),
@@ -46,7 +50,11 @@ class HistoryListWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
 
-                    Text("${workout.caloriesBurnt} kcal"),
+                    Text(
+                      "${workout.caloriesBurnt}\t",
+                      style: theme.textTheme.displayMedium,
+                    ),
+                    Text("kcal"),
 
                     const SizedBox(width: 20),
 
@@ -55,19 +63,38 @@ class HistoryListWidget extends StatelessWidget {
                       size: 18,
                     ),
                     const SizedBox(width: 4),
-                    Text("${workout.duration} min"),
+                    Text(
+                      "${workout.duration}\t",
+                      style: theme.textTheme.displayMedium,
+                    ),
+                    Text("min"),
 
                     const SizedBox(width: 20),
 
-                    if (workout is Jogging)
-                    // if (workout.distance != null)
-                    ...[
+                    if (workout is Jogging) ...[
                       const Icon(
                         Icons.straighten_outlined,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
-                      Text("${workout.distance} km"),
+                      Text(
+                        "${workout.distance}\t",
+                        style:
+                            theme.textTheme.displayMedium,
+                      ),
+                      Text("km"),
+                    ] else if (workout is Climbing) ...[
+                      const Icon(
+                        Icons.straighten_outlined,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        "${workout.distance}\t",
+                        style:
+                            theme.textTheme.displayMedium,
+                      ),
+                      Text("km"),
                     ],
                   ],
                 ),
