@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   // Dark Theme Colors
   /// Primary color used in dark theme (main accents, highlights)
-  static const darkThemePrimaryColor = Color.fromARGB(
+  static const Color darkThemePrimaryColor = Color.fromARGB(
     255,
     178,
     156,
@@ -16,30 +16,24 @@ class AppColor {
   );
 
   /// Secondary color used in dark theme (inactive elements, tiles, etc.)
-  static const darkThemeSecondaryColor = Color.fromARGB(
-    255,
-    89,
-    89,
-    89,
-  );
+  static const Color darkThemeSecondaryColor =
+      Color.fromARGB(255, 89, 89, 89);
 
   /// Background color for dark theme screens
-  static const darkThemeBackgroundColor = Colors.black;
+  static const Color darkThemeBackgroundColor =
+      Colors.black;
 
   // Light Theme Colors
   /// Primary color used in light theme (main text, icons)
-  static const lightThemePrimaryColor = Colors.black;
+  static const Color lightThemePrimaryColor = Colors.black;
 
   /// Secondary color used in light theme (subtle UI elements)
-  static const lightThemeSecondaryColor = Color.fromARGB(
-    255,
-    191,
-    186,
-    186,
-  );
+  static const Color lightThemeSecondaryColor =
+      Color.fromARGB(255, 191, 186, 186);
 
   /// Background color for light theme screens
-  static const lightThemeBackgroundColor = Colors.white;
+  static const Color lightThemeBackgroundColor =
+      Colors.white;
 }
 
 /// Light Theme Configuration
@@ -57,12 +51,13 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   ),
 
   /// Floating Action Button styling
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: AppColor.lightThemeSecondaryColor,
-  ),
+  floatingActionButtonTheme:
+      const FloatingActionButtonThemeData(
+        backgroundColor: AppColor.lightThemeSecondaryColor,
+      ),
 
   /// Global text styling for the app
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     /// Medium display text (e.g., section titles)
     displayMedium: TextStyle(
       fontSize: 18,
@@ -136,12 +131,13 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
 
   /// Floating Action Button styling
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: AppColor.darkThemePrimaryColor,
-  ),
+  floatingActionButtonTheme:
+      const FloatingActionButtonThemeData(
+        backgroundColor: AppColor.darkThemePrimaryColor,
+      ),
 
   /// Global text styling
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     /// Medium display text
     displayMedium: TextStyle(
       fontSize: 18,
@@ -216,7 +212,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
 
   /// Input field styling (TextField, TextFormField)
-  inputDecorationTheme: InputDecorationThemeData(
+  inputDecorationTheme: const InputDecorationThemeData(
     /// Color of prefix icons
     prefixIconColor: AppColor.darkThemePrimaryColor,
 
@@ -225,7 +221,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
 
   /// Default icon styling across the app
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: AppColor.darkThemePrimaryColor,
     size: 20,
   ),
