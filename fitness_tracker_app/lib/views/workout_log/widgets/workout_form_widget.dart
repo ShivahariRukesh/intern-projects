@@ -37,26 +37,26 @@ class _WorkoutFormWidgetState
 
       // Require workout
       if (_workoutTypeController.text.isEmpty) {
-        _workoutError = "Please select a workout";
+        _workoutError = 'Please select a workout';
       }
 
       // Require duration
       if (_durationTextController.text.isEmpty) {
-        _durationError = "Duration is required";
+        _durationError = 'Duration is required';
       }
 
       // Require calories
       if (_calorieTextController.text.isEmpty) {
-        _calorieError = "Calories are required";
+        _calorieError = 'Calories are required';
       }
 
       // Require distance
       if (_distanceTextController.text.isEmpty) {
-        _distanceError = "Distance is required";
+        _distanceError = 'Distance is required';
       }
 
-      if (!(_workoutTypeController.text == "CLIMBING" ||
-          _workoutTypeController.text == "JOGGING")) {
+      if (!(_workoutTypeController.text == 'CLIMBING' ||
+          _workoutTypeController.text == 'JOGGING')) {
         _distanceError = null;
       }
 
@@ -67,16 +67,16 @@ class _WorkoutFormWidgetState
           _distanceError == null) {
         workoutController.addWorkout(
           _workoutTypeController.text.toLowerCase() ==
-                  "pullup"
+                  'pullup'
               ? WorkoutType.pullup
               : _workoutTypeController.text.toLowerCase() ==
-                    "jogging"
+                    'jogging'
               ? WorkoutType.jogging
               : _workoutTypeController.text.toLowerCase() ==
-                    "situp"
+                    'situp'
               ? WorkoutType.situp
               : _workoutTypeController.text.toLowerCase() ==
-                    "plank"
+                    'plank'
               ? WorkoutType.plank
               : WorkoutType.climbing,
 
@@ -114,7 +114,7 @@ class _WorkoutFormWidgetState
   @override
   @override
   Widget build(BuildContext context) {
-    debugPrint("yo ${_workoutTypeController.text}");
+    debugPrint('yo ${_workoutTypeController.text}');
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Center(
@@ -128,10 +128,10 @@ class _WorkoutFormWidgetState
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.stretch,
-              children: [
+              children: <Widget>[
                 // Subtitle
                 Text(
-                  "Fields marked with (*) are required",
+                  'Fields marked with (*) are required',
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall,
@@ -141,23 +141,27 @@ class _WorkoutFormWidgetState
                 const SizedBox(height: 20),
 
                 // Workout Type Dropdown
-                DropdownMenu(
+                DropdownMenu<String>(
                   textStyle: Theme.of(
                     context,
                   ).textTheme.displayMedium,
-                  leadingIcon: Icon(Icons.fitness_center),
+                  leadingIcon: const Icon(
+                    Icons.fitness_center,
+                  ),
                   width: double.infinity,
                   controller: _workoutTypeController,
-                  hintText: "Select Your Workout *",
+                  hintText: 'Select Your Workout *',
                   onSelected: (String? value) {
                     setState(() {
                       _workoutTypeController.text =
-                          value ?? "";
+                          value ?? '';
                     });
                   },
                   dropdownMenuEntries: WorkoutType.values
                       .map(
-                        (workout) => DropdownMenuEntry(
+                        (
+                          WorkoutType workout,
+                        ) => DropdownMenuEntry<String>(
                           value: workout.name.toUpperCase(),
                           label: workout.name.toUpperCase(),
                         ),
@@ -181,11 +185,11 @@ class _WorkoutFormWidgetState
                 // Duration Input
                 CustomInputField(
                   controller: _durationTextController,
-                  label: "Enter the duration *",
+                  label: 'Enter the duration *',
                   icon: Icons.timer_outlined,
-                  suffixText: "minutes",
+                  suffixText: 'minutes',
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
+                  inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                   errorText: _durationError,
@@ -194,19 +198,19 @@ class _WorkoutFormWidgetState
 
                 // Distance Input
                 if (_workoutTypeController.text ==
-                        "CLIMBING" ||
+                        'CLIMBING' ||
                     _workoutTypeController.text ==
-                        "JOGGING") ...[
+                        'JOGGING') ...<Widget>[
                   CustomInputField(
                     controller: _distanceTextController,
-                    label: "Enter the distance *",
+                    label: 'Enter the distance *',
                     icon: Icons.straighten_outlined,
-                    suffixText: "km",
+                    suffixText: 'km',
                     keyboardType:
                         const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
-                    inputFormatters: [
+                    inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(
                         RegExp(r'^\d*\.?\d*'),
                       ),
@@ -219,15 +223,15 @@ class _WorkoutFormWidgetState
                 // Calorie Input
                 CustomInputField(
                   controller: _calorieTextController,
-                  label: "Enter the calorie *",
+                  label: 'Enter the calorie *',
                   icon:
                       Icons.local_fire_department_outlined,
-                  suffixText: "kCal",
+                  suffixText: 'kCal',
                   keyboardType:
                       const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                  inputFormatters: [
+                  inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(
                       RegExp(r'^\d*\.?\d*'),
                     ),
@@ -249,7 +253,7 @@ class _WorkoutFormWidgetState
                       ),
                     ),
                     child: Text(
-                      "Submit",
+                      'Submit',
                       style: Theme.of(
                         context,
                       ).textTheme.bodyMedium,
