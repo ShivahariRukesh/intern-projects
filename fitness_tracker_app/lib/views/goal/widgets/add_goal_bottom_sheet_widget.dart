@@ -24,17 +24,17 @@ class _AddGoalBottomSheetWidgetState
   String? _goalTitleError;
   String? _goalTypeError;
   String? _goalTargetError;
-  String _goalUnit = "unit";
+  String _goalUnit = 'unit';
 
   void onChangeGoalType(String? value) {
-    _goalTargetController.text = "";
+    _goalTargetController.text = '';
 
     setState(() {
       _goalUnit = switch (value) {
-        "calorie" => "Kcal",
-        "distance" => "km",
-        "duration" => "min",
-        _ => "unit",
+        'calorie' => 'Kcal',
+        'distance' => 'km',
+        'duration' => 'min',
+        _ => 'unit',
       };
     });
   }
@@ -47,17 +47,17 @@ class _AddGoalBottomSheetWidgetState
 
       // Require goal target
       if (_goalTargetController.text.isEmpty) {
-        _goalTargetError = "Goal target is required";
+        _goalTargetError = 'Goal target is required';
       }
 
       // Require goal title
       if (_goalTitleController.text.isEmpty) {
-        _goalTitleError = "Goal title is required";
+        _goalTitleError = 'Goal title is required';
       }
 
       // Require goal type
       if (_goalTypeController.text.isEmpty) {
-        _goalTypeError = "Please select goal type";
+        _goalTypeError = 'Please select goal type';
       }
 
       //Submit the values if all of the fields are entered
@@ -68,10 +68,10 @@ class _AddGoalBottomSheetWidgetState
           GoalModel(
             _goalTitleController.text,
             _goalTypeController.text.toLowerCase() ==
-                    "calorie"
+                    'calorie'
                 ? GoalType.calorie
                 : _goalTypeController.text.toLowerCase() ==
-                      "distance"
+                      'distance'
                 ? GoalType.distance
                 : GoalType.duration,
             num.tryParse(_goalTargetController.text)!,
@@ -95,10 +95,10 @@ class _AddGoalBottomSheetWidgetState
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: <Widget>[
               // Title
-              Text(
-                "Add Your New Goal",
+              const Text(
+                'Add Your New Goal',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -106,46 +106,47 @@ class _AddGoalBottomSheetWidgetState
                 textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Subtitle
               Text(
-                "Fields marked with (*) are required",
+                'Fields marked with (*) are required',
                 style: Theme.of(
                   context,
                 ).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
 
               // Goal Title Input
               CustomInputField(
                 controller: _goalTitleController,
-                hint: "Write a title for your goal *",
+                hint: 'Write a title for your goal *',
                 icon: Icons.note_add,
                 keyboardType: TextInputType.text,
                 errorText: _goalTitleError,
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Goal Type Dropdown
-              DropdownMenu(
+              DropdownMenu<String>(
                 textStyle: Theme.of(
                   context,
                 ).textTheme.displayMedium,
                 controller: _goalTypeController,
-                hintText: "Select Your Goal Type *",
+                hintText: 'Select Your Goal Type *',
                 width: double.infinity,
                 onSelected: (String? value) =>
                     onChangeGoalType(value),
                 dropdownMenuEntries: GoalType.values
                     .map(
-                      (type) => DropdownMenuEntry(
-                        value: type.name,
-                        label: type.name.toUpperCase(),
-                      ),
+                      (GoalType type) =>
+                          DropdownMenuEntry<String>(
+                            value: type.name,
+                            label: type.name.toUpperCase(),
+                          ),
                     )
                     .toList(),
               ),
@@ -161,22 +162,22 @@ class _AddGoalBottomSheetWidgetState
                   ),
                 ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Goal Target Input
               CustomInputField(
                 controller: _goalTargetController,
-                hint: "Your target ($_goalUnit) *",
+                hint: 'Your target ($_goalUnit) *',
                 icon: Icons.track_changes,
                 suffixText: _goalUnit,
                 keyboardType:
-                    _goalTypeController.text == "DURATION"
+                    _goalTypeController.text == 'DURATION'
                     ? TextInputType.number
                     : const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                inputFormatters: [
-                  _goalTypeController.text == "DURATION"
+                inputFormatters: <TextInputFormatter>[
+                  _goalTypeController.text == 'DURATION'
                       ? FilteringTextInputFormatter
                             .digitsOnly
                       : FilteringTextInputFormatter.allow(
@@ -185,7 +186,7 @@ class _AddGoalBottomSheetWidgetState
                 ],
                 errorText: _goalTargetError,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Submit Button
               SizedBox(
@@ -200,7 +201,7 @@ class _AddGoalBottomSheetWidgetState
                   ),
                   onPressed: _onAddGoalSubmit,
                   child: Text(
-                    "Submit",
+                    'Submit',
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium,

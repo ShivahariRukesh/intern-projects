@@ -3,13 +3,13 @@ import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 
 class GoalListWidget extends StatelessWidget {
-  final List goalList;
+  final List<GoalModel> goalList;
 
   const GoalListWidget({super.key, required this.goalList});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -21,7 +21,7 @@ class GoalListWidget extends StatelessWidget {
               childAspectRatio: 2.8,
               mainAxisSpacing: 12,
             ),
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           final GoalModel goal = goalList[index];
 
           return Container(
@@ -33,9 +33,9 @@ class GoalListWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment:
                   MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     const Icon(Icons.flag),
 
                     const SizedBox(width: 10),
@@ -50,7 +50,7 @@ class GoalListWidget extends StatelessWidget {
                     const SizedBox(width: 10),
 
                     Row(
-                      children: [
+                      children: <Widget>[
                         const Icon(
                           Icons.category,
                           size: 18,
@@ -68,21 +68,21 @@ class GoalListWidget extends StatelessWidget {
                     const SizedBox(width: 16),
 
                     Row(
-                      children: [
+                      children: <Widget>[
                         const Icon(
                           Icons.track_changes,
                           size: 18,
                         ),
                         const SizedBox(width: 4),
                         // Text("${goal.goalTarget}"),
-                        Text("${goal.target}"),
+                        Text('${goal.target}'),
                       ],
                     ),
                   ],
                 ),
 
                 Column(
-                  children: [
+                  children: <Widget>[
                     LinearProgressIndicator(
                       color: Theme.of(context).primaryColor,
                       value: goalController
@@ -98,7 +98,7 @@ class GoalListWidget extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        "${goalController.getProgressFraction(goal) > 1 ? 100 : ((goalController.getProgressFraction(goal) * 100) as num).toStringAsFixed(0)}%",
+                        '${goalController.getProgressFraction(goal) > 1 ? 100 : ((goalController.getProgressFraction(goal) * 100) as num).toStringAsFixed(0)}%',
                         style: theme.textTheme.displaySmall,
                       ),
                     ),
