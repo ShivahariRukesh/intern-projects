@@ -1,3 +1,5 @@
+import 'package:fitness_tracker_app/models/workout_model.dart';
+
 import '../models/goal_model.dart';
 import '../services/fitness_manager.dart';
 
@@ -8,8 +10,8 @@ class GoalController {
 
   double getProgressFraction(GoalModel goal) {
     double total = fitnessManager.workouts.fold(0.0, (
-      sum,
-      workout,
+      double sum,
+      WorkoutModel workout,
     ) {
       switch (goal.type) {
         case GoalType.duration:
@@ -29,8 +31,8 @@ class GoalController {
 
   double getTotalMetric(GoalType type) {
     return fitnessManager.workouts.fold(0.0, (
-      sum,
-      workout,
+      double sum,
+      WorkoutModel workout,
     ) {
       switch (type) {
         case GoalType.duration:
