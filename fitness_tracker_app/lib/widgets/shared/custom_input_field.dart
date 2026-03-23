@@ -27,7 +27,7 @@ class CustomInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         TextField(
           style: Theme.of(context).textTheme.displayMedium,
           controller: controller,
