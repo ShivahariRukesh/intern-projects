@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,9 @@ import 'package:flutter/material.dart';
 class DashboardGoalRecordWidget extends StatelessWidget {
   DashboardGoalRecordWidget({super.key});
 
-  final totalGoalsCompleted = fitnessService.goals.fold(0, (
+  final int? totalGoalsCompleted = fitnessService.goals.fold(0, (
     int? acc,
-    goal,
+    GoalModel goal,
   ) {
     if (goalController.getProgressFraction(goal) == 1) {
       return (acc as int) + 1;
@@ -17,31 +18,31 @@ class DashboardGoalRecordWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Card(
       elevation: 8,
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         height: 180,
         child: fitnessService.goals.isEmpty
-            ? Center(
+            ? const Center(
                 child: Text(
-                  "No Goals Enlisted Yet",
+                  'No Goals Enlisted Yet',
                   style: TextStyle(fontSize: 25),
                 ),
               )
             : Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: PieChart(
                       PieChartData(
                         centerSpaceRadius: 10,
                         sectionsSpace: 5,
 
-                        sections: [
+                        sections: <PieChartSectionData>[
                           PieChartSectionData(
-                            title: "Completed",
+                            title: 'Completed',
                             value: totalGoalsCompleted
                                 ?.toDouble(),
                             radius: 80,
@@ -49,7 +50,7 @@ class DashboardGoalRecordWidget extends StatelessWidget {
                           ),
 
                           PieChartSectionData(
-                            title: "Incomplete",
+                            title: 'Incomplete',
                             value:
                                 (fitnessService
                                             .goals
@@ -65,8 +66,8 @@ class DashboardGoalRecordWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "$totalGoalsCompleted/${fitnessService.goals.length} Goals are Completed",
-                    style: TextStyle(fontSize: 25),
+                    '$totalGoalsCompleted/${fitnessService.goals.length} Goals are Completed',
+                    style: const TextStyle(fontSize: 25),
                   ),
                 ],
               ),

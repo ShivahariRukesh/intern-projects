@@ -14,8 +14,8 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWidget(
-      title: "Dashboard",
-      actions: [
+      title: 'Dashboard',
+      actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.brightness_6),
           onPressed: toggleTheme,
@@ -24,14 +24,14 @@ class DashboardScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [
+          children: <Widget>[
             const DashboardRecordWidget(),
             DashboardGoalRecordWidget(),
             Container(
               alignment: Alignment.center,
               height: 120,
               child: Text(
-                "FITNESS",
+                'FITNESS',
                 style: TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,

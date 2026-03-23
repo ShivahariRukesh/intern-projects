@@ -16,7 +16,7 @@ class DashboardStatsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -30,7 +30,7 @@ class DashboardStatsCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -46,14 +46,14 @@ class DashboardStatsCardWidget extends StatelessWidget {
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
+            children: <Widget>[
               Text(
                 value,
                 style: theme.textTheme.headlineSmall
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
 
-              if (unit != null) ...[
+              if (unit != null) ...<Widget>[
                 const SizedBox(width: 6),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 4),

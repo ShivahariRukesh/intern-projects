@@ -14,14 +14,14 @@ class DashboardRecordWidget extends StatelessWidget {
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
         crossAxisCount: 2,
-        children: [
+        children: <Widget>[
           DashboardStatsCardWidget(
             value: fitnessService.workouts.length
                 .toString(),
 
             icon: Icons.fitness_center,
             label: 'This week',
-            unit: "session",
+            unit: 'session',
           ),
 
           DashboardStatsCardWidget(
@@ -30,7 +30,7 @@ class DashboardRecordWidget extends StatelessWidget {
                 .toString(),
             icon: Icons.timer_outlined,
             label: 'Total Time Spent',
-            unit: "mins",
+            unit: 'mins',
           ),
 
           DashboardStatsCardWidget(
@@ -39,7 +39,7 @@ class DashboardRecordWidget extends StatelessWidget {
                 .toString(),
             icon: Icons.straighten_outlined,
             label: 'Total distance covered',
-            unit: "km",
+            unit: 'km',
           ),
 
           DashboardStatsCardWidget(
