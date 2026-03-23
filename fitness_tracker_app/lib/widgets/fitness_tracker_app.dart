@@ -33,11 +33,14 @@ class _FitnessTrackerAppState
 
       initialRoute: '/dashboard',
       routes: {
-        '/dashboard': (context) =>
+        '/dashboard': (BuildContext context) =>
             DashboardScreen(toggleTheme: _toggleTheme),
-        '/history': (context) => WorkoutHistoryScreen(),
-        '/goal': (context) => GoalScreen(),
-        '/log': (context) => WorkoutLogScreen(),
+        '/history': (BuildContext context) =>
+            const WorkoutHistoryScreen(),
+        '/goal': (BuildContext context) =>
+            const GoalScreen(),
+        '/log': (BuildContext context) =>
+            const WorkoutLogScreen(),
       },
       theme: lightTheme,
       darkTheme: darkTheme,
