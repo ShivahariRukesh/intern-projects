@@ -1,5 +1,6 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
+import 'package:fitness_tracker_app/widgets/shared/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -83,108 +84,239 @@ class _AddGoalBottomSheetWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            "Add Your New Goal",
-            style: TextStyle(fontSize: 25),
-          ),
-          Text(
-            "Fields marked with (*) are meant to be required",
-            style: TextStyle(
-              color: const Color.fromARGB(
-                255,
-                135,
-                55,
-                149,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Title
+              Text(
+                "Add Your New Goal",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ),
-          TextField(
-            controller: _goalTitleController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.note_add),
-              hintText: "Write a title for your goal *",
-            ),
-          ),
-          if (_goalTitleError != null)
-            Text(
-              _goalTitleError!,
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 12,
+
+              SizedBox(height: 10),
+
+              // Subtitle
+              Text(
+                "Fields marked with (*) are required",
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall,
+                textAlign: TextAlign.center,
               ),
-            ),
 
-          DropdownMenu(
-            controller: _goalTypeController,
-            hintText: "Select Your Goal Type",
-            width: 400,
-            onSelected: (String? value) =>
-                onChangeGoalType(value),
+              SizedBox(height: 25),
 
-            // dropdownMenuEntries: GoalTypeEnum.values
-            dropdownMenuEntries: GoalType.values
-                .map(
-                  (workout) => DropdownMenuEntry(
-                    value: workout.name,
-                    label: workout.name.toUpperCase(),
-                  ),
-                )
-                .toList(),
-          ),
-          if (_goalTypeError != null)
-            Text(
-              _goalTypeError!,
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 12,
+              // Goal Title Input
+              CustomInputField(
+                controller: _goalTitleController,
+                hint: "Write a title for your goal *",
+                icon: Icons.note_add,
+                keyboardType: TextInputType.text,
+                errorText: _goalTitleError,
               ),
-            ),
-          TextField(
-            keyboardType:
-                _goalTypeController.text == "DURATION"
-                ? TextInputType.number
-                : TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
 
-            inputFormatters: [
-              _goalTypeController.text == "DURATION"
-                  ? FilteringTextInputFormatter.digitsOnly
-                  : FilteringTextInputFormatter.allow(
-                      // Allows digits and one decimal point only
-                      RegExp(r'^\d*\.?\d*'),
+              SizedBox(height: 20),
+
+              // Goal Type Dropdown
+              DropdownMenu(
+                textStyle: Theme.of(
+                  context,
+                ).textTheme.displayMedium,
+                controller: _goalTypeController,
+                hintText: "Select Your Goal Type *",
+                width: double.infinity,
+                onSelected: (String? value) =>
+                    onChangeGoalType(value),
+                dropdownMenuEntries: GoalType.values
+                    .map(
+                      (type) => DropdownMenuEntry(
+                        value: type.name,
+                        label: type.name.toUpperCase(),
+                      ),
+                    )
+                    .toList(),
+              ),
+              if (_goalTypeError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Text(
+                    _goalTypeError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
                     ),
-            ],
-            controller: _goalTargetController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.track_changes),
-              hintText: "Your target ($_goalUnit)",
-              suffixText: _goalUnit,
-            ),
-          ),
-          if (_goalTargetError != null)
-            Text(
-              _goalTargetError!,
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 12,
-              ),
-            ),
+                  ),
+                ),
 
-          OutlinedButton(
-            onPressed: _onAddGoalSubmit,
-            child: Text("Submit"),
+              SizedBox(height: 20),
+
+              // Goal Target Input
+              CustomInputField(
+                controller: _goalTargetController,
+                hint: "Your target ($_goalUnit) *",
+                icon: Icons.track_changes,
+                suffixText: _goalUnit,
+                keyboardType:
+                    _goalTypeController.text == "DURATION"
+                    ? TextInputType.number
+                    : const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                inputFormatters: [
+                  _goalTypeController.text == "DURATION"
+                      ? FilteringTextInputFormatter
+                            .digitsOnly
+                      : FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d*'),
+                        ),
+                ],
+                errorText: _goalTargetError,
+              ),
+              SizedBox(height: 30),
+
+              // Submit Button
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                    ),
+                  ),
+                  onPressed: _onAddGoalSubmit,
+                  child: Text(
+                    "Submit",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
+
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     padding: EdgeInsets.all(20),
+
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       children: [
+  //         Text(
+  //           "Add Your New Goal",
+  //           style: TextStyle(fontSize: 25),
+  //         ),
+  //         Text(
+  //           "Fields marked with (*) are meant to be required",
+  //           style: TextStyle(
+  //             color: const Color.fromARGB(
+  //               255,
+  //               135,
+  //               55,
+  //               149,
+  //             ),
+  //           ),
+  //         ),
+  //         TextField(
+  //           controller: _goalTitleController,
+  //           decoration: InputDecoration(
+  //             prefixIcon: Icon(Icons.note_add),
+  //             hintText: "Write a title for your goal *",
+  //           ),
+  //         ),
+  //         if (_goalTitleError != null)
+  //           Text(
+  //             _goalTitleError!,
+  //             style: const TextStyle(
+  //               color: Colors.red,
+  //               fontSize: 12,
+  //             ),
+  //           ),
+
+  //         DropdownMenu(
+  //           controller: _goalTypeController,
+  //           hintText: "Select Your Goal Type",
+  //           width: 400,
+  //           onSelected: (String? value) =>
+  //               onChangeGoalType(value),
+
+  //           // dropdownMenuEntries: GoalTypeEnum.values
+  //           dropdownMenuEntries: GoalType.values
+  //               .map(
+  //                 (workout) => DropdownMenuEntry(
+  //                   value: workout.name,
+  //                   label: workout.name.toUpperCase(),
+  //                 ),
+  //               )
+  //               .toList(),
+  //         ),
+  //         if (_goalTypeError != null)
+  //           Text(
+  //             _goalTypeError!,
+  //             style: const TextStyle(
+  //               color: Colors.red,
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //         TextField(
+  //           keyboardType:
+  //               _goalTypeController.text == "DURATION"
+  //               ? TextInputType.number
+  //               : TextInputType.numberWithOptions(
+  //                   decimal: true,
+  //                 ),
+
+  //           inputFormatters: [
+  //             _goalTypeController.text == "DURATION"
+  //                 ? FilteringTextInputFormatter.digitsOnly
+  //                 : FilteringTextInputFormatter.allow(
+  //                     // Allows digits and one decimal point only
+  //                     RegExp(r'^\d*\.?\d*'),
+  //                   ),
+  //           ],
+  //           controller: _goalTargetController,
+  //           decoration: InputDecoration(
+  //             prefixIcon: Icon(Icons.track_changes),
+  //             hintText: "Your target ($_goalUnit)",
+  //             suffixText: _goalUnit,
+  //           ),
+  //         ),
+  //         if (_goalTargetError != null)
+  //           Text(
+  //             _goalTargetError!,
+  //             style: const TextStyle(
+  //               color: Colors.red,
+  //               fontSize: 12,
+  //             ),
+  //           ),
+
+  //         OutlinedButton(
+  //           onPressed: _onAddGoalSubmit,
+  //           child: Text("Submit"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   void dispose() {
