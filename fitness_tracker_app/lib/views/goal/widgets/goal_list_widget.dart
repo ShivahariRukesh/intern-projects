@@ -84,6 +84,7 @@ class GoalListWidget extends StatelessWidget {
                 Column(
                   children: [
                     LinearProgressIndicator(
+                      color: Theme.of(context).primaryColor,
                       value: goalController
                           .getProgressFraction(goal),
                       minHeight: 8,
@@ -98,7 +99,7 @@ class GoalListWidget extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: Text(
                         "${goalController.getProgressFraction(goal) > 1 ? 100 : ((goalController.getProgressFraction(goal) * 100) as num).toStringAsFixed(0)}%",
-                        style: theme.textTheme.bodySmall,
+                        style: theme.textTheme.displaySmall,
                       ),
                     ),
                   ],
