@@ -7,17 +7,19 @@ class HistoryListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
         itemCount: fitnessService.workouts.length,
 
-        separatorBuilder: (context, index) =>
-            const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          final workout = fitnessService.workouts[index];
+        separatorBuilder:
+            (BuildContext context, int index) =>
+                const SizedBox(height: 12),
+        itemBuilder: (BuildContext context, int index) {
+          final WorkoutModel workout =
+              fitnessService.workouts[index];
 
           return Container(
             decoration: BoxDecoration(
@@ -43,7 +45,7 @@ class HistoryListWidget extends StatelessWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Row(
-                  children: [
+                  children: <Widget>[
                     const Icon(
                       Icons.local_fire_department,
                       size: 18,
@@ -51,10 +53,10 @@ class HistoryListWidget extends StatelessWidget {
                     const SizedBox(width: 4),
 
                     Text(
-                      "${workout.caloriesBurnt}\t",
+                      '${workout.caloriesBurnt}\t',
                       style: theme.textTheme.displayMedium,
                     ),
-                    Text("kcal"),
+                    const Text('kcal'),
 
                     const SizedBox(width: 20),
 
@@ -64,37 +66,38 @@ class HistoryListWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      "${workout.duration}\t",
+                      '${workout.duration}\t',
                       style: theme.textTheme.displayMedium,
                     ),
-                    Text("min"),
+                    const Text('min'),
 
                     const SizedBox(width: 20),
 
-                    if (workout is Jogging) ...[
+                    if (workout is Jogging) ...<Widget>[
                       const Icon(
                         Icons.straighten_outlined,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        "${workout.distance}\t",
+                        '${workout.distance}\t',
                         style:
                             theme.textTheme.displayMedium,
                       ),
-                      Text("km"),
-                    ] else if (workout is Climbing) ...[
+                      const Text('km'),
+                    ] else if (workout
+                        is Climbing) ...<Widget>[
                       const Icon(
                         Icons.straighten_outlined,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        "${workout.distance}\t",
+                        '${workout.distance}\t',
                         style:
                             theme.textTheme.displayMedium,
                       ),
-                      Text("km"),
+                      const Text('km'),
                     ],
                   ],
                 ),

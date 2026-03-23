@@ -9,9 +9,9 @@ class WorkoutHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWidget(
-      title: "Workout History",
+      title: 'Workout History',
       body: fitnessService.workouts.isEmpty
-          ? const Center(child: Text("No history yet"))
+          ? const Center(child: Text('No history yet'))
           : const HistoryListWidget(),
     );
   }
