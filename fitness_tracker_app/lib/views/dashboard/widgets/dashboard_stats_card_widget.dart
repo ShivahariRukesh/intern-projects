@@ -37,7 +37,7 @@ class DashboardStatsCardWidget extends StatelessWidget {
                   color: theme.scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, size: 20),
+                child: Icon(icon),
               ),
             ],
           ),
@@ -68,12 +68,7 @@ class DashboardStatsCardWidget extends StatelessWidget {
 
           const SizedBox(height: 6),
 
-          Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodySmall?.color,
-            ),
-          ),
+          Text(label, style: theme.textTheme.displayMedium),
         ],
       ),
     );
