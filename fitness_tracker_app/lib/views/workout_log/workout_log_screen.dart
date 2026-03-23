@@ -7,8 +7,8 @@ class WorkoutLogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWidget(
-      title: "Workout Log",
+    return const ScaffoldWidget(
+      title: 'Workout Log',
       body: Center(child: WorkoutFormWidget()),
     );
   }
