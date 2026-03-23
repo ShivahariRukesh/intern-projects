@@ -32,7 +32,7 @@ class _FitnessTrackerAppState
       debugShowCheckedModeBanner: false,
 
       initialRoute: '/dashboard',
-      routes: {
+      routes: <String, Widget Function(BuildContext)>{
         '/dashboard': (BuildContext context) =>
             DashboardScreen(toggleTheme: _toggleTheme),
         '/history': (BuildContext context) =>
