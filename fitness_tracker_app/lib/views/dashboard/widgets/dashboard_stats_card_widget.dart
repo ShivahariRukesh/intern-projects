@@ -26,7 +26,7 @@ class DashboardStatsCardWidget extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Row(
             mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,

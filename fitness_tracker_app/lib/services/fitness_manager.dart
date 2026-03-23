@@ -17,5 +17,3 @@ class FitnessManager {
     _goals.add(goal);
   }
 }
-
-// FitnessManager fitnessService = FitnessManager();
