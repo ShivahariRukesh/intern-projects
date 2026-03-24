@@ -1,9 +1,18 @@
 import 'package:fitness_tracker_app/models/workout_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
-import 'package:fitness_tracker_app/widgets/shared/custom_input_field.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_dropdown_required_label_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_modal_button_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_input_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A form widget for filling out a workout session.
+///
+/// It has four/three different fields depending on the type of workout selected,
+/// - Workout Type which is a dropdown
+/// - Distance(Optional) which is a text field that measures the total distance covered.
+/// - Duration which is a text field that measures the time taken to complete.
+/// -Calorie which is a text field that measures the amount of calorie burnt.
 class WorkoutFormWidget extends StatefulWidget {
   const WorkoutFormWidget({super.key});
 
@@ -14,107 +23,22 @@ class WorkoutFormWidget extends StatefulWidget {
 
 class _WorkoutFormWidgetState
     extends State<WorkoutFormWidget> {
-  final TextEditingController _durationTextController =
+  final TextEditingController durationTextController =
       TextEditingController();
-  final TextEditingController _distanceTextController =
+  final TextEditingController distanceTextController =
       TextEditingController();
-  final TextEditingController _calorieTextController =
+  final TextEditingController calorieTextController =
       TextEditingController();
-  final TextEditingController _workoutTypeController =
+  final TextEditingController workoutTypeController =
       TextEditingController();
 
-  String? _durationError;
-  String? _distanceError;
-  String? _calorieError;
-  String? _workoutError;
+  String? durationError;
+  String? distanceError;
+  String? calorieError;
+  String? workoutError;
 
-  void submitWorkoutForm() {
-    setState(() {
-      _durationError = null;
-      _calorieError = null;
-      _workoutError = null;
-      _distanceError = null;
-
-      // Require workout
-      if (_workoutTypeController.text.isEmpty) {
-        _workoutError = 'Please select a workout';
-      }
-
-      // Require duration
-      if (_durationTextController.text.isEmpty) {
-        _durationError = 'Duration is required';
-      }
-
-      // Require calories
-      if (_calorieTextController.text.isEmpty) {
-        _calorieError = 'Calories are required';
-      }
-
-      // Require distance
-      if (_distanceTextController.text.isEmpty) {
-        _distanceError = 'Distance is required';
-      }
-
-      if (!(_workoutTypeController.text == 'CLIMBING' ||
-          _workoutTypeController.text == 'JOGGING')) {
-        _distanceError = null;
-      }
-
-      // If all required fields are filled
-      if (_workoutError == null &&
-          _durationError == null &&
-          _calorieError == null &&
-          _distanceError == null) {
-        workoutController.addWorkout(
-          _workoutTypeController.text.toLowerCase() ==
-                  'pullup'
-              ? WorkoutType.pullup
-              : _workoutTypeController.text.toLowerCase() ==
-                    'jogging'
-              ? WorkoutType.jogging
-              : _workoutTypeController.text.toLowerCase() ==
-                    'situp'
-              ? WorkoutType.situp
-              : _workoutTypeController.text.toLowerCase() ==
-                    'plank'
-              ? WorkoutType.plank
-              : WorkoutType.climbing,
-
-          int.parse(_durationTextController.text),
-          double.parse(_calorieTextController.text),
-          _distanceTextController.text.isEmpty
-              ? 0
-              : double.parse(_distanceTextController.text),
-        );
-
-        // Clear inputs
-        _workoutTypeController.clear();
-        _durationTextController.clear();
-        _distanceTextController.clear();
-        _calorieTextController.clear();
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Workout submitted!'),
-          ),
-        );
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _durationTextController.dispose();
-    _distanceTextController.dispose();
-    _calorieTextController.dispose();
-    _workoutTypeController.dispose();
-    super.dispose();
-  }
-
-  @override
   @override
   Widget build(BuildContext context) {
-    debugPrint('yo ${_workoutTypeController.text}');
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Center(
@@ -129,7 +53,6 @@ class _WorkoutFormWidgetState
               crossAxisAlignment:
                   CrossAxisAlignment.stretch,
               children: <Widget>[
-                // Subtitle
                 Text(
                   'Fields marked with (*) are required',
                   style: Theme.of(
@@ -137,54 +60,14 @@ class _WorkoutFormWidgetState
                   ).textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
-
                 const SizedBox(height: 20),
-
-                // Workout Type Dropdown
-                DropdownMenu<String>(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.displayMedium,
-                  leadingIcon: const Icon(
-                    Icons.fitness_center,
-                  ),
-                  width: double.infinity,
-                  controller: _workoutTypeController,
-                  hintText: 'Select Your Workout *',
-                  onSelected: (String? value) {
-                    setState(() {
-                      _workoutTypeController.text =
-                          value ?? '';
-                    });
-                  },
-                  dropdownMenuEntries: WorkoutType.values
-                      .map(
-                        (
-                          WorkoutType workout,
-                        ) => DropdownMenuEntry<String>(
-                          value: workout.name.toUpperCase(),
-                          label: workout.name.toUpperCase(),
-                        ),
-                      )
-                      .toList(),
+                _workoutTypeDropDown(context),
+                BaseDropdownRequiredLabelWidget(
+                  workoutError,
                 ),
-                if (_workoutError != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      _workoutError!,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-
                 const SizedBox(height: 20),
-
-                // Duration Input
-                CustomInputField(
-                  controller: _durationTextController,
+                BaseInputFieldWidget(
+                  controller: durationTextController,
                   label: 'Enter the duration *',
                   icon: Icons.timer_outlined,
                   suffixText: 'minutes',
@@ -192,37 +75,12 @@ class _WorkoutFormWidgetState
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
                   ],
-                  errorText: _durationError,
+                  errorText: durationError,
                 ),
                 const SizedBox(height: 20),
-
-                // Distance Input
-                if (_workoutTypeController.text ==
-                        'CLIMBING' ||
-                    _workoutTypeController.text ==
-                        'JOGGING') ...<Widget>[
-                  CustomInputField(
-                    controller: _distanceTextController,
-                    label: 'Enter the distance *',
-                    icon: Icons.straighten_outlined,
-                    suffixText: 'km',
-                    keyboardType:
-                        const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d*\.?\d*'),
-                      ),
-                    ],
-                    errorText: _distanceError,
-                  ),
-                  const SizedBox(height: 20),
-                ],
-
-                // Calorie Input
-                CustomInputField(
-                  controller: _calorieTextController,
+                ..._distanceInputWidget,
+                BaseInputFieldWidget(
+                  controller: calorieTextController,
                   label: 'Enter the calorie *',
                   icon:
                       Icons.local_fire_department_outlined,
@@ -236,28 +94,33 @@ class _WorkoutFormWidgetState
                       RegExp(r'^\d*\.?\d*'),
                     ),
                   ],
-                  errorText: _calorieError,
+                  errorText: calorieError,
                 ),
                 const SizedBox(height: 30),
-
-                // Submit Button
-                SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: submitWorkoutForm,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          10,
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      'Submit',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium,
-                    ),
+                BaseModalButtonWidget(
+                  () => workoutController.submitWorkoutForm(
+                    context,
+                    setState,
+                    setDurationError: (String? text) =>
+                        durationError = text,
+                    setCalorieError: (String? text) =>
+                        calorieError = text,
+                    setDistanceError: (String? text) =>
+                        distanceError = text,
+                    setWorkoutError: (String? text) =>
+                        workoutError = text,
+                    getDurationError: () => durationError,
+                    getCalorieError: () => calorieError,
+                    getWorkoutError: () => workoutError,
+                    getDistanceError: () => distanceError,
+                    workoutTypeController:
+                        workoutTypeController,
+                    durationTextController:
+                        durationTextController,
+                    calorieTextController:
+                        calorieTextController,
+                    distanceTextController:
+                        distanceTextController,
                   ),
                 ),
               ],
@@ -266,5 +129,67 @@ class _WorkoutFormWidgetState
         ),
       ),
     );
+  }
+
+  DropdownMenu<String> _workoutTypeDropDown(
+    BuildContext context,
+  ) {
+    return DropdownMenu<String>(
+      textStyle: Theme.of(context).textTheme.displayMedium,
+      leadingIcon: const Icon(Icons.fitness_center),
+      width: double.infinity,
+      controller: workoutTypeController,
+      hintText: 'Select Your Workout *',
+      onSelected: (String? value) {
+        setState(() {
+          workoutTypeController.text = value ?? '';
+        });
+      },
+      dropdownMenuEntries: WorkoutType.values
+          .map(
+            (WorkoutType workout) =>
+                DropdownMenuEntry<String>(
+                  value: workout.name.toUpperCase(),
+                  label: workout.name.toUpperCase(),
+                ),
+          )
+          .toList(),
+    );
+  }
+
+  List<Widget> get _distanceInputWidget {
+    if (workoutTypeController.text == 'CLIMBING' ||
+        workoutTypeController.text == 'JOGGING') {
+      return <Widget>[
+        BaseInputFieldWidget(
+          controller: distanceTextController,
+          label: 'Enter the distance *',
+          icon: Icons.straighten_outlined,
+          suffixText: 'km',
+          keyboardType:
+              const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(
+              RegExp(r'^\d*\.?\d*'),
+            ),
+          ],
+          errorText: distanceError,
+        ),
+        const SizedBox(height: 20),
+      ];
+    } else {
+      return <Widget>[const SizedBox()];
+    }
+  }
+
+  @override
+  void dispose() {
+    durationTextController.dispose();
+    distanceTextController.dispose();
+    calorieTextController.dispose();
+    workoutTypeController.dispose();
+    super.dispose();
   }
 }
