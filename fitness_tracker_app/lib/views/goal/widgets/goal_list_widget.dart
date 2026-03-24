@@ -2,9 +2,14 @@ import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that displays the lists of all goals created
 class GoalListWidget extends StatelessWidget {
+  ///[goalList] is the List of [GoalModel] data type that retains the collection of goals.
   final List<GoalModel> goalList;
 
+  /// Takes two named parameters:
+  /// - [key] is optional, uniquely identifies widget in the widget tree
+  /// - [goalList] is required parameter that has lists of goals that were created.
   const GoalListWidget({super.key, required this.goalList});
 
   @override
@@ -23,7 +28,6 @@ class GoalListWidget extends StatelessWidget {
             ),
         itemBuilder: (BuildContext context, int index) {
           final GoalModel goal = goalList[index];
-
           return Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -37,18 +41,14 @@ class GoalListWidget extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     const Icon(Icons.flag),
-
                     const SizedBox(width: 10),
-
                     Expanded(
                       child: Text(
                         goal.title,
                         style: theme.textTheme.titleMedium,
                       ),
                     ),
-
                     const SizedBox(width: 10),
-
                     Row(
                       children: <Widget>[
                         const Icon(
@@ -64,9 +64,7 @@ class GoalListWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(width: 16),
-
                     Row(
                       children: <Widget>[
                         const Icon(
@@ -74,13 +72,11 @@ class GoalListWidget extends StatelessWidget {
                           size: 18,
                         ),
                         const SizedBox(width: 4),
-                        // Text("${goal.goalTarget}"),
                         Text('${goal.target}'),
                       ],
                     ),
                   ],
                 ),
-
                 Column(
                   children: <Widget>[
                     LinearProgressIndicator(
@@ -92,9 +88,6 @@ class GoalListWidget extends StatelessWidget {
                         10,
                       ),
                     ),
-
-                    const SizedBox(height: 6),
-
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(

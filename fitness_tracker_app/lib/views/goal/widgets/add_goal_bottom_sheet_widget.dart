@@ -1,9 +1,17 @@
 import 'package:fitness_tracker_app/models/goal_model.dart';
 import 'package:fitness_tracker_app/utils/global_instance.dart';
-import 'package:fitness_tracker_app/widgets/shared/custom_input_field.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_dropdown_required_label_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_modal_button_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_input_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A bottom sheet widget that enables to create a goal
+///
+/// It has three input fields to write information about the goal
+/// - Title is required to identify the goals
+/// - Goal Type is required to select a measure for your goal
+/// - Target is required to fulfill the goal objective
 class AddGoalBottomSheetWidget extends StatefulWidget {
   const AddGoalBottomSheetWidget({super.key});
 
@@ -14,21 +22,20 @@ class AddGoalBottomSheetWidget extends StatefulWidget {
 
 class _AddGoalBottomSheetWidgetState
     extends State<AddGoalBottomSheetWidget> {
-  final TextEditingController _goalTitleController =
+  final TextEditingController goalTitleController =
       TextEditingController();
-  final TextEditingController _goalTypeController =
+  final TextEditingController goalTypeController =
       TextEditingController();
-  final TextEditingController _goalTargetController =
+  final TextEditingController goalTargetController =
       TextEditingController();
 
-  String? _goalTitleError;
-  String? _goalTypeError;
-  String? _goalTargetError;
+  String? goalTitleError;
+  String? goalTypeError;
+  String? goalTargetError;
   String _goalUnit = 'unit';
 
   void onChangeGoalType(String? value) {
-    _goalTargetController.text = '';
-
+    goalTargetController.text = '';
     setState(() {
       _goalUnit = switch (value) {
         'calorie' => 'Kcal',
@@ -36,49 +43,6 @@ class _AddGoalBottomSheetWidgetState
         'duration' => 'min',
         _ => 'unit',
       };
-    });
-  }
-
-  void _onAddGoalSubmit() {
-    setState(() {
-      _goalTitleError = null;
-      _goalTypeError = null;
-      _goalTargetError = null;
-
-      // Require goal target
-      if (_goalTargetController.text.isEmpty) {
-        _goalTargetError = 'Goal target is required';
-      }
-
-      // Require goal title
-      if (_goalTitleController.text.isEmpty) {
-        _goalTitleError = 'Goal title is required';
-      }
-
-      // Require goal type
-      if (_goalTypeController.text.isEmpty) {
-        _goalTypeError = 'Please select goal type';
-      }
-
-      //Submit the values if all of the fields are entered
-      if (_goalTypeError == null &&
-          _goalTitleError == null &&
-          _goalTargetError == null) {
-        fitnessService.addGoal(
-          GoalModel(
-            _goalTitleController.text,
-            _goalTypeController.text.toLowerCase() ==
-                    'calorie'
-                ? GoalType.calorie
-                : _goalTypeController.text.toLowerCase() ==
-                      'distance'
-                ? GoalType.distance
-                : GoalType.duration,
-            num.tryParse(_goalTargetController.text)!,
-          ),
-        );
-        Navigator.pop(context, fitnessService.goals);
-      }
     });
   }
 
@@ -96,7 +60,6 @@ class _AddGoalBottomSheetWidgetState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // Title
               const Text(
                 'Add Your New Goal',
                 style: TextStyle(
@@ -105,10 +68,7 @@ class _AddGoalBottomSheetWidgetState
                 ),
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 10),
-
-              // Subtitle
               Text(
                 'Fields marked with (*) are required',
                 style: Theme.of(
@@ -116,96 +76,59 @@ class _AddGoalBottomSheetWidgetState
                 ).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(height: 25),
-
-              // Goal Title Input
-              CustomInputField(
-                controller: _goalTitleController,
+              BaseInputFieldWidget(
+                controller: goalTitleController,
                 hint: 'Write a title for your goal *',
                 icon: Icons.note_add,
                 keyboardType: TextInputType.text,
-                errorText: _goalTitleError,
+                errorText: goalTitleError,
               ),
-
               const SizedBox(height: 20),
-
-              // Goal Type Dropdown
-              DropdownMenu<String>(
-                textStyle: Theme.of(
-                  context,
-                ).textTheme.displayMedium,
-                controller: _goalTypeController,
-                hintText: 'Select Your Goal Type *',
-                width: double.infinity,
-                onSelected: (String? value) =>
-                    onChangeGoalType(value),
-                dropdownMenuEntries: GoalType.values
-                    .map(
-                      (GoalType type) =>
-                          DropdownMenuEntry<String>(
-                            value: type.name,
-                            label: type.name.toUpperCase(),
-                          ),
-                    )
-                    .toList(),
+              _goalTypeDropDown(context),
+              BaseDropdownRequiredLabelWidget(
+                goalTypeError,
               ),
-              if (_goalTypeError != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text(
-                    _goalTypeError!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-
               const SizedBox(height: 20),
-
-              // Goal Target Input
-              CustomInputField(
-                controller: _goalTargetController,
+              BaseInputFieldWidget(
+                controller: goalTargetController,
                 hint: 'Your target ($_goalUnit) *',
                 icon: Icons.track_changes,
                 suffixText: _goalUnit,
                 keyboardType:
-                    _goalTypeController.text == 'DURATION'
+                    goalTypeController.text == 'DURATION'
                     ? TextInputType.number
                     : const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
                 inputFormatters: <TextInputFormatter>[
-                  _goalTypeController.text == 'DURATION'
+                  goalTypeController.text == 'DURATION'
                       ? FilteringTextInputFormatter
                             .digitsOnly
                       : FilteringTextInputFormatter.allow(
                           RegExp(r'^\d*\.?\d*'),
                         ),
                 ],
-                errorText: _goalTargetError,
+                errorText: goalTargetError,
               ),
               const SizedBox(height: 30),
-
-              // Submit Button
-              SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ),
-                    ),
-                  ),
-                  onPressed: _onAddGoalSubmit,
-                  child: Text(
-                    'Submit',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium,
-                  ),
+              BaseModalButtonWidget(
+                () => goalController.onAddGoalSubmit(
+                  context,
+                  setState,
+                  getGoalTargetError: () => goalTargetError,
+                  getGoalTitleError: () => goalTitleError,
+                  getGoalTypeError: () => goalTypeError,
+                  setGoalTargetError: (String? text) =>
+                      goalTargetError = text,
+                  setGoalTitleError: (String? text) =>
+                      goalTitleError = text,
+                  setGoalTypeError: (String? text) =>
+                      goalTypeError = text,
+                  goalTargetController:
+                      goalTargetController,
+                  goalTitleController: goalTitleController,
+                  goalTypeController: goalTypeController,
                 ),
               ),
             ],
@@ -215,12 +138,32 @@ class _AddGoalBottomSheetWidgetState
     );
   }
 
+  DropdownMenu<String> _goalTypeDropDown(
+    BuildContext context,
+  ) {
+    return DropdownMenu<String>(
+      textStyle: Theme.of(context).textTheme.displayMedium,
+      controller: goalTypeController,
+      hintText: 'Select Your Goal Type *',
+      width: double.infinity,
+      onSelected: (String? value) =>
+          onChangeGoalType(value),
+      dropdownMenuEntries: GoalType.values
+          .map(
+            (GoalType type) => DropdownMenuEntry<String>(
+              value: type.name,
+              label: type.name.toUpperCase(),
+            ),
+          )
+          .toList(),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
-
-    _goalTargetController.dispose();
-    _goalTitleController.dispose();
-    _goalTypeController.dispose();
+    goalTargetController.dispose();
+    goalTitleController.dispose();
+    goalTypeController.dispose();
   }
 }
