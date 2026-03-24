@@ -1,9 +1,12 @@
 import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_goal_record_widget.dart';
 import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_record_widget.dart';
-import 'package:fitness_tracker_app/widgets/shared/scaffold_widget.dart';
+import 'package:fitness_tracker_app/widgets/shared/base_scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
+/// One of the screens of an app that shows overview of things or records happening in current instance
 class DashboardScreen extends StatelessWidget {
+  /// [toggleTheme] is a callback function that is used to toggle theme of an app.
+  /// Switch between dark theme and light theme
   final VoidCallback toggleTheme;
 
   const DashboardScreen({
@@ -13,7 +16,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWidget(
+    return BaseScaffoldWidget(
       title: 'Dashboard',
       actions: <Widget>[
         IconButton(
@@ -26,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const DashboardRecordWidget(),
-            DashboardGoalRecordWidget(),
+            const DashboardGoalRecordWidget(),
             Container(
               alignment: Alignment.center,
               height: 120,

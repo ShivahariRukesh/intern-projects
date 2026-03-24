@@ -3,6 +3,7 @@ import 'package:fitness_tracker_app/utils/global_instance.dart';
 import 'package:fitness_tracker_app/views/dashboard/widgets/dashboard_stats_card_widget.dart';
 import 'package:flutter/material.dart';
 
+/// A dashboard widget that displays the information of recorded workout sessions with each details in separate container
 class DashboardRecordWidget extends StatelessWidget {
   const DashboardRecordWidget({super.key});
 
@@ -18,12 +19,10 @@ class DashboardRecordWidget extends StatelessWidget {
           DashboardStatsCardWidget(
             value: fitnessService.workouts.length
                 .toString(),
-
             icon: Icons.fitness_center,
             label: 'This week',
             unit: 'session',
           ),
-
           DashboardStatsCardWidget(
             value: goalController
                 .getTotalMetric(GoalType.duration)
@@ -32,7 +31,6 @@ class DashboardRecordWidget extends StatelessWidget {
             label: 'Total Time Spent',
             unit: 'mins',
           ),
-
           DashboardStatsCardWidget(
             value: goalController
                 .getTotalMetric(GoalType.distance)
@@ -41,7 +39,6 @@ class DashboardRecordWidget extends StatelessWidget {
             label: 'Total distance covered',
             unit: 'km',
           ),
-
           DashboardStatsCardWidget(
             value: goalController
                 .getTotalMetric(GoalType.calorie)
