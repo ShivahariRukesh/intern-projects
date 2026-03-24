@@ -5,6 +5,7 @@ import 'package:fitness_tracker_app/views/dashboard/dashboard_screen.dart';
 import 'package:fitness_tracker_app/views/goal/goal_screen.dart';
 import 'package:fitness_tracker_app/views/workout_history/workout_history_screen.dart';
 
+/// The main entry point of app that wraps every widgets
 class FitnessTrackerApp extends StatefulWidget {
   const FitnessTrackerApp({super.key});
   @override
@@ -14,23 +15,14 @@ class FitnessTrackerApp extends StatefulWidget {
 
 class _FitnessTrackerAppState
     extends State<FitnessTrackerApp> {
+  /// [_themeMode] holds the values(system,light,dark) from [ThemeMode] enum
+  /// By default it uses light
   ThemeMode _themeMode = ThemeMode.light;
-
-  void _toggleTheme() {
-    setState(() {
-      if (_themeMode == ThemeMode.light) {
-        _themeMode = ThemeMode.dark;
-      } else {
-        _themeMode = ThemeMode.light;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       initialRoute: '/dashboard',
       routes: <String, Widget Function(BuildContext)>{
         '/dashboard': (BuildContext context) =>
@@ -46,5 +38,15 @@ class _FitnessTrackerAppState
       darkTheme: darkTheme,
       themeMode: _themeMode,
     );
+  }
+
+  void _toggleTheme() {
+    setState(() {
+      if (_themeMode == ThemeMode.light) {
+        _themeMode = ThemeMode.dark;
+      } else {
+        _themeMode = ThemeMode.light;
+      }
+    });
   }
 }
