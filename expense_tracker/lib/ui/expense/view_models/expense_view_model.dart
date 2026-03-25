@@ -1,37 +1,38 @@
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:expense_tracker/data/models/expense_model.dart';
+import 'package:expense_tracker/data/repositories/expense_repository.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseViewModel extends ChangeNotifier {
-  final List<ExpenseModel> _expenseList = [
-    ExpenseModel(
-      expenseId: 2,
-      title: "title",
-      description: "description",
-      expenseAmount: 2222,
-    ),
-  ];
+  final ExpenseRepository _repository;
+
+  ExpenseViewModel({required repository})
+    : _repository = repository;
+
+  List<ExpenseModel> _expenseList = [];
+
+  UnmodifiableListView<ExpenseModel> get expenseList =>
+      UnmodifiableListView(_expenseList);
   int _randomNumberSeed = 1;
+
   void createExpense({
     required String title,
     String? description,
     required double amount,
   }) {
     try {
-      int id =
-          Random().nextInt(_randomNumberSeed) +
-          _randomNumberSeed +
-          10;
-      _expenseList.add(
-        ExpenseModel(
-          expenseId: id,
-          description: description,
-          title: title,
-          expenseAmount: amount,
-        ),
+      int id = _randomNumberSeed;
+
+      final expense = ExpenseModel(
+        expenseId: id,
+        description: description,
+        title: title,
+        expenseAmount: amount,
       );
+
+      _repository.createExpense(expense);
+      _expenseList.add(expense);
       _randomNumberSeed = id + 1;
       notifyListeners();
     } on Exception catch (excep) {
@@ -41,26 +42,25 @@ class ExpenseViewModel extends ChangeNotifier {
     }
   }
 
-  UnmodifiableListView<ExpenseModel>? getAllExpenses() {
+  Future<void> loadExpenses() async {
     try {
-      UnmodifiableListView<ExpenseModel>
-      unmodifiedExpenseList = UnmodifiableListView(
-        _expenseList,
-      );
-      return unmodifiedExpenseList;
+      final result = await _repository.getAllExpenses();
+      _expenseList = result;
+      notifyListeners();
     } on Exception catch (excep) {
       debugPrint(
         'Error when fetching all expenses : $excep',
       );
-      return null;
     }
   }
 
-  void deleteExpense(int id) {
+  void deleteExpense(String id) {
     try {
+      _repository.deleteExpense(id);
       _expenseList.removeWhere(
-        (expense) => expense.expenseId == id,
+        (expense) => expense.expenseId == int.parse(id),
       );
+
       notifyListeners();
     } on Exception catch (excep) {
       debugPrint(
@@ -79,12 +79,15 @@ class ExpenseViewModel extends ChangeNotifier {
       final expenseIndex = _expenseList.indexWhere(
         (expense) => expense.expenseId == id,
       );
-      _expenseList[expenseIndex] = ExpenseModel(
+      final expense = ExpenseModel(
         expenseId: id,
         title: title,
         expenseAmount: amount,
         description: description,
       );
+
+      _repository.updateExpense(expense);
+      _expenseList[expenseIndex] = expense;
       notifyListeners();
     } on Exception catch (excep) {
       debugPrint(

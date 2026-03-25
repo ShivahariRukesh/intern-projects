@@ -1,26 +1,9 @@
-import 'package:expense_tracker/ui/expense/view_models/expense_view_model.dart';
-import 'package:expense_tracker/ui/expense/widgets/expense_screen.dart';
+import 'package:expense_tracker/app.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => ExpenseViewModel(),
-        ),
-      ],
-      child: mainExpenseTracker(),
-    ),
-  );
-}
-
-MaterialApp mainExpenseTracker() {
-  return const MaterialApp(
-    home: Scaffold(
-      body: ExpenseScreen(),
-      backgroundColor: Color.fromARGB(66, 237, 237, 237),
-    ),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  runApp(App(prefs: prefs));
 }

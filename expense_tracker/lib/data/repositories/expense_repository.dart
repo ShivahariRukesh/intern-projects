@@ -1,58 +1,54 @@
-import 'dart:collection';
-
 import 'package:expense_tracker/data/models/expense_model.dart';
+import 'package:expense_tracker/data/services/expense_service.dart';
 import 'package:flutter/widgets.dart';
 
 class ExpenseRepository {
-  List<ExpenseModel> _expenseList = [];
+  final ExpenseService _service;
 
-  void createExpense(ExpenseModel expense) {
+  const ExpenseRepository(this._service);
+
+  void createExpense(ExpenseModel expense) async {
     try {
-      _expenseList.add(expense);
+      await _service.create(expense);
     } on Exception catch (excep) {
       debugPrint(
         'Error while creating an expense : $excep',
       );
+      throw Exception(excep);
     }
   }
 
-  UnmodifiableListView<ExpenseModel>? getAllExpenses() {
+  Future<List<ExpenseModel>> getAllExpenses() async {
     try {
-      UnmodifiableListView<ExpenseModel>
-      unmodifiedExpenseList = UnmodifiableListView(
-        _expenseList,
-      );
-      return unmodifiedExpenseList;
+      final res = await _service.fetchAll();
+      return res;
     } on Exception catch (excep) {
       debugPrint(
         'Error when fetching all expenses : $excep',
       );
-      return null;
+      throw Exception(excep);
     }
   }
 
-  void deleteExpense(int id) {
+  void deleteExpense(String id) async {
     try {
-      _expenseList.removeWhere(
-        (expense) => expense.expenseId == id,
-      );
+      await _service.delete(id);
     } on Exception catch (excep) {
       debugPrint(
-        "Errorr while deleting an expense : $excep",
+        'Errorr while deleting an expense : $excep',
       );
+      throw Exception(excep);
     }
   }
 
-  void updateExpense(ExpenseModel editedExpense) {
+  void updateExpense(ExpenseModel editedExpense) async {
     try {
-      _expenseList.firstWhere(
-        (expense) =>
-            expense.expenseId == editedExpense.expenseId,
-      );
+      await _service.update(editedExpense);
     } on Exception catch (excep) {
       debugPrint(
-        "Error while updating an expense : $excep",
+        'Error while updating an expense : $excep',
       );
+      throw Exception(excep);
     }
   }
 }

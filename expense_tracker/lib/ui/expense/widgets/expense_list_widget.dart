@@ -1,7 +1,3 @@
-import 'dart:collection';
-import 'dart:math';
-
-import 'package:expense_tracker/data/models/expense_model.dart';
 import 'package:expense_tracker/ui/expense/view_models/expense_view_model.dart';
 import 'package:expense_tracker/ui/expense/widgets/expense_edit_form_widget.dart';
 import 'package:expense_tracker/ui/expense/widgets/expense_list_tile_widget.dart';
@@ -16,7 +12,7 @@ class ExpenseListWidget extends StatelessWidget {
     Provider.of<ExpenseViewModel>(
       context,
       listen: false,
-    ).deleteExpense(id);
+    ).deleteExpense(id.toString());
   }
 
   void onEditExpense(
@@ -43,8 +39,7 @@ class ExpenseListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UnmodifiableListView<ExpenseModel>? expenseList =
-        context.watch<ExpenseViewModel>().getAllExpenses();
+    final vm = context.watch<ExpenseViewModel>();
 
     return Expanded(
       child: DecoratedBox(
@@ -61,7 +56,7 @@ class ExpenseListWidget extends StatelessWidget {
                 .reorderExpenses(oldIndex, newIndex);
           },
           padding: const EdgeInsets.all(5),
-          children: expenseList!
+          children: vm.expenseList
               .map(
                 (expense) => ExpenseListTileWidget(
                   key: Key('${expense.expenseId}'),
