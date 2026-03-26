@@ -55,7 +55,7 @@ class ExpenseListTileWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(
                   0xFF6366F1,
-                ).withOpacity(0.2),
+                ).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,

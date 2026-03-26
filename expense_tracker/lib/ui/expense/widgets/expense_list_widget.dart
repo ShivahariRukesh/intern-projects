@@ -22,6 +22,7 @@ class ExpenseListWidget extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF1E293B),
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
@@ -64,90 +65,71 @@ class ExpenseListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<ExpenseViewModel>();
+    final width = MediaQuery.of(context).size.width;
 
     if (vm.expenseList.isEmpty) {
-      return const Center(
-        child: Text(
-          'No expenses yet',
-          style: TextStyle(
-            color: Colors.white54,
-            fontSize: 16,
-          ),
-        ),
-      );
+      return const Center(child: Text('No expenses yet'));
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ReorderableListView.builder(
+    if (width > 600) {
+      return GridView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: vm.expenseList.length,
-
-        proxyDecorator: (child, index, animation) {
-          return Material(
-            color: Colors
-                .transparent, // 🚨 removes white flicker
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) {
-                final elevation = 6.0 * animation.value;
-                return Transform.scale(
-                  scale: 1.02,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        16,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(
-                            0.4,
-                          ),
-                          blurRadius: elevation,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: child,
-                  ),
-                );
-              },
-              child: child,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
             ),
-          );
-        },
-
-        onReorder: (oldIndex, newIndex) {
-          if (newIndex > oldIndex) {
-            newIndex -= 1;
-          }
-          context.read<ExpenseViewModel>().reorderExpenses(
-            oldIndex,
-            newIndex,
-          );
-        },
-
+        itemCount: vm.expenseList.length,
         itemBuilder: (context, index) {
           final expense = vm.expenseList[index];
 
-          return Padding(
-            key: Key('${expense.expenseId}'),
-            padding: const EdgeInsets.only(bottom: 10),
-            child: ExpenseListTileWidget(
-              id: expense.expenseId,
-              title: expense.title,
-              description: expense.description,
-              amount: expense.expenseAmount,
-              onDeleteExpense: onDeleteExpense,
-              onEditExpense: onEditExpense,
-              onViewExpenseModal: onViewExpenseModal,
-            ),
+          return ExpenseListTileWidget(
+            id: expense.expenseId,
+            title: expense.title,
+            description: expense.description,
+            amount: expense.expenseAmount,
+            onDeleteExpense: onDeleteExpense,
+            onEditExpense: onEditExpense,
+            onViewExpenseModal: onViewExpenseModal,
           );
         },
-      ),
+      );
+    }
+
+    return ReorderableListView.builder(
+      itemCount: vm.expenseList.length,
+      proxyDecorator: (child, index, animation) {
+        return Material(
+          color: Colors.transparent,
+          child: child,
+        );
+      },
+      onReorder: (oldIndex, newIndex) {
+        if (newIndex > oldIndex) newIndex -= 1;
+        context.read<ExpenseViewModel>().reorderExpenses(
+          oldIndex,
+          newIndex,
+        );
+      },
+      itemBuilder: (context, index) {
+        final expense = vm.expenseList[index];
+
+        return Padding(
+          key: ValueKey(expense.expenseId),
+          padding: const EdgeInsets.only(bottom: 10),
+          child: ExpenseListTileWidget(
+            id: expense.expenseId,
+            title: expense.title,
+            description: expense.description,
+            amount: expense.expenseAmount,
+            onDeleteExpense: onDeleteExpense,
+            onEditExpense: onEditExpense,
+            onViewExpenseModal: onViewExpenseModal,
+          ),
+        );
+      },
     );
   }
 }

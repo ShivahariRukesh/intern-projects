@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ExpenseShowModalWidget extends StatelessWidget {
   final Map<String, Object?> _currentExpenseDetail;
+
   const ExpenseShowModalWidget(
     this._currentExpenseDetail, {
     super.key,
@@ -9,115 +10,128 @@ class ExpenseShowModalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    final isSmall = size.width < 400;
+
+    final title =
+        (_currentExpenseDetail['title'] ?? '') as String;
+    final description =
+        (_currentExpenseDetail['description'] ?? '')
+            as String;
+    final amount = _currentExpenseDetail['amount'];
+
     return Dialog(
-      backgroundColor:
-          Colors.transparent, // remove default dialog bg
-      insetPadding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 24,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(
-            0xFF0F172A,
-          ), // dark modal background
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// CLOSE BUTTON
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.close_rounded,
-                  color: Colors.white70,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
+      backgroundColor: Colors.transparent,
 
-            const SizedBox(height: 8),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 450),
 
-            /// ID + TITLE
-            Row(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F172A),
+            borderRadius: BorderRadius.circular(20),
+          ),
+
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  "#${_currentExpenseDetail["id"]}",
-                  style: const TextStyle(
-                    color: Colors.white38,
-                    fontWeight: FontWeight.bold,
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: Colors.white70,
+                      size: isSmall ? 20 : 24,
+                    ),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    _currentExpenseDetail['title']
-                        as String,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+
+                SizedBox(height: isSmall ? 6 : 8),
+
+                Row(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "#${_currentExpenseDetail["id"]}",
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontWeight: FontWeight.bold,
+                        fontSize: isSmall ? 12 : 14,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: isSmall ? 10 : 12),
+
+                if (description.isNotEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(
+                      isSmall ? 10 : 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1E293B),
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ),
+                    ),
+                    child: Text(
+                      description,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: isSmall ? 13 : 14,
+                      ),
                     ),
                   ),
+
+                SizedBox(height: isSmall ? 14 : 16),
+
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Amount',
+                      style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: isSmall ? 13 : 14,
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        "Rs. ${amount ?? "0"}",
+                        style: const TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
+
+                const SizedBox(height: 8),
               ],
             ),
-
-            const SizedBox(height: 12),
-
-            /// DESCRIPTION
-            if (_currentExpenseDetail['description'] !=
-                    null &&
-                (_currentExpenseDetail['description']
-                        as String)
-                    .isNotEmpty)
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E293B),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  _currentExpenseDetail['description']
-                      as String,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-
-            const SizedBox(height: 16),
-
-            /// AMOUNT
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Amount',
-                  style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  "Rs. ${_currentExpenseDetail["amount"] ?? "0"}",
-                  style: const TextStyle(
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 8),
-          ],
+          ),
         ),
       ),
     );
