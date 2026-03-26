@@ -36,15 +36,9 @@ class App extends StatelessWidget {
               ExpenseViewModel(repository: repository),
         ),
       ],
-      child: MaterialApp(
-        title: 'Expense Tracker',
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Expense Tracker'),
-          ),
-
-          body: const ExpenseScreen(),
-        ),
+      child: const MaterialApp(
+        title: 'Expense Tracker App',
+        home: ExpenseScreen(),
       ),
     );
   }
