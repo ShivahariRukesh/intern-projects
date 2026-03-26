@@ -6,24 +6,29 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Root widget of the Expense Tracker application.
+///
+/// Sets up dependency injection for services, repositories, and view models
+/// using the Provider package and defines the main [MaterialApp] with its
+/// initial screen.
 class App extends StatelessWidget {
-  final SharedPreferences prefs;
-  const App({super.key, required this.prefs});
+  /// The SharedPreferences instance used for persistent storage.
+  final SharedPreferences sharedPref;
 
+  /// Requires a [sharedPref] instance that is passed down to services.
+  const App({super.key, required this.sharedPref});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Data layer
         Provider<ExpenseService>(
-          create: (_) => ExpenseService(prefs),
+          create: (_) => ExpenseService(sharedPref),
         ),
         ProxyProvider<ExpenseService, ExpenseRepository>(
           update: (_, service, __) =>
               ExpenseRepository(service),
         ),
 
-        // ViewModel
         ChangeNotifierProxyProvider<
           ExpenseRepository,
           ExpenseViewModel
