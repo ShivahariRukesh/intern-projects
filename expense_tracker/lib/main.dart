@@ -1,26 +1,14 @@
-import 'package:expense_tracker/ui/expense/view_models/expense_view_model.dart';
-import 'package:expense_tracker/ui/expense/widgets/expense_screen.dart';
+import 'package:expense_tracker/app.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => ExpenseViewModel(),
-        ),
-      ],
-      child: mainExpenseTracker(),
-    ),
-  );
-}
+/// Entry point of the Expense Tracker application.
+///
+/// Initializes Flutter bindings, loads persistent storage using
+/// `SharedPreferences`, and launches the [App] widget.
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPref = await SharedPreferences.getInstance();
 
-MaterialApp mainExpenseTracker() {
-  return const MaterialApp(
-    home: Scaffold(
-      body: ExpenseScreen(),
-      backgroundColor: Color.fromARGB(66, 237, 237, 237),
-    ),
-  );
+  runApp(App(sharedPref: sharedPref));
 }
