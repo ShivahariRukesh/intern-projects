@@ -12,7 +12,7 @@ class ExpenseListTileWidget extends StatelessWidget {
   final void Function(BuildContext, Map<String, String?>)
   onViewExpenseModal;
 
-  ExpenseListTileWidget({
+  const ExpenseListTileWidget({
     super.key,
     required this.id,
     required this.title,
@@ -25,36 +25,136 @@ class ExpenseListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
       onTap: () => onViewExpenseModal(context, {
-        "id": id.toString(),
-        "title": title,
-        "description": description,
-        "amount": amount.toString(),
+        'id': id.toString(),
+        'title': title,
+        'description': description,
+        'amount': amount.toString(),
       }),
-      tileColor: Colors.amber.shade600,
-      textColor: Colors.white,
-      title: Text(title),
-      leading: Text(id.toString()),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: const Color(0xFF334155),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            /// LEFT ICON / ID
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: const Color(
+                  0xFF6366F1,
+                ).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                id.toString(),
+                style: const TextStyle(
+                  color: Color(0xFF818CF8),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
 
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: () => onDeleteExpense(context, id),
-            icon: const Icon(Icons.delete),
-          ),
+            const SizedBox(width: 12),
 
-          IconButton(
-            onPressed: () => onEditExpense(context, {
-              "id": id,
-              "title": title,
-              "description": description,
-              "amount": amount.toString(),
-            }),
-            icon: const Icon(Icons.edit),
-          ),
-        ],
+            /// TITLE + DESCRIPTION
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (description != null &&
+                      description!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                      ),
+                      child: Text(
+                        description!,
+                        style: const TextStyle(
+                          color: Colors.white54,
+                          fontSize: 13,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            const SizedBox(width: 10),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Rs. ${amount.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 6),
+
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    /// EDIT
+                    GestureDetector(
+                      onTap: () => onEditExpense(context, {
+                        'id': id,
+                        'title': title,
+                        'description': description,
+                        'amount': amount.toString(),
+                      }),
+                      child: const Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.white70,
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    /// DELETE
+                    GestureDetector(
+                      onTap: () =>
+                          onDeleteExpense(context, id),
+                      child: const Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
