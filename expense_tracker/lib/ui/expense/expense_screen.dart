@@ -1,9 +1,10 @@
-import 'package:expense_tracker/ui/core/shared/base_expense_form_widget.dart';
+import 'package:expense_tracker/ui/core/shared/base_form_widget.dart';
 import 'package:expense_tracker/ui/expense/view_models/expense_view_model.dart';
 import 'package:expense_tracker/ui/expense/widgets/expense_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Only one screen in the app that holds all the widgets of expense tracker app
 class ExpenseScreen extends StatefulWidget {
   const ExpenseScreen({super.key});
 
@@ -14,38 +15,9 @@ class ExpenseScreen extends StatefulWidget {
 
 class _ExpenseScreenState extends State<ExpenseScreen> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ExpenseViewModel>().loadExpenses();
-    });
-  }
-
-  void _openAddExpense() {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      // isScrollControlled: true,
-      context: context,
-      builder: (_) => BaseExpenseFormWidget(
-        titleText: 'Add Expense',
-        buttonText: 'Save Expense',
-        onSubmit: (ctx, title, desc, amount) {
-          ctx.read<ExpenseViewModel>().createExpense(
-            title: title,
-            description: desc,
-            amount: amount,
-          );
-        },
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(
-        0xFF0F172A,
-      ), // modern dark blue
+      backgroundColor: const Color(0xFF0F172A),
       appBar: AppBar(
         title: const Text(
           'Expenses Tracker',
@@ -60,12 +32,33 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       ),
       body: const Padding(
         padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Expanded(child: ExpenseListWidget()),
-          ],
-        ),
+        child: ExpenseListWidget(),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ExpenseViewModel>().loadExpenses();
+    });
+  }
+
+  void _openAddExpense() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (_) => BaseFormWidget(
+        titleText: 'Add Expense',
+        buttonText: 'Save Expense',
+        onSubmit: (ctx, title, desc, amount) {
+          ctx.read<ExpenseViewModel>().createExpense(
+            title: title,
+            description: desc,
+            amount: amount,
+          );
+        },
       ),
     );
   }
