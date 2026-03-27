@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_crypto_demo/ui/features/home/view_model/home_view_model.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_error_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_fetch_button_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_idle_view_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_list_header_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_list_view_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_loading_widget.dart';
+import 'package:simple_crypto_demo/ui/features/home/widget/coin_search_bar_widget.dart';
+
+/// It is the main home screen widget that displays cryptocurrency data based on state
+class HomeScreen extends StatelessWidget {
+  /// Displays cryptocurrency data based on state
+  /// Parameters:
+  /// There is 1 named parameter:
+  /// - [key]: An optional parameter that identifies the widget in the widget tree.
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<HomeViewModel>();
+
+    Widget body;
+    switch (vm.currentState) {
+      case HomeState.loading:
+        body = const CoinLoadingWidget();
+        break;
+      case HomeState.error:
+        body = CoinErrorWidget(message: vm.errorMessage);
+        break;
+      case HomeState.success:
+        body = CoinListViewWidget(coins: vm.filteredCoins);
+        break;
+      default:
+        body = const CoinIdleViewWidget();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+          child: Column(
+            children: [
+              const CoinListHeaderWidget(),
+              CoinSearchBarWidget(
+                currentState: vm.currentState,
+              ),
+            ],
+          ),
+        ),
+        Expanded(child: body),
+        const SizedBox(height: 20),
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: CoinFetchButtonWidget(
+              currentState: vm.currentState,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
