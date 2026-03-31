@@ -7,7 +7,7 @@ class Success<T> extends Result<T> {
   const Success(this.data);
 }
 
-class Failure<T> extends Result<T> {
+class Failure extends Result<Never> {
   final String message;
   const Failure(this.message);
 }

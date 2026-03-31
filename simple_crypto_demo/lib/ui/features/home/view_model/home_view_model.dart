@@ -47,7 +47,7 @@ class HomeViewModel extends ChangeNotifier {
         _coinList = data;
         _currentState = HomeState.success;
 
-      case Failure<List<CoinModel>>(:final message):
+      case Failure(:final message):
         _currentState = HomeState.error;
         _errorMessage = message;
     }

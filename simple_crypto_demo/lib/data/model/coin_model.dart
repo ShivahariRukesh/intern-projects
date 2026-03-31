@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class CoinModel {
   final String name;
   final String symbol;
@@ -24,12 +26,18 @@ class CoinModel {
   });
 
   factory CoinModel.fromJson(
-    Map<String, dynamic> jsonData,
+    Map<String, dynamic>? jsonData,
   ) {
+    String? requiredKey = jsonData?.keys.toList()[0];
+    String? id;
+
+    id = requiredKey.toString();
+
+    debugPrint('Inside constructor $id');
     return CoinModel(
-      name: jsonData['name'],
-      symbol: jsonData['symbol'],
-      price: jsonData['quote'][0]['price'],
+      name: jsonData?['name'] ?? jsonData?[id]?['name'],
+      symbol: jsonData?['symbol'] ?? jsonData?[id]?['slug'],
+      price: jsonData?['quote']?[0]?['price'] ?? 99969,
     );
   }
 
