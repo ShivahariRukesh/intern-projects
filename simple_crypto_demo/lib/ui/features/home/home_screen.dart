@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_crypto_demo/ui/features/coin_detail.dart/view_model/coin_meta_data_view_model.dart';
+import 'package:simple_crypto_demo/ui/features/coin_detail.dart/widget/coin_detail.dart';
 import 'package:simple_crypto_demo/ui/features/home/view_model/home_view_model.dart';
 import 'package:simple_crypto_demo/ui/features/home/widget/coin_error_widget.dart';
 import 'package:simple_crypto_demo/ui/features/home/widget/coin_fetch_button_widget.dart';
@@ -58,14 +60,35 @@ class HomeScreen extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Colors.black,
           ),
-          child: Align(
-            alignment: Alignment.center,
-            child: CoinFetchButtonWidget(
-              currentState: vm.currentState,
-            ),
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceAround,
+
+            children: [
+              CoinFetchButtonWidget(
+                currentState: vm.currentState,
+              ),
+              ElevatedButton(
+                onPressed: () =>
+                    showCoinDetailDialog(context),
+                // OldCryptoService().getCoinMetaData(),
+                child: const Text('MetaData'),
+              ),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  void showCoinDetailDialog(BuildContext context) {
+    Provider.of<CoinMetaDataViewModel>(
+      context,
+      listen: false,
+    ).showACoinMetaData();
+    showDialog(
+      context: context,
+      builder: (context) => const CoinDetail(),
     );
   }
 }

@@ -12,7 +12,7 @@ class CryptoService {
     try {
       await Future.delayed(const Duration(seconds: 3));
       final response = await _apiService.get(
-        '',
+        'v3/cryptocurrency/listings/latest',
         queryParameters: {'limit': 10},
       );
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:simple_crypto_demo/data/repository/crypto_repository.dart';
 import 'package:simple_crypto_demo/data/service/crypto_service.dart';
+import 'package:simple_crypto_demo/ui/features/coin_detail.dart/view_model/coin_meta_data_view_model.dart';
 import 'package:simple_crypto_demo/ui/features/home/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_crypto_demo/ui/features/home/view_model/home_view_model.dart';
@@ -22,6 +23,9 @@ void main() async {
           create: (context) => HomeViewModel(
             repository: context.read<CryptoRepository>(),
           ),
+        ),
+        ChangeNotifierProvider<CoinMetaDataViewModel>(
+          create: (context) => CoinMetaDataViewModel(),
         ),
       ],
       child: myApp(),
