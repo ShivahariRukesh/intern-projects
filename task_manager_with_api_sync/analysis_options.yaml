@@ -24,6 +24,7 @@ linter:
     avoid_print: true
     lines_longer_than_80_chars : false
     prefer_const_constructors: true
+    prefer_const_declarations: true
     always_specify_types: true
     always_declare_return_types: true
     avoid_unused_constructor_parameters : true
