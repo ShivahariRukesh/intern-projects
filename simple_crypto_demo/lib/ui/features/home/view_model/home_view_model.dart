@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:simple_crypto_demo/data/model/coin_model.dart';
 import 'package:simple_crypto_demo/data/repository/crypto_repository.dart';
-import 'package:simple_crypto_demo/utils/result.dart';
+import 'package:simple_crypto_demo/ui/core/shared/base_view_model.dart';
 
 enum HomeState { loading, error, success, idle }
 
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel extends BaseViewModel {
   List<CoinModel> _coinList = [];
-  String _errorMessage = '';
-  HomeState _currentState = HomeState.idle;
+
   String _searchQuery = '';
 
   final CryptoRepository _repository;
@@ -17,8 +15,6 @@ class HomeViewModel extends ChangeNotifier {
     : _repository = repository;
 
   List<CoinModel> get coinList => _coinList;
-  String get errorMessage => _errorMessage;
-  HomeState get currentState => _currentState;
 
   /// Retrieve the coin lists based on search query (either through name or symbol)
   List<CoinModel> get filteredCoins {
@@ -37,21 +33,12 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   /// Retrieve the coins details
-  void getCoins() async {
-    _currentState = HomeState.loading;
-    notifyListeners();
-    final getCoinsResult = await _repository.getCoinsData();
-
-    switch (getCoinsResult) {
-      case Success<List<CoinModel>>(:final data):
+  Future<void> getCoins() async {
+    await executeFuture(
+      future: () => _repository.getCoinsData(),
+      onSuccess: (data) {
         _coinList = data;
-        _currentState = HomeState.success;
-
-      case Failure(:final message):
-        _currentState = HomeState.error;
-        _errorMessage = message;
-    }
-
-    notifyListeners();
+      },
+    );
   }
 }
