@@ -4,12 +4,12 @@ import 'package:task_manager_with_api_sync/data/repositories/task_repository.dar
 import 'package:task_manager_with_api_sync/utils/result.dart';
 
 class TaskViewModel extends ChangeNotifier {
-  final TaskRepository _taskRepository = TaskRepository();
-
+  final TaskRepository _taskRepository;
   List<TaskModel> _taskList = <TaskModel>[];
   String message = '';
 
-  TaskViewModel() {
+  TaskViewModel({required TaskRepository taskRepository})
+    : _taskRepository = taskRepository {
     getAllTask();
   }
 
