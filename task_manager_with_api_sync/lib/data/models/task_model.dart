@@ -15,13 +15,13 @@ class TaskModel {
     required this.priority,
   });
 
-  TaskModel.fromJSON(Map<String, String> jsonData)
+  TaskModel.fromJSON(Map<String, Object?> jsonData)
     : id = jsonData['id'] as int?,
-      title = jsonData['title'] ?? 'Untitled',
-      description = jsonData['description'] ?? '',
-      status = jsonData['status'] ?? 'incomplete',
-      dueDate = jsonData['dueDate'] ?? '${DateTime.now()}',
-      priority = jsonData['priority'] ?? 'low';
+      title = jsonData['title'] as String,
+      description = jsonData['description'] as String,
+      status = jsonData['status'] as String,
+      dueDate = jsonData['dueDate'] as String,
+      priority = jsonData['priority'] as String;
 
   Map<String, Object?> toJSON() {
     return <String, Object?>{
