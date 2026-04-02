@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static final Color darkThemePrimaryColor = Colors.white;
+  static const Color darkThemePrimaryColor = Colors.white;
   static final Color darkThemeSecondaryColor =
       Colors.grey.shade700;
 
-  static final Color darkThemeBackgroundColor =
+  static const Color darkThemeBackgroundColor =
       Colors.black;
 
-  static final Color lightThemePrimaryColor = Colors.black;
-  static final Color lightThemeSecondaryColor =
+  static const Color lightThemePrimaryColor = Colors.black;
+  static const Color lightThemeSecondaryColor =
       Colors.blueGrey;
-  static final Color lightThemeBackgroundColor =
+  static const Color lightThemeBackgroundColor =
       Colors.white;
 
   static ThemeData get lightTheme => ThemeData(
@@ -26,7 +26,7 @@ class AppTheme {
     ),
 
     // Dark Text Theme
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyLarge: TextStyle(
         color: lightThemePrimaryColor,
         fontSize: 20,
@@ -61,7 +61,7 @@ class AppTheme {
       surface: darkThemeBackgroundColor,
     ),
 
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyLarge: TextStyle(
         color: darkThemePrimaryColor,
         fontSize: 20,
