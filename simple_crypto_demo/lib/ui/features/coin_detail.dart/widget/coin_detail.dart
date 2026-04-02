@@ -10,7 +10,7 @@ class CoinDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<CoinMetaDataViewModel>();
 
-    if (vm.coinMetaDataUiCurrentState.screenState ==
+    if (vm.currentUiState.screenState ==
         ScreenState.loading) {
       return Container(
         height: 200,
@@ -21,11 +21,11 @@ class CoinDetail extends StatelessWidget {
         child: const CircularProgressIndicator(),
       );
     }
-    if (vm.coinMetaDataUiCurrentState.screenState ==
+    if (vm.currentUiState.screenState ==
         ScreenState.error) {
       return Center(
         child: Text(
-          'errorr!!! ${vm.coinMetaDataUiCurrentState.errorMessage}',
+          'error!!! ${vm.currentUiState.errorMessage}',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 20,

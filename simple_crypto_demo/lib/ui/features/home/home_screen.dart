@@ -10,6 +10,7 @@ import 'package:simple_crypto_demo/ui/features/home/widget/coin_list_header_widg
 import 'package:simple_crypto_demo/ui/features/home/widget/coin_list_view_widget.dart';
 import 'package:simple_crypto_demo/ui/features/home/widget/coin_loading_widget.dart';
 import 'package:simple_crypto_demo/ui/features/home/widget/coin_search_bar_widget.dart';
+import 'package:simple_crypto_demo/utils/ui_state.dart';
 
 /// It is the main home screen widget that displays cryptocurrency data based on state
 class HomeScreen extends StatelessWidget {
@@ -24,14 +25,16 @@ class HomeScreen extends StatelessWidget {
     final vm = context.watch<HomeViewModel>();
 
     Widget body;
-    switch (vm.currentState) {
-      case HomeState.loading:
+    switch (vm.currentUiState.screenState) {
+      case ScreenState.loading:
         body = const CoinLoadingWidget();
         break;
-      case HomeState.error:
-        body = CoinErrorWidget(message: vm.errorMessage);
+      case ScreenState.error:
+        body = CoinErrorWidget(
+          message: vm.currentUiState.errorMessage,
+        );
         break;
-      case HomeState.success:
+      case ScreenState.success:
         body = CoinListViewWidget(coins: vm.filteredCoins);
         break;
       default:
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const CoinListHeaderWidget(),
               CoinSearchBarWidget(
-                currentState: vm.currentState,
+                currentState: vm.currentUiState.screenState,
               ),
             ],
           ),
@@ -66,7 +69,7 @@ class HomeScreen extends StatelessWidget {
 
             children: [
               CoinFetchButtonWidget(
-                currentState: vm.currentState,
+                currentState: vm.currentUiState.screenState,
               ),
               ElevatedButton(
                 onPressed: () =>

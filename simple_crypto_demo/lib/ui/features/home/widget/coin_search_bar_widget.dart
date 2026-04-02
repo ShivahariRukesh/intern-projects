@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_crypto_demo/ui/features/home/view_model/home_view_model.dart';
+import 'package:simple_crypto_demo/utils/ui_state.dart';
 
 /// It is the search bar widget used to filter or search coins
 class CoinSearchBarWidget extends StatelessWidget {
   /// [currentState] Represents the current state of the home screen.
   /// It can be used to enable/disable search functionality based on state.
-  final HomeState currentState;
+  final ScreenState currentState;
 
   /// It searches the coins based on the name or symbol
   /// Parameters:
   /// There are 2 named parameters:
   /// - [key]: An optional parameter that identifies the widget in the widget tree.
-  /// - [currentState]: A required parameter of type [HomeState].
+  /// - [currentState]: A required parameter of type [ScreenState].
   const CoinSearchBarWidget({
     super.key,
     required this.currentState,
@@ -31,7 +32,7 @@ class CoinSearchBarWidget extends StatelessWidget {
 
   TextField _searchTextField(BuildContext context) {
     return TextField(
-      enabled: currentState != HomeState.loading,
+      enabled: currentState != ScreenState.loading,
       style: const TextStyle(color: Colors.lightBlueAccent),
       decoration: InputDecoration(
         hintText: 'Search coins by name or symbol...',
