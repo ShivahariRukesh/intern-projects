@@ -9,7 +9,6 @@ class TaskListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TaskViewModel vm = context.watch<TaskViewModel>();
-
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: const BoxDecoration(color: Colors.blue),
@@ -18,7 +17,7 @@ class TaskListWidget extends StatelessWidget {
         itemCount: vm.taskList.length,
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 1,
             ),
         itemBuilder: (_, int index) {
           return InkWell(

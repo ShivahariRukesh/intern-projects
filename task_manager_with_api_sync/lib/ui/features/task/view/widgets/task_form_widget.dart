@@ -21,8 +21,8 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
   final TextEditingController descriptionController =
       TextEditingController();
 
-  String status = 'pending';
-  String priority = 'Medium';
+  late String status;
+  late String priority;
   String dueDate =
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
 
@@ -88,19 +88,18 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
   }
 
   Widget statusOption(String value) {
-    return Expanded(
-      child: InkWell(
-        onTap: () => setState(() => status = value),
-        child: Row(
-          children: <Widget>[
-            Checkbox(
-              value: status == value,
-              onChanged: (_) =>
-                  setState(() => status = value),
-            ),
-            Flexible(child: Text(value)),
-          ],
-        ),
+    return InkWell(
+      onTap: () => setState(() => status = value),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Checkbox(
+            value: status == value,
+            onChanged: (_) =>
+                setState(() => status = value),
+          ),
+          Text(value),
+        ],
       ),
     );
   }
@@ -154,11 +153,12 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
                     CrossAxisAlignment.start,
                 children: <Widget>[
                   const Text('Task Status'),
-                  Row(
+                  Wrap(
+                    spacing: 0.0,
                     children: <Widget>[
-                      statusOption('pending'),
-                      statusOption('inprogress'),
-                      statusOption('done'),
+                      statusOption('Pending'),
+                      statusOption('In-Progress'),
+                      statusOption('Done'),
                     ],
                   ),
                 ],
@@ -242,6 +242,7 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
                         status: status,
                         priority: priority,
                         dueDate: dueDate,
+                        isApiData: false,
                       ),
                     );
 
@@ -267,7 +268,7 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
     titleController.text = widget.task?.title ?? '';
     descriptionController.text = widget.task?.title ?? '';
     priority = widget.task?.priority ?? 'Low';
-    status = widget.task?.status ?? 'pending';
+    status = widget.task?.status ?? 'Pending';
     dueDate =
         widget.task?.dueDate ??
         '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
