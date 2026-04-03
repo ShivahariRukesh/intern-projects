@@ -21,8 +21,8 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
   final TextEditingController descriptionController =
       TextEditingController();
 
-  String status = 'Pending';
-  String priority = 'Medium';
+  late String status;
+  late String priority;
   String dueDate =
       '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
 
@@ -242,6 +242,7 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
                         status: status,
                         priority: priority,
                         dueDate: dueDate,
+                        isApiData: false,
                       ),
                     );
 
@@ -267,7 +268,7 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
     titleController.text = widget.task?.title ?? '';
     descriptionController.text = widget.task?.title ?? '';
     priority = widget.task?.priority ?? 'Low';
-    status = widget.task?.status ?? 'pending';
+    status = widget.task?.status ?? 'Pending';
     dueDate =
         widget.task?.dueDate ??
         '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
