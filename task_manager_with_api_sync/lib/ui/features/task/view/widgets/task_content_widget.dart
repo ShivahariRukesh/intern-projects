@@ -16,12 +16,11 @@ class TaskContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('The id of $task is $id');
     void editTask(TaskModel task) {
       Provider.of<TaskViewModel>(
         context,
         listen: false,
-      ).updateTask(task, id!);
+      ).updateTask(task, id!); //check here firs
     }
 
     void showEditTaskModal(BuildContext context) {
