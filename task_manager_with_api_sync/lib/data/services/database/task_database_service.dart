@@ -8,7 +8,7 @@ class TaskDatabaseService {
   static const String _tableName = 'tasks';
   final DatabaseService _databaseService = DatabaseService(
     databaseName: _tableName,
-    version: 2,
+    version: 3,
     createTableRawQuery:
         'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, title TEXT, description TEXT, status TEXT, priority TEXT, dueDate TEXT )',
     updateTableRawQuery:
