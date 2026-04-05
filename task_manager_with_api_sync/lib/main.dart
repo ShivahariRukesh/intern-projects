@@ -13,6 +13,9 @@ import 'package:task_manager_with_api_sync/utils/shared_preferences_service.dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefService.init();
+  print(
+    'Preferenced data ${PrefService.email.runtimeType} ${PrefService.isLoggedIn} ${PrefService.username.runtimeType}',
+  );
   runApp(
     MultiProvider(
       providers: <SingleChildWidget>[

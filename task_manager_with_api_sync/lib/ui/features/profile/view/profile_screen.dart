@@ -3,24 +3,22 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_with_api_sync/ui/core/shared/base_scaffold_widget.dart';
 import 'package:task_manager_with_api_sync/ui/features/auth/view_model/login_view_model.dart';
-// import 'package:task_manager_with_api_sync/ui/features/auth/view_model/auth_view_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    void handleLogout() async {
-      final AuthenticateViewModel vm = context
-          .read<AuthenticateViewModel>();
+    final AuthenticateViewModel vm = context
+        .read<AuthenticateViewModel>();
 
+    void handleLogout() async {
       await vm.logoutUser();
 
-      if (!context.mounted) return;
-
-      if (!vm.isLoggedIn) {
-        context.go('/login');
+      if (!context.mounted) {
+        return;
       }
+      context.go('/login');
     }
 
     return BaseScaffoldWidget(
@@ -29,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
         builder:
             (
               BuildContext context,
-              Object? authViewModel,
+              AuthenticateViewModel? authViewModel,
               Widget? child,
             ) {
               return Center(
@@ -38,32 +36,26 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 50,
                         child: Text(
-                          'E',
-                          style: TextStyle(fontSize: 32),
+                          authViewModel?.usernameState
+                                  ?.substring(0, 1) ??
+                              'G',
+                          style: const TextStyle(
+                            fontSize: 32,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        'Guest User',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        authViewModel?.usernameState ??
+                            'Guest User',
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No email provided',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
+                        authViewModel?.emailState ??
+                            'No emailState provided',
                       ),
 
                       OutlinedButton(

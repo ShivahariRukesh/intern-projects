@@ -6,8 +6,8 @@ import 'package:task_manager_with_api_sync/utils/shared_preferences_service.dart
 class AuthenticateViewModel extends ChangeNotifier {
   final UserRepository userRepository = UserRepository();
 
-  String? username;
-  String? email;
+  String? usernameState;
+  String? emailState;
   bool isLoggedIn = false;
 
   Future<void> loginUser({
@@ -25,9 +25,10 @@ class AuthenticateViewModel extends ChangeNotifier {
         :final Map<String, dynamic> data,
       ):
         PrefService.username = data['username'];
-        username = data['username'];
         PrefService.email = data['email'];
-        email = data['email'];
+        PrefService.isLoggedIn = true;
+        usernameState = data['username'];
+        emailState = data['email'];
         isLoggedIn = true;
       case Failure(:final String errorMessage):
     }
@@ -37,10 +38,10 @@ class AuthenticateViewModel extends ChangeNotifier {
 
   Future<void> logoutUser() async {
     PrefService.username = '';
-    username = '';
     PrefService.email = '';
-    email = '';
+    PrefService.isLoggedIn = false;
+    usernameState = '';
+    emailState = '';
     isLoggedIn = false;
-    notifyListeners();
   }
 }

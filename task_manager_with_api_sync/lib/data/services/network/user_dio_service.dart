@@ -33,6 +33,7 @@ class UserDioService {
             'email': json['email'],
             'isLoggedIn': true,
           };
+      print('hola $responseData');
 
       return Success(data: responseData);
     } catch (e) {

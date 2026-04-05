@@ -23,7 +23,7 @@ class TaskDioService {
           .map((dynamic item) => TaskModel.fromApi(item))
           .toList();
 
-      print('The task is ${jsonTasks[0].title}');
+      // print('The task is ${jsonTasks[0].title}');
 
       return Success(data: jsonTasks);
     } catch (e) {
