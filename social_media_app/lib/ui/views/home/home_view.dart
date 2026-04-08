@@ -6,8 +6,7 @@ class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
 
   @override
-  Widget builder(BuildContext context,
-      HomeViewModel viewModel, Widget? child) {
+  Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('The Social Me'),
@@ -22,8 +21,7 @@ class HomeView extends StackedView<HomeViewModel> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.0),
           child: Center(
-            child:
-                Column(children: [Text("Welcome back!!")]),
+            child: Column(children: [Text("Welcome back!!")]),
           ),
         ),
       ),
@@ -31,8 +29,7 @@ class HomeView extends StackedView<HomeViewModel> {
   }
 
   @override
-  HomeViewModel viewModelBuilder(BuildContext context) =>
-      HomeViewModel();
+  HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
   @override
   void onViewModelReady(HomeViewModel viewModel) {

@@ -7,14 +7,11 @@ import 'auth_viewmodel.dart';
 
 @FormView(fields: [
   FormTextField(
-      name: 'username',
-      validator: AuthFieldValidator.validateUsername),
+      name: 'username', validator: AuthFieldValidator.validateUsername),
   FormTextField(
-      name: 'password',
-      validator: AuthFieldValidator.validatePassword)
+      name: 'password', validator: AuthFieldValidator.validatePassword)
 ])
-class AuthView extends StackedView<AuthViewModel>
-    with $AuthView {
+class AuthView extends StackedView<AuthViewModel> with $AuthView {
   AuthView({Key? key}) : super(key: key);
 
   @override
@@ -30,8 +27,7 @@ class AuthView extends StackedView<AuthViewModel>
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -39,25 +35,19 @@ class AuthView extends StackedView<AuthViewModel>
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Welcome Back",
-                      style: theme.textTheme.titleLarge),
+                  Text("Welcome Back", style: theme.textTheme.titleLarge),
                   const SizedBox(height: 8),
                   const SizedBox(height: 30),
                   TextFormField(
                     controller: usernameController,
                     decoration: InputDecoration(
                       labelText: "Username",
-                      errorText: viewModel
-                              .usernameValidationMessage ??
-                          "",
-                      prefixIcon:
-                          const Icon(Icons.person_outline),
+                      errorText: viewModel.usernameValidationMessage ?? "",
+                      prefixIcon: const Icon(Icons.person_outline),
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
@@ -67,14 +57,10 @@ class AuthView extends StackedView<AuthViewModel>
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      errorText: viewModel
-                              .passwordValidationMessage ??
-                          "",
-                      prefixIcon:
-                          const Icon(Icons.lock_outline),
+                      errorText: viewModel.passwordValidationMessage ?? "",
+                      prefixIcon: const Icon(Icons.lock_outline),
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
@@ -83,21 +69,18 @@ class AuthView extends StackedView<AuthViewModel>
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: viewModel.isBusy
-                          ? null
-                          : () => viewModel.loginUser(),
+                      onPressed:
+                          viewModel.isBusy ? null : () => viewModel.loginUser(),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: viewModel.isBusy
                           ? const SizedBox(
                               height: 22,
                               width: 22,
-                              child:
-                                  CircularProgressIndicator(
+                              child: CircularProgressIndicator(
                                 strokeWidth: 2.5,
                                 color: Colors.white,
                               ),
@@ -109,14 +92,11 @@ class AuthView extends StackedView<AuthViewModel>
                   ),
                   if (viewModel.hasError)
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 12),
+                      padding: const EdgeInsets.only(top: 12),
                       child: Center(
                         child: Text(
                           "Error while logging in",
-                          style: TextStyle(
-                              color:
-                                  theme.colorScheme.error),
+                          style: TextStyle(color: theme.colorScheme.error),
                         ),
                       ),
                     ),
@@ -130,8 +110,7 @@ class AuthView extends StackedView<AuthViewModel>
   }
 
   @override
-  AuthViewModel viewModelBuilder(BuildContext context) =>
-      AuthViewModel();
+  AuthViewModel viewModelBuilder(BuildContext context) => AuthViewModel();
 
   @override
   void onViewModelReady(AuthViewModel viewModel) {

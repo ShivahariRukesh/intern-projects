@@ -11,8 +11,7 @@ class AuthViewModel extends FormViewModel {
 
   String loginKey = 'login-user';
   void getValues() {
-    print(
-        "The submitted values are : $usernameField and $passwordField");
+    print("The submitted values are : $usernameField and $passwordField");
   }
 
   Future<void> loginUser() async {
@@ -55,8 +54,7 @@ class AuthViewModel extends FormViewModel {
 
 class AuthFieldValidator {
   static String? validateUsername(String? value) {
-    if (value != null &&
-        RegExp(r'^[a-zA-Z0-9_]{3,16}$').hasMatch(value)) {
+    if (value != null && RegExp(r'^[a-zA-Z0-9_]{3,16}$').hasMatch(value)) {
       return null;
     } else {
       return "Enter a valid username";

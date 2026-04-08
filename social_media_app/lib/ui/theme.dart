@@ -3,17 +3,14 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const errorColor = Colors.red;
   static const lightThemePrimaryColor = Colors.black;
-  static const lightThemeBackgroundColor =
-      Color.fromARGB(255, 169, 189, 217);
-  static const lightThemeSecondaryColor =
-      Color.fromARGB(255, 6, 102, 237);
+  static const lightThemeBackgroundColor = Color.fromARGB(255, 169, 189, 217);
+  static const lightThemeSecondaryColor = Color.fromARGB(255, 6, 102, 237);
 
   static const darkThemePrimaryColor = Colors.white;
 
   static const darkThemeBackgroundColor = Colors.black;
 
-  static const darkThemeSecondaryColor =
-      Color.fromARGB(255, 6, 102, 237);
+  static const darkThemeSecondaryColor = Color.fromARGB(255, 6, 102, 237);
 
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
