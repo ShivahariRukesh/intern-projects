@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:social_media_app/app/app.bottomsheets.dart';
 import 'package:social_media_app/app/app.dialogs.dart';
 import 'package:social_media_app/app/app.locator.dart';
+import 'package:social_media_app/services/auth_service.dart';
+import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
+  final _themeService = locator<ThemeService>();
+  final _authService = locator<AuthService>();
   final _dialogService = locator<DialogService>();
   final _bottomSheetService = locator<BottomSheetService>();
 
@@ -32,5 +37,13 @@ class HomeViewModel extends BaseViewModel {
       title: ksHomeBottomSheetTitle,
       description: ksHomeBottomSheetDescription,
     );
+  }
+
+  void toggleTheme() {
+    _themeService.toggleTheme();
+  }
+
+  Future<void> getAllUsers() async {
+    final res = await _authService.fetchAllUsers();
   }
 }
