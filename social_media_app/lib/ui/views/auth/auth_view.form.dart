@@ -8,7 +8,7 @@
 // ignore_for_file: public_member_api_docs, constant_identifier_names, non_constant_identifier_names,unnecessary_this
 
 import 'package:flutter/material.dart';
-import 'package:social_media_app/ui/views/auth/auth_viewmodel.dart';
+import 'package:social_media_app/utils/auth_field_validator.dart';
 import 'package:stacked/stacked.dart';
 
 const bool _autoTextFieldValidation = true;
@@ -16,11 +16,13 @@ const bool _autoTextFieldValidation = true;
 const String UsernameValueKey = 'username';
 const String PasswordValueKey = 'password';
 
-final Map<String, TextEditingController> _AuthViewTextEditingControllers = {};
+final Map<String, TextEditingController>
+    _AuthViewTextEditingControllers = {};
 
 final Map<String, FocusNode> _AuthViewFocusNodes = {};
 
-final Map<String, String? Function(String?)?> _AuthViewTextValidations = {
+final Map<String, String? Function(String?)?>
+    _AuthViewTextValidations = {
   UsernameValueKey: AuthFieldValidator.validateUsername,
   PasswordValueKey: AuthFieldValidator.validatePassword,
 };
@@ -31,8 +33,10 @@ mixin $AuthView {
   TextEditingController get passwordController =>
       _getFormTextEditingController(PasswordValueKey);
 
-  FocusNode get usernameFocusNode => _getFormFocusNode(UsernameValueKey);
-  FocusNode get passwordFocusNode => _getFormFocusNode(PasswordValueKey);
+  FocusNode get usernameFocusNode =>
+      _getFormFocusNode(UsernameValueKey);
+  FocusNode get passwordFocusNode =>
+      _getFormFocusNode(PasswordValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -58,10 +62,13 @@ mixin $AuthView {
   /// Registers a listener on every generated controller that calls [model.setData()]
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
-    usernameController.addListener(() => _updateFormData(model));
-    passwordController.addListener(() => _updateFormData(model));
+    usernameController
+        .addListener(() => _updateFormData(model));
+    passwordController
+        .addListener(() => _updateFormData(model));
 
-    _updateFormData(model, forceValidate: _autoTextFieldValidation);
+    _updateFormData(model,
+        forceValidate: _autoTextFieldValidation);
   }
 
   /// Registers a listener on every generated controller that calls [model.setData()]
@@ -71,14 +78,18 @@ mixin $AuthView {
     'This feature was deprecated after 3.1.0.',
   )
   void listenToFormUpdated(FormViewModel model) {
-    usernameController.addListener(() => _updateFormData(model));
-    passwordController.addListener(() => _updateFormData(model));
+    usernameController
+        .addListener(() => _updateFormData(model));
+    passwordController
+        .addListener(() => _updateFormData(model));
 
-    _updateFormData(model, forceValidate: _autoTextFieldValidation);
+    _updateFormData(model,
+        forceValidate: _autoTextFieldValidation);
   }
 
   /// Updates the formData on the FormViewModel
-  void _updateFormData(FormStateHelper model, {bool forceValidate = false}) {
+  void _updateFormData(FormStateHelper model,
+      {bool forceValidate = false}) {
     model.setData(
       model.formValueMap
         ..addAll({
@@ -101,7 +112,8 @@ mixin $AuthView {
   void disposeForm() {
     // The dispose function for a TextEditingController sets all listeners to null
 
-    for (var controller in _AuthViewTextEditingControllers.values) {
+    for (var controller
+        in _AuthViewTextEditingControllers.values) {
       controller.dispose();
     }
     for (var focusNode in _AuthViewFocusNodes.values) {
@@ -125,16 +137,20 @@ extension ValueProperties on FormStateHelper {
     return !hasAnyValidationMessage;
   }
 
-  String? get usernameValue => this.formValueMap[UsernameValueKey] as String?;
-  String? get passwordValue => this.formValueMap[PasswordValueKey] as String?;
+  String? get usernameValue =>
+      this.formValueMap[UsernameValueKey] as String?;
+  String? get passwordValue =>
+      this.formValueMap[PasswordValueKey] as String?;
 
   set usernameValue(String? value) {
     this.setData(
       this.formValueMap..addAll({UsernameValueKey: value}),
     );
 
-    if (_AuthViewTextEditingControllers.containsKey(UsernameValueKey)) {
-      _AuthViewTextEditingControllers[UsernameValueKey]?.text = value ?? '';
+    if (_AuthViewTextEditingControllers.containsKey(
+        UsernameValueKey)) {
+      _AuthViewTextEditingControllers[UsernameValueKey]
+          ?.text = value ?? '';
     }
   }
 
@@ -143,8 +159,10 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({PasswordValueKey: value}),
     );
 
-    if (_AuthViewTextEditingControllers.containsKey(PasswordValueKey)) {
-      _AuthViewTextEditingControllers[PasswordValueKey]?.text = value ?? '';
+    if (_AuthViewTextEditingControllers.containsKey(
+        PasswordValueKey)) {
+      _AuthViewTextEditingControllers[PasswordValueKey]
+          ?.text = value ?? '';
     }
   }
 
@@ -156,9 +174,15 @@ extension ValueProperties on FormStateHelper {
       (passwordValue?.isNotEmpty ?? false);
 
   bool get hasUsernameValidationMessage =>
-      this.fieldsValidationMessages[UsernameValueKey]?.isNotEmpty ?? false;
+      this
+          .fieldsValidationMessages[UsernameValueKey]
+          ?.isNotEmpty ??
+      false;
   bool get hasPasswordValidationMessage =>
-      this.fieldsValidationMessages[PasswordValueKey]?.isNotEmpty ?? false;
+      this
+          .fieldsValidationMessages[PasswordValueKey]
+          ?.isNotEmpty ??
+      false;
 
   String? get usernameValidationMessage =>
       this.fieldsValidationMessages[UsernameValueKey];
@@ -167,10 +191,14 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  void setUsernameValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[UsernameValueKey] = validationMessage;
-  void setPasswordValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[PasswordValueKey] = validationMessage;
+  void setUsernameValidationMessage(
+          String? validationMessage) =>
+      this.fieldsValidationMessages[UsernameValueKey] =
+          validationMessage;
+  void setPasswordValidationMessage(
+          String? validationMessage) =>
+      this.fieldsValidationMessages[PasswordValueKey] =
+          validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
@@ -181,8 +209,10 @@ extension Methods on FormStateHelper {
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
-      UsernameValueKey: getValidationMessage(UsernameValueKey),
-      PasswordValueKey: getValidationMessage(PasswordValueKey),
+      UsernameValueKey:
+          getValidationMessage(UsernameValueKey),
+      PasswordValueKey:
+          getValidationMessage(PasswordValueKey),
     });
   }
 }
@@ -202,6 +232,8 @@ String? getValidationMessage(String key) {
 /// Updates the fieldsValidationMessages on the FormViewModel
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
-      UsernameValueKey: getValidationMessage(UsernameValueKey),
-      PasswordValueKey: getValidationMessage(PasswordValueKey),
+      UsernameValueKey:
+          getValidationMessage(UsernameValueKey),
+      PasswordValueKey:
+          getValidationMessage(PasswordValueKey),
     });

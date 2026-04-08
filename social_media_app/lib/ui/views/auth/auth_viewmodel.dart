@@ -10,9 +10,6 @@ class AuthViewModel extends FormViewModel {
   String get passwordField => passwordValue ?? '';
 
   String loginKey = 'login-user';
-  void getValues() {
-    print("The submitted values are : $usernameField and $passwordField");
-  }
 
   Future<void> loginUser() async {
     try {
@@ -49,25 +46,5 @@ class AuthViewModel extends FormViewModel {
     // TODO: implement onFutureError
     super.onFutureError(error, key);
     print("Eror future is $error");
-  }
-}
-
-class AuthFieldValidator {
-  static String? validateUsername(String? value) {
-    if (value != null && RegExp(r'^[a-zA-Z0-9_]{3,16}$').hasMatch(value)) {
-      return null;
-    } else {
-      return "Enter a valid username";
-    }
-  }
-
-  static String? validatePassword(String? value) {
-    if (value != null &&
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-            .hasMatch(value)) {
-      return null;
-    } else {
-      return "Enter a valid password";
-    }
   }
 }
