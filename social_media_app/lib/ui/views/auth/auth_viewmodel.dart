@@ -8,8 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AuthViewModel extends FormViewModel {
   final _apiService = locator<AuthService>();
-  final _sharedPreferenceService =
-      locator<SharedPreferenceService>();
+  final _sharedPreferenceService = locator<SharedPreferenceService>();
   final _navigationService = locator<NavigationService>();
 
   String get usernameField => usernameValue ?? '';

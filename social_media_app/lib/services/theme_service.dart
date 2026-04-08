@@ -10,9 +10,15 @@ class ThemeService with ListenableServiceMixin {
   ThemeMode get themeMode => _themeMode;
 
   void toggleTheme() {
-    _themeMode =
-        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode = _themeMode == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
 
+    notifyListeners();
+  }
+
+  void initTheme(ThemeMode Function() init) {
+    _themeMode = init();
     notifyListeners();
   }
 }

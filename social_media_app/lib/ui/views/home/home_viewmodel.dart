@@ -3,6 +3,7 @@ import 'package:social_media_app/app/app.bottomsheets.dart';
 import 'package:social_media_app/app/app.dialogs.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/services/auth_service.dart';
+import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
@@ -13,6 +14,7 @@ class HomeViewModel extends BaseViewModel {
   final _authService = locator<AuthService>();
   final _dialogService = locator<DialogService>();
   final _bottomSheetService = locator<BottomSheetService>();
+  final _sharedPreferenceService = locator<SharedPreferenceService>();
 
   String get counterLabel => 'Counter is: $_counter';
 
@@ -39,8 +41,9 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  void toggleTheme() {
+  void toggleTheme() async {
     _themeService.toggleTheme();
+    await _sharedPreferenceService.toggleThemeMode();
   }
 
   Future<void> getAllUsers() async {
