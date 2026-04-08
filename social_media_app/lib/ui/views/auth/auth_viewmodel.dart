@@ -8,7 +8,8 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AuthViewModel extends FormViewModel {
   final _apiService = locator<AuthService>();
-  final _sharedPreferenceService = locator<SharedPreferenceService>();
+  final _sharedPreferenceService =
+      locator<SharedPreferenceService>();
   final _navigationService = locator<NavigationService>();
 
   String get usernameField => usernameValue ?? '';
@@ -19,7 +20,7 @@ class AuthViewModel extends FormViewModel {
   Future<void> loginUser() async {
     try {
       final result = await runBusyFuture(
-        _apiService.handleLogin(
+        _apiService.loginUser(
           username: usernameValue,
           password: passwordValue,
         ),
@@ -40,7 +41,7 @@ class AuthViewModel extends FormViewModel {
     //   final result =
     //       await runBusyFuture<Map<String, dynamic>>(
 
-    //           _apiService.handleLogin(
+    //           _apiService.loginUser(
     //     username: usernameValue,
     //     password: passwordValue,
     //   ));

@@ -25,7 +25,7 @@ class StartupViewModel extends ReactiveViewModel {
 
     _sharedPreferenceService.isUserLoggedIn
         ? _navigationService.replaceWithHomeView()
-        : _navigationService.replaceWith('/auth-view');
+        : _navigationService.replaceWithAuthView();
 
     _themeService.initTheme(() =>
         _sharedPreferenceService.isLightThemeMode

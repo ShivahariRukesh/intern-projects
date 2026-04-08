@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app/app/app.bottomsheets.dart';
 import 'package:social_media_app/app/app.dialogs.dart';
 import 'package:social_media_app/app/app.locator.dart';
+import 'package:social_media_app/app/app.router.dart';
 import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
@@ -14,7 +15,11 @@ class HomeViewModel extends BaseViewModel {
   final _authService = locator<AuthService>();
   final _dialogService = locator<DialogService>();
   final _bottomSheetService = locator<BottomSheetService>();
-  final _sharedPreferenceService = locator<SharedPreferenceService>();
+  final _sharedPreferenceService =
+      locator<SharedPreferenceService>();
+
+  final _navigationPreferenceService =
+      locator<NavigationService>();
 
   String get counterLabel => 'Counter is: $_counter';
 
@@ -44,6 +49,14 @@ class HomeViewModel extends BaseViewModel {
   void toggleTheme() async {
     _themeService.toggleTheme();
     await _sharedPreferenceService.toggleThemeMode();
+  }
+
+  Future<void> handleLogout() async {
+    await runBusyFuture(_authService.logoutUser());
+
+    await _sharedPreferenceService.logout();
+
+    _navigationPreferenceService.replaceWithAuthView();
   }
 
   Future<void> getAllUsers() async {
