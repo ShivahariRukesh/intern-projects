@@ -29,8 +29,11 @@ class HomeView extends StackedView<HomeViewModel> {
           child: Center(
             child: viewModel.isBusy
                 ? const CircularProgressIndicator()
-                : const Column(
-                    children: [Text("Welcome back!!")]),
+                : Column(children: [
+                    const Text("Welcome back!!"),
+                    Text(viewModel.loggedInUser?.username ??
+                        'Unknown User')
+                  ]),
           ),
         ),
       ),
@@ -43,6 +46,6 @@ class HomeView extends StackedView<HomeViewModel> {
 
   @override
   void onViewModelReady(HomeViewModel viewModel) {
-    viewModel.getAllUsers();
+    viewModel.getLoggedInUser();
   }
 }

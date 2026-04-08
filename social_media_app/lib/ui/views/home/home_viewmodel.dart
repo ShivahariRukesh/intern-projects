@@ -1,50 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:social_media_app/app/app.bottomsheets.dart';
-import 'package:social_media_app/app/app.dialogs.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
+import 'package:social_media_app/models/user_model.dart';
 import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
-import 'package:social_media_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
   final _themeService = locator<ThemeService>();
   final _authService = locator<AuthService>();
-  final _dialogService = locator<DialogService>();
-  final _bottomSheetService = locator<BottomSheetService>();
   final _sharedPreferenceService =
       locator<SharedPreferenceService>();
 
   final _navigationPreferenceService =
       locator<NavigationService>();
 
-  String get counterLabel => 'Counter is: $_counter';
-
-  int _counter = 0;
-
-  void incrementCounter() {
-    _counter++;
-    rebuildUi();
-  }
-
-  void showDialog() {
-    _dialogService.showCustomDialog(
-      variant: DialogType.infoAlert,
-      title: 'Stacked Rocks!',
-      description: 'Give stacked $_counter stars on Github',
-    );
-  }
-
-  void showBottomSheet() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.notice,
-      title: ksHomeBottomSheetTitle,
-      description: ksHomeBottomSheetDescription,
-    );
-  }
+  UserModel? loggedInUser;
 
   void toggleTheme() async {
     _themeService.toggleTheme();
@@ -61,5 +33,24 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> getAllUsers() async {
     final res = await _authService.fetchAllUsers();
+  }
+
+  Future<void> getLoggedInUser() async {
+    try {
+      setBusy(true);
+      final int? userId =
+          _sharedPreferenceService.extractUserId();
+      if (userId == null) {
+        throw Exception('Cannot access logged in user');
+      }
+      final UserModel user = await _authService
+          .fetchLoggedInUser(userId: userId);
+      loggedInUser = user;
+
+      rebuildUi();
+    } catch (err) {
+      setError(err);
+    }
+    setBusy(false);
   }
 }

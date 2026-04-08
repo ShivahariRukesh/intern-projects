@@ -1,5 +1,6 @@
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
+import 'package:social_media_app/models/user_model.dart';
 import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/ui/views/auth/auth_view.form.dart';
@@ -25,10 +26,9 @@ class AuthViewModel extends FormViewModel {
           password: passwordValue,
         ),
       );
-      if (result.containsKey('accessToken')) {
-        _sharedPreferenceService.login();
-        _navigationService.replaceWithHomeView();
-      }
+
+      _sharedPreferenceService.login(userId: result.id);
+      _navigationService.replaceWithHomeView();
 
       // handle success
     } catch (e) {
