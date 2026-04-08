@@ -27,14 +27,21 @@ class SharedPreferenceService
     }
   }
 
-  Future<void> login() async {
+  Future<void> login({required int userId}) async {
     await _sharedPref.setBool('isUserLoggedIn', true);
+    await _sharedPref.setInt('userId', userId);
+
     _isUserLoggedIn = true;
   }
 
   Future<void> logout() async {
     await _sharedPref.setBool('isUserLoggedIn', false);
+    await _sharedPref.remove('userId');
     _isUserLoggedIn = false;
+  }
+
+  int? extractUserId() {
+    return _sharedPref.getInt('userId');
   }
 
   Future<void> toggleThemeMode() async {

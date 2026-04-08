@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:social_media_app/models/user_model.dart';
 
 class AuthService {
   final dio = Dio(
@@ -21,23 +22,33 @@ class AuthService {
     print("The first user info is : ${requiredData[0]}");
   }
 
-  Future<Map<String, dynamic>> loginUser(
+  Future<UserModel> fetchLoggedInUser(
+      {required int userId}) async {
+    try {
+      final response = await dio.get('/$userId');
+
+      final Map<String, dynamic> data = response.data;
+      print(
+          "Inside logged in service ${UserModel.fromJson(data)}");
+      return UserModel.fromJson(data);
+    } on DioException catch (err) {
+      print("The err is $err");
+      rethrow;
+    }
+  }
+
+  Future<UserModel> loginUser(
       {required username, required password}) async {
     try {
       final response = await dio.post('/login', data: {
         'username': username,
         'password': password
       });
-      print("logged in data is $response");
-      final data = response.data;
-      // final data = jsonDecode(response.toString());
-      print("logged in data is $data");
 
-      final Map<String, dynamic> requiredData = {
-        "username": data["username"],
-        "email": data["email"],
-        "accessToken": data["accessToken"]
-      };
+      final data = response.data;
+
+      final UserModel requiredData =
+          UserModel.fromJson(data);
 
       return requiredData;
     } on DioException catch (err) {
