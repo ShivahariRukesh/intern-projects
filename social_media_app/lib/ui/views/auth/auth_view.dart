@@ -84,10 +84,14 @@ class AuthView extends StackedView<AuthViewModel>
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: viewModel.isBusy
-                          ? null
-                          : () => viewModel.loginUser(),
+                      onPressed: () =>
+                          handleLogin(viewModel),
                       style: ElevatedButton.styleFrom(
+                        disabledBackgroundColor: viewModel
+                                .hasUsernameValidationMessage
+                            ? const Color.fromARGB(
+                                255, 8, 38, 62)
+                            : Colors.blue,
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(12),
@@ -128,6 +132,13 @@ class AuthView extends StackedView<AuthViewModel>
         ),
       ),
     );
+  }
+
+  void handleLogin(AuthViewModel viewModel) {
+    if (!viewModel.isBusy &&
+        !viewModel.hasUsernameValidationMessage) {
+      viewModel.loginUser();
+    }
   }
 
   @override
