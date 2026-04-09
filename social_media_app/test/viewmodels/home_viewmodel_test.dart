@@ -12,16 +12,14 @@ void main() {
     tearDown(() => locator.reset());
 
     group('incrementCounter -', () {
-      test('When called once should return  Counter is: 1',
-          () {});
+      test('When called once should return  Counter is: 1', () {});
     });
 
     group('showBottomSheet -', () {
       test(
         'When called, should show custom bottom sheet using notice variant',
         () {
-          final bottomSheetService =
-              getAndRegisterBottomSheetService();
+          final bottomSheetService = getAndRegisterBottomSheetService();
 
           verify(
             bottomSheetService.showCustomSheet(
