@@ -6,6 +6,7 @@ import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/post_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
+import 'package:social_media_app/utils/result_record.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -23,14 +24,13 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> getAllPost() async {
     setBusy(true);
-    try {
-      final result = await _postService.fetchAllPosts();
-      postList = result;
-      print("Get all posts $result");
-
+    final result = await _postService.fetchAllPosts();
+    if (result.success != null) {
+      postList = result.success!.data;
       rebuildUi();
-    } catch (err) {
-      setError(err);
+    } else {
+      setError(result.error?.message ??
+          "Unexpected Error Occurred");
     }
     setBusy(false);
   }
@@ -42,9 +42,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> handleLogout() async {
     await runBusyFuture(_authService.logoutUser());
-
     await _sharedPreferenceService.logout();
-
     _navigationPreferenceService.replaceWithAuthView();
   }
 
@@ -60,11 +58,16 @@ class HomeViewModel extends BaseViewModel {
       if (userId == null) {
         throw Exception('Cannot access logged in user');
       }
-      final UserModel user = await _authService
+      final Result<UserModel> result = await _authService
           .fetchLoggedInUser(userId: userId);
-      loggedInUser = user;
 
-      rebuildUi();
+      if (result.success != null) {
+        loggedInUser = result.success!.data;
+        rebuildUi();
+      } else {
+        setError(result.error?.message ??
+            "Unexpected Error Occurred");
+      }
     } catch (err) {
       setError(err);
     }

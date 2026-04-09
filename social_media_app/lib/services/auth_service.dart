@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:social_media_app/models/user_model.dart';
 import 'package:social_media_app/utils/error_handler.dart';
 import 'package:social_media_app/utils/result_record.dart';
@@ -20,21 +21,33 @@ class AuthService {
               "password": ele["password"]
             })
         .toList();
-
-    print("The first user info is : ${requiredData[0]}");
   }
 
-  Future<UserModel> fetchLoggedInUser(
+  Future<Result<UserModel>> fetchLoggedInUser(
       {required int userId}) async {
     try {
       final response = await dio.get('/$userId');
-
       final Map<String, dynamic> data = response.data;
 
-      return UserModel.fromJson(data);
-    } on DioException catch (err) {
-      print("The err is $err");
-      rethrow;
+      return (
+        success:
+            SuccessResponse(data: UserModel.fromJson(data)),
+        error: null
+      );
+    } on DioException catch (e) {
+      debugPrint("Error when fetching logged in user : $e");
+      return (
+        success: null,
+        error: ErrorResponse(message: handleDioError(e))
+      );
+    } catch (e) {
+      debugPrint("Error when fetching logged in user : $e");
+      return (
+        success: null,
+        error: ErrorResponse(
+            message:
+                'Unexpected error occurred when fetching logged in user')
+      );
     }
   }
 
