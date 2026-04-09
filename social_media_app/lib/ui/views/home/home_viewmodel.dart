@@ -2,6 +2,7 @@ import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
 import 'package:social_media_app/models/post_model.dart';
 import 'package:social_media_app/models/user_model.dart';
+import 'package:social_media_app/repositories/auth_repository.dart';
 import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/post_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
@@ -18,6 +19,7 @@ class HomeViewModel extends BaseViewModel {
       locator<NavigationService>();
   final _authService = locator<AuthService>();
   final _postService = locator<PostService>();
+  final _authRepository = AuthRepository();
 
   UserModel? loggedInUser;
   List<PostModel> postList = [];
@@ -41,9 +43,15 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> handleLogout() async {
-    await runBusyFuture(_authService.logoutUser());
-    await _sharedPreferenceService.logout();
-    _navigationPreferenceService.replaceWithAuthView();
+    final result =
+        await runBusyFuture(_authRepository.logoutUser());
+    if (result.success != null) {
+      _navigationPreferenceService.replaceWithAuthView();
+    } else {
+      setError(result.error?.message ??
+          'Unexpected Error Occurred When Logging Out');
+    }
+    setBusy(false);
   }
 
   Future<void> getAllUsers() async {

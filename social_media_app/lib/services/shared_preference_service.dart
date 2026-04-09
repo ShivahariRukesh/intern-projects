@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_app/utils/result_record.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-class SharedPreferenceService implements InitializableDependency {
+class SharedPreferenceService
+    implements InitializableDependency {
   late SharedPreferences _sharedPref;
 
   bool _isUserLoggedIn = false;
@@ -14,27 +16,55 @@ class SharedPreferenceService implements InitializableDependency {
   Future<void> init() async {
     _sharedPref = await SharedPreferences.getInstance();
 
-    _isUserLoggedIn = _sharedPref.getBool('isUserLoggedIn') ?? false;
+    _isUserLoggedIn =
+        _sharedPref.getBool('isUserLoggedIn') ?? false;
 
     if (_sharedPref.containsKey('isLightThemeMode')) {
-      isLightThemeMode = _sharedPref.getBool('isLightThemeMode')!;
+      isLightThemeMode =
+          _sharedPref.getBool('isLightThemeMode')!;
     } else {
       isLightThemeMode = true;
       await _sharedPref.setBool('isLightThemeMode', true);
     }
   }
 
-  Future<void> login({required int userId}) async {
-    await _sharedPref.setBool('isUserLoggedIn', true);
-    await _sharedPref.setInt('userId', userId);
-
-    _isUserLoggedIn = true;
+  Future<Result<bool>> login({required int userId}) async {
+    try {
+      await _sharedPref.setBool('isUserLoggedIn', true);
+      await _sharedPref.setInt('userId', userId);
+      _isUserLoggedIn = true;
+      return (
+        success: SuccessResponse(data: true),
+        error: null
+      );
+    } catch (e) {
+      debugPrint(
+          "Unexpected error occurred when storing values during user login :$e");
+      return (
+        success: null,
+        error: ErrorResponse(
+            message: "Cannot store logged in credentials")
+      );
+    }
   }
 
-  Future<void> logout() async {
-    await _sharedPref.setBool('isUserLoggedIn', false);
-    await _sharedPref.remove('userId');
-    _isUserLoggedIn = false;
+  Future<Result<bool>> logout() async {
+    try {
+      await _sharedPref.setBool('isUserLoggedIn', false);
+      await _sharedPref.remove('userId');
+      _isUserLoggedIn = false;
+
+      return (
+        success: SuccessResponse(data: true),
+        error: null
+      );
+    } catch (e) {
+      return (
+        error: ErrorResponse(
+            message: "Cannot remove logged in credentials"),
+        success: null
+      );
+    }
   }
 
   int? extractUserId() {
@@ -43,6 +73,7 @@ class SharedPreferenceService implements InitializableDependency {
 
   Future<void> toggleThemeMode() async {
     isLightThemeMode = !isLightThemeMode;
-    await _sharedPref.setBool('isLightThemeMode', isLightThemeMode);
+    await _sharedPref.setBool(
+        'isLightThemeMode', isLightThemeMode);
   }
 }
