@@ -13,6 +13,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/auth_service.dart';
+import '../services/post_service.dart';
 import '../services/shared_preference_service.dart';
 import '../services/theme_service.dart';
 
@@ -33,4 +34,6 @@ Future<void> setupLocator(
   final sharedPreferenceService = SharedPreferenceService();
   await sharedPreferenceService.init();
   locator.registerSingleton(sharedPreferenceService);
+
+  locator.registerLazySingleton(() => PostService());
 }
