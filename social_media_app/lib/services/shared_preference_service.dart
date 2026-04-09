@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-class SharedPreferenceService
-    implements InitializableDependency {
+class SharedPreferenceService implements InitializableDependency {
   late SharedPreferences _sharedPref;
 
   bool _isUserLoggedIn = false;
@@ -15,12 +14,10 @@ class SharedPreferenceService
   Future<void> init() async {
     _sharedPref = await SharedPreferences.getInstance();
 
-    _isUserLoggedIn =
-        _sharedPref.getBool('isUserLoggedIn') ?? false;
+    _isUserLoggedIn = _sharedPref.getBool('isUserLoggedIn') ?? false;
 
     if (_sharedPref.containsKey('isLightThemeMode')) {
-      isLightThemeMode =
-          _sharedPref.getBool('isLightThemeMode')!;
+      isLightThemeMode = _sharedPref.getBool('isLightThemeMode')!;
     } else {
       isLightThemeMode = true;
       await _sharedPref.setBool('isLightThemeMode', true);
@@ -46,7 +43,6 @@ class SharedPreferenceService
 
   Future<void> toggleThemeMode() async {
     isLightThemeMode = !isLightThemeMode;
-    await _sharedPref.setBool(
-        'isLightThemeMode', isLightThemeMode);
+    await _sharedPref.setBool('isLightThemeMode', isLightThemeMode);
   }
 }
