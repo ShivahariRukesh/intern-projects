@@ -14,16 +14,13 @@ class PostModel {
       required this.likes,
       required this.views});
 
-  factory PostModel.fromJson(
-      Map<String, dynamic> filteredJsonData) {
+  factory PostModel.fromJson(Map<String, dynamic> filteredJsonData) {
     return PostModel(
         id: filteredJsonData["id"] as int,
         userId: filteredJsonData["userId"] as int,
         title: filteredJsonData["title"] as String,
-        imageUrl:
-            filteredJsonData["imageUrl"] as String? ?? '',
-        likes:
-            filteredJsonData["reactions"]["likes"] as int,
+        imageUrl: filteredJsonData["imageUrl"] as String? ?? '',
+        likes: filteredJsonData["reactions"]["likes"] as int,
         views: filteredJsonData["views"] as int);
   }
 }

@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:social_media_app/models/post_model.dart';
+import 'package:social_media_app/ui/views/home/widgets/post_card_widget.dart';
+
+class PostFeedWidget extends StatelessWidget {
+  final List<PostModel> posts;
+
+  const PostFeedWidget({super.key, required this.posts});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: ListView.builder(
+            itemCount: 5 ?? posts.length,
+            itemBuilder: (context, index) =>
+                PostCardWidget(post: posts[index])));
+  }
+}
