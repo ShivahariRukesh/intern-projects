@@ -7,6 +7,8 @@ environment:
   sdk: '>=3.0.3 <4.0.0'
 
 dependencies:
+  cached_network_image: ^3.4.1
+  custom_refresh_indicator: ^4.0.1
   dio: ^5.9.2
   flutter:
     sdk: flutter
