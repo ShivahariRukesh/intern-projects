@@ -9,6 +9,7 @@ import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/post_service.dart';
+import 'package:social_media_app/services/image_cache_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -26,6 +27,7 @@ import 'package:social_media_app/services/post_service.dart';
     LazySingleton(classType: ThemeService),
     InitializableSingleton(classType: SharedPreferenceService),
     LazySingleton(classType: PostService),
+    LazySingleton(classType: ImageCacheService),
 // @stacked-service
   ],
   bottomsheets: [

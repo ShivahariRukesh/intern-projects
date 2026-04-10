@@ -25,9 +25,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           onGenerateRoute: StackedRouter().onGenerateRoute,
           navigatorKey: StackedService.navigatorKey,
-          navigatorObservers: [
-            StackedService.routeObserver
-          ],
+          navigatorObservers: [StackedService.routeObserver],
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: model.themeMode,
@@ -40,20 +38,17 @@ class MyApp extends StatelessWidget {
 
 class MyAppViewModel extends ReactiveViewModel {
   final _themeService = locator<ThemeService>();
-  final _sharedPreferenceService =
-      locator<SharedPreferenceService>();
+  final _sharedPreferenceService = locator<SharedPreferenceService>();
   ThemeMode get themeMode => _themeService.themeMode;
 
   @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_themeService];
+  List<ListenableServiceMixin> get listenableServices => [_themeService];
 
   Future runStartupLogic() async {
     // This is where you can make decisions on where your app should navigate when
     // you have custom startup logic
-    _themeService.initTheme(() =>
-        _sharedPreferenceService.isLightThemeMode
-            ? ThemeMode.light
-            : ThemeMode.dark);
+    _themeService.initTheme(() => _sharedPreferenceService.isLightThemeMode
+        ? ThemeMode.light
+        : ThemeMode.dark);
   }
 }
