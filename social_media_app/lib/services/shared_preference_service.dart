@@ -3,8 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_app/utils/result_record.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-class SharedPreferenceService
-    implements InitializableDependency {
+class SharedPreferenceService implements InitializableDependency {
   late SharedPreferences _sharedPref;
 
   bool _isUserLoggedIn = false;
@@ -16,12 +15,10 @@ class SharedPreferenceService
   Future<void> init() async {
     _sharedPref = await SharedPreferences.getInstance();
 
-    _isUserLoggedIn =
-        _sharedPref.getBool('isUserLoggedIn') ?? false;
+    _isUserLoggedIn = _sharedPref.getBool('isUserLoggedIn') ?? false;
 
     if (_sharedPref.containsKey('isLightThemeMode')) {
-      isLightThemeMode =
-          _sharedPref.getBool('isLightThemeMode')!;
+      isLightThemeMode = _sharedPref.getBool('isLightThemeMode')!;
     } else {
       isLightThemeMode = true;
       await _sharedPref.setBool('isLightThemeMode', true);
@@ -33,17 +30,13 @@ class SharedPreferenceService
       await _sharedPref.setBool('isUserLoggedIn', true);
       await _sharedPref.setInt('userId', userId);
       _isUserLoggedIn = true;
-      return (
-        success: SuccessResponse(data: true),
-        error: null
-      );
+      return (success: SuccessResponse(data: true), error: null);
     } catch (e) {
       debugPrint(
           "Unexpected error occurred when storing values during user login :$e");
       return (
         success: null,
-        error: ErrorResponse(
-            message: "Cannot store logged in credentials")
+        error: ErrorResponse(message: "Cannot store logged in credentials")
       );
     }
   }
@@ -54,14 +47,10 @@ class SharedPreferenceService
       await _sharedPref.remove('userId');
       _isUserLoggedIn = false;
 
-      return (
-        success: SuccessResponse(data: true),
-        error: null
-      );
+      return (success: SuccessResponse(data: true), error: null);
     } catch (e) {
       return (
-        error: ErrorResponse(
-            message: "Cannot remove logged in credentials"),
+        error: ErrorResponse(message: "Cannot remove logged in credentials"),
         success: null
       );
     }
@@ -73,7 +62,6 @@ class SharedPreferenceService
 
   Future<void> toggleThemeMode() async {
     isLightThemeMode = !isLightThemeMode;
-    await _sharedPref.setBool(
-        'isLightThemeMode', isLightThemeMode);
+    await _sharedPref.setBool('isLightThemeMode', isLightThemeMode);
   }
 }

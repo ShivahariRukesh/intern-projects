@@ -10,14 +10,12 @@ import 'package:stacked_services/stacked_services.dart';
 class StartupViewModel extends ReactiveViewModel {
   final _navigationService = locator<NavigationService>();
   final _themeService = locator<ThemeService>();
-  final _sharedPreferenceService =
-      locator<SharedPreferenceService>();
+  final _sharedPreferenceService = locator<SharedPreferenceService>();
 
   ThemeMode get themeMode => _themeService.themeMode;
 
   @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_themeService];
+  List<ListenableServiceMixin> get listenableServices => [_themeService];
   // Place anything here that needs to happen before we get into the application
   Future runStartupLogic() async {
     // This is where you can make decisions on where your app should navigate when

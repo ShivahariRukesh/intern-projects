@@ -4,26 +4,43 @@ import 'package:social_media_app/utils/error_handler.dart';
 import 'package:social_media_app/utils/result_record.dart';
 
 class PostService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'https://dummyjson.com/posts'));
+  final Dio _dio = Dio(
+      BaseOptions(baseUrl: 'https://dummyjson.com/posts'));
 
   Future<Result<List<PostModel>>> fetchAllPosts() async {
+    String imageUrl;
+
     try {
-      final response = await _dio.get('/');
+      final response = await _dio.get('');
 
       final List data = response.data["posts"];
-      final List<PostModel> posts =
-          data.map((post) => PostModel.fromJson(post)).toList();
+      final List<PostModel> posts = [];
+      for (int i = 0; i < data.length; i++) {
+        imageUrl =
+            'https://picsum.photos/seed/${i + 1}/800/800';
 
-      return (success: SuccessResponse(data: posts), error: null);
+        posts.add(PostModel.fromJson(
+            {...data[i], "imageUrl": imageUrl}));
+      }
+
+      return (
+        success: SuccessResponse(data: posts),
+        error: null
+      );
     } on DioException catch (e) {
-      return (success: null, error: ErrorResponse(message: handleDioError(e)));
+      return (
+        success: null,
+        error: ErrorResponse(message: handleDioError(e))
+      );
     } catch (e) {
-      print("Error in post service while fetching all posts $e ");
+      print(
+          "Error in post service while fetching all posts $e ");
 
       return (
         success: null,
         error: ErrorResponse(
-            message: "Unexpected error occurred while fetching posts")
+            message:
+                "Unexpected error occurred while fetching posts")
       );
     }
   }

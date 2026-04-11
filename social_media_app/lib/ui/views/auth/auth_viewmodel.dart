@@ -7,25 +7,29 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AuthViewModel extends FormViewModel {
   final AuthRepository _authRepository = AuthRepository();
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService =
+      locator<NavigationService>();
 
   String get usernameField => usernameValue ?? '';
   String get passwordField => passwordValue ?? '';
 
   Future<void> loginUser() async {
-    final result = await runBusyFuture(_authRepository.loginUser(
-        username: usernameField, password: passwordField));
+    final result = await runBusyFuture(
+        _authRepository.loginUser(
+            username: usernameField,
+            password: passwordField));
 
     if (result.success != null) {
       _navigationService.replaceWithHomeView();
     } else {
-      setError(result.error?.message ?? "Something went wrong while logging");
+      setError(result.error?.message ??
+          "Something went wrong while logging");
     }
   }
 
-  @override
-  void onFutureError(error, Object? key) {
-    super.onFutureError(error, key);
-    print("Error future is $error");
-  }
+  // @override
+  // void onFutureError(error, Object? key) {
+  //   super.onFutureError(error, key);
+  //   print("Error future is $error");
+  // }
 }

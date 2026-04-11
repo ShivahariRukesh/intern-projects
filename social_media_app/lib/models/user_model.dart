@@ -10,11 +10,17 @@ class UserModel {
       required this.email,
       required this.accessToken});
 
-  factory UserModel.fromJson(Map<String, dynamic> jsonData) {
+  factory UserModel.fromJson(
+      Map<String, dynamic> jsonData) {
     return UserModel(
         id: jsonData["id"],
         username: jsonData["username"],
         email: jsonData["email"],
         accessToken: jsonData["accessToken"] ?? '');
+  }
+
+  @override
+  String toString() {
+    return 'User(id: $id, username: $username, email: $email)';
   }
 }

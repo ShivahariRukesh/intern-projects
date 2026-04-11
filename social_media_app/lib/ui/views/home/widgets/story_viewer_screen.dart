@@ -11,12 +11,10 @@ class StoryViewerScreen extends StatefulWidget {
   });
 
   @override
-  State<StoryViewerScreen> createState() =>
-      _StoryViewerScreenState();
+  State<StoryViewerScreen> createState() => _StoryViewerScreenState();
 }
 
-class _StoryViewerScreenState
-    extends State<StoryViewerScreen> {
+class _StoryViewerScreenState extends State<StoryViewerScreen> {
   late PageController _pageController;
   late int currentIndex;
 
@@ -24,8 +22,7 @@ class _StoryViewerScreenState
   void initState() {
     super.initState();
     currentIndex = widget.initialIndex;
-    _pageController =
-        PageController(initialPage: currentIndex);
+    _pageController = PageController(initialPage: currentIndex);
   }
 
   void nextStory() {
@@ -91,8 +88,7 @@ class _StoryViewerScreenState
                   widget.stories.length,
                   (index) => Expanded(
                     child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 2),
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
                       height: 3,
                       color: index <= currentIndex
                           ? Colors.white
@@ -108,8 +104,7 @@ class _StoryViewerScreenState
               top: 40,
               right: 16,
               child: IconButton(
-                icon: const Icon(Icons.close,
-                    color: Colors.white),
+                icon: const Icon(Icons.close, color: Colors.white),
                 onPressed: () => Navigator.pop(context),
               ),
             ),

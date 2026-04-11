@@ -19,13 +19,25 @@ class PostFeedWidget extends StatelessWidget {
           child: CircularProgressIndicator());
     }
 
-    return Column(
-      children: posts.map((post) {
-        return PostCardWidget(
-          post: post,
-          username: usernameMap[post.userId] ?? 'Anonymous',
-        );
-      }).toList(),
+    // return Column(
+    //   children: posts.map((post) {
+    //     return PostCardWidget(
+    //       post: post,
+    //       username: usernameMap[post.userId] ?? 'Anonymous',
+    //     );
+    //   }).toList(),
+    // );
+
+    return SizedBox(
+      height: 900,
+      child: ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (context, index) => PostCardWidget(
+                post: posts[index],
+                username:
+                    usernameMap[posts[index].userId] ??
+                        'Anonymous',
+              )),
     );
   }
 }

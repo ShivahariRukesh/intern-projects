@@ -10,17 +10,14 @@ class Story {
   Story({required this.imageUrl});
 }
 
-class StoryListWidget
-    extends ViewModelWidget<HomeViewModel> {
+class StoryListWidget extends ViewModelWidget<HomeViewModel> {
   const StoryListWidget({super.key});
 
   @override
-  Widget build(
-      BuildContext context, HomeViewModel viewModel) {
-    final postList =
-        handleShuffleList<PostModel>(viewModel.postList);
+  Widget build(BuildContext context, HomeViewModel viewModel) {
+    final storyList = viewModel.storyList;
     final List storyImages = List.generate(
-      postList.length,
+      storyList.length,
       (index) => [
         "https://picsum.photos/seed/${index + 100}/200/200",
         "https://picsum.photos/seed/${index + 100}/800/800"
@@ -31,7 +28,7 @@ class StoryListWidget
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: postList.length,
+        itemCount: storyList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
@@ -53,26 +50,16 @@ class StoryListWidget
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                            colors: [
-                              Colors.red,
-                              Colors.blue,
-                              Colors.yellow
-                            ]),
-                        borderRadius:
-                            BorderRadius.circular(100)),
+                            colors: [Colors.red, Colors.blue, Colors.yellow]),
+                        borderRadius: BorderRadius.circular(100)),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          storyImages[index][0]),
+                      backgroundImage: NetworkImage(storyImages[index][0]),
                       radius: 25,
                     ),
                   ),
                   Text(
-                    viewModel.usernameMap[
-                            postList[index].userId] ??
-                        '...',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall,
+                    viewModel.usernameMap[storyList[index].userId] ?? '...',
+                    style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               ),

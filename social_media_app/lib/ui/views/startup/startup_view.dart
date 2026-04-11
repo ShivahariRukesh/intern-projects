@@ -19,14 +19,12 @@ class StartupView extends StackedView<StartupViewModel> {
         children: [
           Text(
             'STACKED',
-            style: TextStyle(
-                fontSize: 40, fontWeight: FontWeight.w900),
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Loading ...',
-                  style: TextStyle(fontSize: 16)),
+              Text('Loading ...', style: TextStyle(fontSize: 16)),
               horizontalSpaceSmall,
               SizedBox(
                 width: 16,
@@ -44,11 +42,9 @@ class StartupView extends StackedView<StartupViewModel> {
   }
 
   @override
-  StartupViewModel viewModelBuilder(BuildContext context) =>
-      StartupViewModel();
+  StartupViewModel viewModelBuilder(BuildContext context) => StartupViewModel();
 
   @override
-  void onViewModelReady(StartupViewModel viewModel) =>
-      SchedulerBinding.instance.addPostFrameCallback(
-          (timeStamp) => viewModel.runStartupLogic());
+  void onViewModelReady(StartupViewModel viewModel) => SchedulerBinding.instance
+      .addPostFrameCallback((timeStamp) => viewModel.runStartupLogic());
 }

@@ -20,15 +20,13 @@ String handleDioError(DioException e) {
       return 'Request was cancelled.';
 
     default:
-      return e.message ??
-          'An unknown network error occurred.';
+      return e.message ?? 'An unknown network error occurred.';
   }
 }
 
 String _handleStatusCode(int? statusCode, dynamic data) {
-  final apiMessage = data is Map
-      ? (data['status']?['error_message'] as String?)
-      : null;
+  final apiMessage =
+      data is Map ? (data['status']?['error_message'] as String?) : null;
   debugPrint('Badresponse $statusCode');
 
   switch (statusCode) {
@@ -50,15 +48,12 @@ String _handleStatusCode(int? statusCode, dynamic data) {
       return apiMessage ?? 'Gateway timed out (504)';
 
     default:
-      if (statusCode != null &&
-          statusCode >= 400 &&
-          statusCode < 500) {
+      if (statusCode != null && statusCode >= 400 && statusCode < 500) {
         return apiMessage ?? 'Client error ($statusCode).';
       }
       if (statusCode != null && statusCode >= 500) {
         return apiMessage ?? 'Server error ($statusCode).';
       }
-      return apiMessage ??
-          'Unexpected response ($statusCode).';
+      return apiMessage ?? 'Unexpected response ($statusCode).';
   }
 }

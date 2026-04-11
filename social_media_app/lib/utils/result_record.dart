@@ -1,7 +1,4 @@
-typedef Result<T> = ({
-  SuccessResponse<T>? success,
-  ErrorResponse? error
-});
+typedef Result<T> = ({SuccessResponse<T>? success, ErrorResponse? error});
 
 class SuccessResponse<T> {
   final T data;

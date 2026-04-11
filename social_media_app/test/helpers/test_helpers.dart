@@ -6,6 +6,7 @@ import 'package:social_media_app/services/auth_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/post_service.dart';
+import 'package:social_media_app/services/image_cache_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -23,6 +24,7 @@ import 'test_helpers.mocks.dart';
     MockSpec<SharedPreferenceService>(
         onMissingStub: OnMissingStub.returnDefault),
     MockSpec<PostService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<ImageCacheService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -35,6 +37,7 @@ void registerServices() {
   getAndRegisterSharedPreferenceService();
   getAndRegisterSharedPreferenceService();
   getAndRegisterPostService();
+  getAndRegisterImageCacheService();
 // @stacked-mock-register
 }
 
@@ -117,6 +120,13 @@ MockPostService getAndRegisterPostService() {
   _removeRegistrationIfExists<PostService>();
   final service = MockPostService();
   locator.registerSingleton<PostService>(service);
+  return service;
+}
+
+MockImageCacheService getAndRegisterImageCacheService() {
+  _removeRegistrationIfExists<ImageCacheService>();
+  final service = MockImageCacheService();
+  locator.registerSingleton<ImageCacheService>(service);
   return service;
 }
 // @stacked-mock-create

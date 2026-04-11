@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/models/post_model.dart';
+import 'package:social_media_app/ui/views/home/home_viewmodel.dart';
+import 'package:social_media_app/ui/views/home/post_view_model.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PostCardWidget extends StatelessWidget {
   final PostModel post;
+  final String username;
   final _bottomSheet = locator<BottomSheetService>();
-  PostCardWidget({super.key, required this.post});
+  PostCardWidget(
+      {super.key,
+      required this.post,
+      required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -29,41 +36,38 @@ class PostCardWidget extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
           horizontal: 12, vertical: 10),
       child: Row(
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 18,
             backgroundImage: NetworkImage(
-              'https://picsum.photos/seed/picsum/200/900',
+              'https://picsum.photos/seed/avatar_4/200/200',
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              'username',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
-              ),
+              child: Text(
+            username,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
             ),
-          ),
-          Icon(Icons.more_horiz, size: 22),
+          )),
+          const Icon(Icons.more_horiz, size: 22),
         ],
       ),
     );
   }
 
   Widget _buildImage() {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Image.network(
-        'https://picsum.photos/seed/picsum/200/300',
-        fit: BoxFit.cover,
-      ),
-    );
+    return ViewModelBuilder<PostViewModel>.reactive(
+        viewModelBuilder: () => PostViewModel(),
+        builder: (context, model, child) {
+          return model.getPostImage(post.imageUrl!);
+        });
   }
 
   Widget _buildActions() {
@@ -123,9 +127,10 @@ class PostCardWidget extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           children: [
-            const TextSpan(
-              text: 'username\t\t',
-              style: TextStyle(fontWeight: FontWeight.w700),
+            TextSpan(
+              text: '$username\t\t',
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700),
             ),
             TextSpan(text: post.title),
           ],

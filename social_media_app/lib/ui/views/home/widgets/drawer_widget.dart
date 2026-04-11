@@ -11,10 +11,8 @@ class DrawerWidget extends StatelessWidget {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(
-                loggedInUser?.username ?? 'Guest User'),
-            accountEmail: Text(
-                loggedInUser?.email ?? 'guest@email.com'),
+            accountName: Text(loggedInUser?.username ?? 'Guest User'),
+            accountEmail: Text(loggedInUser?.email ?? 'guest@email.com'),
             currentAccountPicture: const CircleAvatar(
                 // backgroundImage: NetworkImage(
                 //     viewModel.userAvatarUrl ??

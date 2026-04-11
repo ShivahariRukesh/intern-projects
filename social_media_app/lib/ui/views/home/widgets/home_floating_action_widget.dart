@@ -8,8 +8,7 @@ class HomeFloatingActionWidget extends StatefulWidget {
       _HomeFloatingActionWidgetState();
 }
 
-class _HomeFloatingActionWidgetState
-    extends State<HomeFloatingActionWidget>
+class _HomeFloatingActionWidgetState extends State<HomeFloatingActionWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _expandAnim;
@@ -30,11 +29,10 @@ class _HomeFloatingActionWidgetState
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
-    _expandAnim = CurvedAnimation(
-        parent: _controller, curve: Curves.easeOutBack);
+    _expandAnim =
+        CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
     _rotateAnim = Tween<double>(begin: 0, end: 0.125)
-        .animate(CurvedAnimation(
-            parent: _controller, curve: Curves.easeOut));
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -68,37 +66,29 @@ class _HomeFloatingActionWidgetState
                 animation: _expandAnim,
                 builder: (_, __) {
                   final delayedValue =
-                      ((_expandAnim.value - delay) /
-                              (1 - delay))
+                      ((_expandAnim.value - delay) / (1 - delay))
                           .clamp(0.0, 1.0);
                   return Opacity(
                     opacity: delayedValue,
                     child: Transform.translate(
-                      offset: Offset(
-                          0, 20 * (1 - delayedValue)),
+                      offset: Offset(0, 20 * (1 - delayedValue)),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 12),
+                        padding: const EdgeInsets.only(bottom: 12),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              padding: const EdgeInsets
-                                  .symmetric(
-                                  horizontal: 12,
-                                  vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
                                 color: Colors.black87,
-                                borderRadius:
-                                    BorderRadius.circular(
-                                        8),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 action.label,
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontWeight:
-                                        FontWeight.w600,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: 13),
                               ),
                             ),
@@ -108,14 +98,12 @@ class _HomeFloatingActionWidgetState
                               shape: const CircleBorder(),
                               color: Colors.white,
                               child: InkWell(
-                                customBorder:
-                                    const CircleBorder(),
+                                customBorder: const CircleBorder(),
                                 onTap: _toggle,
                                 child: SizedBox(
                                   width: 48,
                                   height: 48,
-                                  child: Icon(action.icon,
-                                      size: 22),
+                                  child: Icon(action.icon, size: 22),
                                 ),
                               ),
                             ),
@@ -134,8 +122,7 @@ class _HomeFloatingActionWidgetState
           child: FloatingActionButton(
             onPressed: _toggle,
             backgroundColor: const Color(0xFFE91E8C),
-            child: const Icon(Icons.add,
-                color: Colors.white, size: 28),
+            child: const Icon(Icons.add, color: Colors.white, size: 28),
           ),
         ),
       ],
@@ -146,6 +133,5 @@ class _HomeFloatingActionWidgetState
 class _FabAction {
   final IconData icon;
   final String label;
-  const _FabAction(
-      {required this.icon, required this.label});
+  const _FabAction({required this.icon, required this.label});
 }

@@ -8,6 +8,7 @@ import 'package:social_media_app/services/post_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/utils/result_record.dart';
+import 'package:social_media_app/utils/shuffle_list.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -23,13 +24,16 @@ class HomeViewModel extends BaseViewModel {
 
   UserModel? loggedInUser;
   List<PostModel> postList = [];
+  List<PostModel> storyList = [];
+
+  Map<int, String> usernameMap = {};
 
   Future<void> getAllPost() async {
     setBusy(true);
     final result = await _postService.fetchAllPosts();
     if (result.success != null) {
       postList = result.success!.data;
-      rebuildUi();
+      storyList = handleShuffleList<PostModel>(postList);
     } else {
       setError(result.error?.message ??
           "Unexpected Error Occurred");
@@ -79,6 +83,22 @@ class HomeViewModel extends BaseViewModel {
     } catch (err) {
       setError(err);
     }
+    setBusy(false);
+  }
+
+  Future<void> getUserById() async {
+    setBusy(true);
+
+    final result =
+        await _authRepository.getUsernameFromPostId();
+
+    if (result.success != null) {
+      usernameMap = result.success!.data;
+    } else {
+      setError(result.error?.message ??
+          "Unexpected Error Occurred When Fetching User");
+    }
+
     setBusy(false);
   }
 }
