@@ -62,20 +62,32 @@ class AuthView extends StackedView<AuthViewModel>
                     ),
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      errorText: viewModel
-                          .passwordValidationMessage,
-                      prefixIcon:
-                          const Icon(Icons.lock_outline),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText:
+                              viewModel.isPasswordObscured,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            errorText: viewModel
+                                .passwordValidationMessage,
+                            prefixIcon: const Icon(
+                                Icons.lock_outline),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                          onPressed: () => viewModel
+                              .toggleObscurePassword(),
+                          icon: const Icon(
+                              Icons.remove_red_eye))
+                    ],
                   ),
                   const SizedBox(height: 30),
                   SizedBox(

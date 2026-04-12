@@ -13,6 +13,7 @@ class AuthViewModel extends FormViewModel {
   String get usernameField => usernameValue ?? '';
   String get passwordField => passwordValue ?? '';
 
+  bool isPasswordObscured = true;
   Future<void> loginUser() async {
     final result = await runBusyFuture(
         _authRepository.loginUser(
@@ -27,9 +28,8 @@ class AuthViewModel extends FormViewModel {
     }
   }
 
-  // @override
-  // void onFutureError(error, Object? key) {
-  //   super.onFutureError(error, key);
-  //   print("Error future is $error");
-  // }
+  void toggleObscurePassword() {
+    isPasswordObscured = !isPasswordObscured;
+    rebuildUi();
+  }
 }
