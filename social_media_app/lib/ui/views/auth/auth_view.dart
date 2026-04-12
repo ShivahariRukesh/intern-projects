@@ -52,8 +52,7 @@ class AuthView extends StackedView<AuthViewModel>
                     decoration: InputDecoration(
                       labelText: "Username",
                       errorText: viewModel
-                              .usernameValidationMessage ??
-                          "",
+                          .usernameValidationMessage,
                       prefixIcon:
                           const Icon(Icons.person_outline),
                       border: OutlineInputBorder(
@@ -69,8 +68,7 @@ class AuthView extends StackedView<AuthViewModel>
                     decoration: InputDecoration(
                       labelText: "Password",
                       errorText: viewModel
-                              .passwordValidationMessage ??
-                          "",
+                          .passwordValidationMessage,
                       prefixIcon:
                           const Icon(Icons.lock_outline),
                       border: OutlineInputBorder(
