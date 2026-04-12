@@ -70,6 +70,15 @@ class AuthView extends StackedView<AuthViewModel>
                           obscureText:
                               viewModel.isPasswordObscured,
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () => viewModel
+                                    .toggleObscurePassword(),
+                                icon: viewModel
+                                        .isPasswordObscured
+                                    ? const Icon(Icons
+                                        .visibility_off_outlined)
+                                    : const Icon(Icons
+                                        .visibility_outlined)),
                             labelText: "Password",
                             errorText: viewModel
                                 .passwordValidationMessage,
@@ -82,11 +91,6 @@ class AuthView extends StackedView<AuthViewModel>
                           ),
                         ),
                       ),
-                      IconButton(
-                          onPressed: () => viewModel
-                              .toggleObscurePassword(),
-                          icon: const Icon(
-                              Icons.remove_red_eye))
                     ],
                   ),
                   const SizedBox(height: 30),
