@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/ui/views/home/widgets/drawer_widget.dart';
@@ -12,26 +11,18 @@ import 'home_viewmodel.dart';
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
   @override
-  Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
+  Widget builder(BuildContext context,
+      HomeViewModel viewModel, Widget? child) {
     return Scaffold(
-      floatingActionButton: const HomeFloatingActionWidget(),
-      drawer: DrawerWidget(loggedInUser: viewModel.loggedInUser),
-      appBar: AppBar(
-        title: const Text('The Social Me'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.sunny),
-            onPressed: () => viewModel.toggleTheme(),
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => viewModel.handleLogout(),
-          )
-        ],
-      ),
+      floatingActionButton:
+          const HomeFloatingActionWidget(),
+      drawer: DrawerWidget(
+          loggedInUser: viewModel.loggedInUser),
+      appBar: _homeAppBar(viewModel),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 25.0),
           child: Center(
             child: CustomMaterialIndicator(
               onRefresh: () async {
@@ -39,26 +30,9 @@ class HomeView extends StackedView<HomeViewModel> {
               },
               backgroundColor: Colors.white,
               indicatorBuilder: (context, controller) {
-                return Padding(
-                  padding: const EdgeInsets.all(9),
-                  child: CircularProgressIndicator(
-                    color: Colors.blue,
-                    value: controller.state.isLoading
-                        ? null
-                        : math.min(controller.value, 1),
-                  ),
-                );
+                return _homeLoadingWidget(controller);
               },
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                  const StoryListWidget(),
-                  PostFeedWidget(
-                    posts: viewModel.postList,
-                    usernameMap: viewModel.usernameMap,
-                  ),
-                ],
-              ),
+              child: _homeContentList(viewModel),
             ),
           ),
         ),
@@ -66,8 +40,51 @@ class HomeView extends StackedView<HomeViewModel> {
     );
   }
 
+  ListView _homeContentList(HomeViewModel viewModel) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        const StoryListWidget(),
+        PostFeedWidget(
+          posts: viewModel.postList,
+          usernameMap: viewModel.usernameMap,
+        ),
+      ],
+    );
+  }
+
+  Padding _homeLoadingWidget(
+      IndicatorController controller) {
+    return Padding(
+      padding: const EdgeInsets.all(9),
+      child: CircularProgressIndicator(
+        color: Colors.blue,
+        value: controller.state.isLoading
+            ? null
+            : math.min(controller.value, 1),
+      ),
+    );
+  }
+
+  AppBar _homeAppBar(HomeViewModel viewModel) {
+    return AppBar(
+      title: const Text('The Social Me'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.sunny),
+          onPressed: () => viewModel.toggleTheme(),
+        ),
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () => viewModel.handleLogout(),
+        )
+      ],
+    );
+  }
+
   @override
-  HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
+  HomeViewModel viewModelBuilder(BuildContext context) =>
+      HomeViewModel();
 
   @override
   void onViewModelReady(HomeViewModel viewModel) {
