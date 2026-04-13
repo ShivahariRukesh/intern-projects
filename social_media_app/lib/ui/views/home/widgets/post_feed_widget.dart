@@ -15,25 +15,18 @@ class PostFeedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (posts.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+          child: CircularProgressIndicator());
     }
-
-    // return Column(
-    //   children: posts.map((post) {
-    //     return PostCardWidget(
-    //       post: post,
-    //       username: usernameMap[post.userId] ?? 'Anonymous',
-    //     );
-    //   }).toList(),
-    // );
-
     return SizedBox(
       height: 900,
       child: ListView.builder(
           itemCount: posts.length,
           itemBuilder: (context, index) => PostCardWidget(
                 post: posts[index],
-                username: usernameMap[posts[index].userId] ?? 'Anonymous',
+                username:
+                    usernameMap[posts[index].userId] ??
+                        'Anonymous',
               )),
     );
   }
