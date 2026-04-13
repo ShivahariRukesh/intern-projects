@@ -15,8 +15,7 @@ class PostFeedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (posts.isEmpty) {
-      return const Center(
-          child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     // return Column(
@@ -34,9 +33,7 @@ class PostFeedWidget extends StatelessWidget {
           itemCount: posts.length,
           itemBuilder: (context, index) => PostCardWidget(
                 post: posts[index],
-                username:
-                    usernameMap[posts[index].userId] ??
-                        'Anonymous',
+                username: usernameMap[posts[index].userId] ?? 'Anonymous',
               )),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:social_media_app/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:social_media_app/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:social_media_app/ui/views/home/home_view.dart';
+import 'package:social_media_app/ui/views/home/widgets/comment_sheet.dart';
 import 'package:social_media_app/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -10,6 +11,7 @@ import 'package:social_media_app/services/theme_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/post_service.dart';
 import 'package:social_media_app/services/image_cache_service.dart';
+import 'package:social_media_app/ui/views/story_screen/story_screen_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -17,6 +19,7 @@ import 'package:social_media_app/services/image_cache_service.dart';
     MaterialRoute(page: HomeView),
     MaterialRoute(page: StartupView),
     MaterialRoute(page: AuthView),
+    MaterialRoute(page: StoryScreenView),
 // @stacked-route
   ],
   dependencies: [
@@ -32,6 +35,7 @@ import 'package:social_media_app/services/image_cache_service.dart';
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),
+    StackedBottomsheet(classType: CommentSheet)
     // @stacked-bottom-sheet
   ],
   dialogs: [
