@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/ui/common/base_text_form_field_widget.dart';
 import 'package:social_media_app/ui/views/auth/auth_view.form.dart';
 import 'package:social_media_app/utils/auth_field_validator.dart';
 import 'package:stacked/stacked.dart';
@@ -8,11 +9,14 @@ import 'auth_viewmodel.dart';
 
 @FormView(fields: [
   FormTextField(
-      name: 'username', validator: AuthFieldValidator.validateUsername),
+      name: 'username',
+      validator: AuthFieldValidator.validateUsername),
   FormTextField(
-      name: 'password', validator: AuthFieldValidator.validatePassword)
+      name: 'password',
+      validator: AuthFieldValidator.validatePassword)
 ])
-class AuthView extends StackedView<AuthViewModel> with $AuthView {
+class AuthView extends StackedView<AuthViewModel>
+    with $AuthView {
   AuthView({Key? key}) : super(key: key);
 
   @override
@@ -28,7 +32,8 @@ class AuthView extends StackedView<AuthViewModel> with $AuthView {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24),
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -36,43 +41,35 @@ class AuthView extends StackedView<AuthViewModel> with $AuthView {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
-                  Text("Welcome Back", style: theme.textTheme.titleLarge),
+                  Text("Welcome Back",
+                      style: theme.textTheme.titleLarge),
                   const SizedBox(height: 8),
                   const SizedBox(height: 30),
-                  TextFormField(
+                  BaseTextFormFieldWidget(
                     controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: "Username",
-                      errorText: viewModel.usernameValidationMessage,
-                      prefixIcon: const Icon(Icons.person_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                    label: "Username",
+                    errorText:
+                        viewModel.usernameValidationMessage,
+                    prefixIcon: Icons.person_outline,
                   ),
                   const SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
-                        child: TextFormField(
+                        child: BaseTextFormFieldWidget(
                           controller: passwordController,
-                          obscureText: viewModel.isPasswordObscured,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                                onPressed: () =>
-                                    viewModel.toggleObscurePassword(),
-                                icon: viewModel.isPasswordObscured
-                                    ? const Icon(Icons.visibility_off_outlined)
-                                    : const Icon(Icons.visibility_outlined)),
-                            labelText: "Password",
-                            errorText: viewModel.passwordValidationMessage,
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                          label: "Password",
+                          errorText: viewModel
+                              .passwordValidationMessage,
+                          prefixIcon: Icons.lock_outline,
+                          obscureText:
+                              viewModel.isPasswordObscured,
+                          showToggle: true,
+                          onToggleObscure: viewModel
+                              .toggleObscurePassword,
                         ),
                       ),
                     ],
@@ -82,21 +79,25 @@ class AuthView extends StackedView<AuthViewModel> with $AuthView {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () async => await login(viewModel),
+                      onPressed: () async =>
+                          await login(viewModel),
                       style: ElevatedButton.styleFrom(
-                        disabledBackgroundColor:
-                            viewModel.hasUsernameValidationMessage
-                                ? const Color.fromARGB(255, 8, 38, 62)
-                                : Colors.blue,
+                        disabledBackgroundColor: viewModel
+                                .hasUsernameValidationMessage
+                            ? const Color.fromARGB(
+                                255, 8, 38, 62)
+                            : Colors.blue,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius:
+                              BorderRadius.circular(12),
                         ),
                       ),
                       child: viewModel.isBusy
                           ? const SizedBox(
                               height: 22,
                               width: 22,
-                              child: CircularProgressIndicator(
+                              child:
+                                  CircularProgressIndicator(
                                 strokeWidth: 2.5,
                                 color: Colors.white,
                               ),
@@ -108,11 +109,14 @@ class AuthView extends StackedView<AuthViewModel> with $AuthView {
                   ),
                   if (viewModel.hasError)
                     Padding(
-                      padding: const EdgeInsets.only(top: 12),
+                      padding:
+                          const EdgeInsets.only(top: 12),
                       child: Center(
                         child: Text(
                           viewModel.modelError,
-                          style: TextStyle(color: theme.colorScheme.error),
+                          style: TextStyle(
+                              color:
+                                  theme.colorScheme.error),
                         ),
                       ),
                     ),
@@ -136,7 +140,8 @@ class AuthView extends StackedView<AuthViewModel> with $AuthView {
   }
 
   @override
-  AuthViewModel viewModelBuilder(BuildContext context) => AuthViewModel();
+  AuthViewModel viewModelBuilder(BuildContext context) =>
+      AuthViewModel();
 
   @override
   void onViewModelReady(AuthViewModel viewModel) {
