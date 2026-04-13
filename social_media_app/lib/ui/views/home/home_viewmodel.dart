@@ -14,8 +14,10 @@ import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
   final _themeService = locator<ThemeService>();
-  final _sharedPreferenceService = locator<SharedPreferenceService>();
-  final _navigationPreferenceService = locator<NavigationService>();
+  final _sharedPreferenceService =
+      locator<SharedPreferenceService>();
+  final _navigationPreferenceService =
+      locator<NavigationService>();
   final _authService = locator<AuthService>();
   final _postService = locator<PostService>();
   final _authRepository = AuthRepository();
@@ -23,6 +25,7 @@ class HomeViewModel extends BaseViewModel {
   UserModel? loggedInUser;
   List<PostModel> postList = [];
   List<PostModel> storyList = [];
+  List<List<String>> storyImages = [];
 
   Map<int, String> usernameMap = {};
 
@@ -32,8 +35,16 @@ class HomeViewModel extends BaseViewModel {
     if (result.success != null) {
       postList = result.success!.data;
       storyList = handleShuffleList<PostModel>(postList);
+      storyImages = List.generate(
+        storyList.length,
+        (index) => [
+          "https://picsum.photos/seed/${index + 100}/200/200",
+          "https://picsum.photos/seed/${index + 100}/800/800"
+        ],
+      );
     } else {
-      setError(result.error?.message ?? "Unexpected Error Occurred");
+      setError(result.error?.message ??
+          "Unexpected Error Occurred");
     }
     setBusy(false);
   }
@@ -44,7 +55,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> handleLogout() async {
-    final result = await runBusyFuture(_authRepository.logoutUser());
+    final result =
+        await runBusyFuture(_authRepository.logoutUser());
     if (result.success != null) {
       _navigationPreferenceService.replaceWithAuthView();
     } else {
@@ -61,18 +73,20 @@ class HomeViewModel extends BaseViewModel {
   Future<void> getLoggedInUser() async {
     try {
       setBusy(true);
-      final int? userId = _sharedPreferenceService.extractUserId();
+      final int? userId =
+          _sharedPreferenceService.extractUserId();
       if (userId == null) {
         throw Exception('Cannot access logged in user');
       }
-      final Result<UserModel> result =
-          await _authService.fetchLoggedInUser(userId: userId);
+      final Result<UserModel> result = await _authService
+          .fetchLoggedInUser(userId: userId);
 
       if (result.success != null) {
         loggedInUser = result.success!.data;
         rebuildUi();
       } else {
-        setError(result.error?.message ?? "Unexpected Error Occurred");
+        setError(result.error?.message ??
+            "Unexpected Error Occurred");
       }
     } catch (err) {
       setError(err);
@@ -83,7 +97,8 @@ class HomeViewModel extends BaseViewModel {
   Future<void> getUserById() async {
     setBusy(true);
 
-    final result = await _authRepository.getUsernameFromPostId();
+    final result =
+        await _authRepository.getUsernameFromPostId();
 
     if (result.success != null) {
       usernameMap = result.success!.data;

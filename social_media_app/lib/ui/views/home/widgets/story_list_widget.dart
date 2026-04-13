@@ -3,7 +3,6 @@ import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
 import 'package:social_media_app/models/post_model.dart';
 import 'package:social_media_app/ui/views/home/home_viewmodel.dart';
-import 'package:social_media_app/utils/shuffle_list.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -19,59 +18,22 @@ class StoryListWidget
   @override
   Widget build(
       BuildContext context, HomeViewModel viewModel) {
-    final storyList = viewModel.storyList;
-    final List<List<String>> storyImages = List.generate(
-      storyList.length,
-      (index) => [
-        "https://picsum.photos/seed/${index + 100}/200/200",
-        "https://picsum.photos/seed/${index + 100}/800/800"
-      ],
-    );
-
     return SizedBox(
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: storyList.length,
+        itemCount: viewModel.storyList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              locator<NavigationService>()
-                  .navigateToStoryScreenView(
-                      stories: storyImages,
-                      initialIndex: index,
-                      usernameMap: viewModel.usernameMap,
-                      storyList: storyList);
-            },
+            onTap: () =>
+                _handleStoryListTap(index, viewModel),
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [
-                              Colors.red,
-                              Colors.blue,
-                              Colors.yellow
-                            ]),
-                        borderRadius:
-                            BorderRadius.circular(100)),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          storyImages[index][0]),
-                      radius: 25,
-                    ),
-                  ),
-                  Text(
-                    viewModel.usernameMap[
-                            storyList[index].userId] ??
-                        '...',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall,
-                  )
+                  _storyImage(viewModel.storyImages, index),
+                  _storyUsername(viewModel,
+                      viewModel.storyList, index, context)
                 ],
               ),
             ),
@@ -79,5 +41,45 @@ class StoryListWidget
         },
       ),
     );
+  }
+
+  Text _storyUsername(
+      HomeViewModel viewModel,
+      List<PostModel> storyList,
+      int index,
+      BuildContext context) {
+    return Text(
+      viewModel.usernameMap[storyList[index].userId] ??
+          '...',
+      style: Theme.of(context).textTheme.bodySmall,
+    );
+  }
+
+  Container _storyImage(
+      List<List<String>> storyImages, int index) {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+          gradient: const LinearGradient(colors: [
+            Colors.red,
+            Colors.blue,
+            Colors.yellow
+          ]),
+          borderRadius: BorderRadius.circular(100)),
+      child: CircleAvatar(
+        backgroundImage:
+            NetworkImage(storyImages[index][0]),
+        radius: 25,
+      ),
+    );
+  }
+
+  void _handleStoryListTap(
+      int index, HomeViewModel viewModel) {
+    locator<NavigationService>().navigateToStoryScreenView(
+        stories: viewModel.storyImages,
+        initialIndex: index,
+        usernameMap: viewModel.usernameMap,
+        storyList: viewModel.storyList);
   }
 }
