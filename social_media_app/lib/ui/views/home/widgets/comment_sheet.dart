@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/ui/views/home/widgets/animated_comment_item.dart';
+import 'package:social_media_app/ui/views/home/widgets/comment_input_field.dart';
+import 'package:social_media_app/ui/views/home/widgets/post_comment_tile.dart';
+import 'package:social_media_app/utils/mock_comments.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CommentSheet extends StatefulWidget {
@@ -22,109 +26,9 @@ class _CommentSheetState extends State<CommentSheet>
   late Animation<Offset> _slideAnimation;
   final TextEditingController _textController =
       TextEditingController();
-
   late AnimationController _sendController;
   late Animation<double> _scaleAnim;
   late Animation<double> _rotateAnim;
-  Widget _commentTile(Map<String, String> comment) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: Colors.grey.shade300,
-          child: const Icon(Icons.person, size: 18),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  comment["name"]!,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text(comment["comment"]!),
-                const SizedBox(height: 6),
-                Text(
-                  comment["time"]!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _inputField() {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                hintText: "Write a comment...",
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () async {
-              if (_textController.text.trim().isEmpty)
-                return;
-
-              await _sendController.forward();
-              _sendController.reverse();
-
-              setState(() {
-                comments.insert(0, {
-                  "name": "You",
-                  "comment": _textController.text,
-                  "time": "now",
-                });
-              });
-
-              _textController.clear();
-            },
-            child: AnimatedBuilder(
-              animation: _sendController,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _scaleAnim.value,
-                  child: Transform.rotate(
-                    angle: _rotateAnim.value,
-                    child: child,
-                  ),
-                );
-              },
-              child: const Icon(Icons.send,
-                  color: Colors.blue),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,40 +53,8 @@ class _CommentSheetState extends State<CommentSheet>
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16),
-                  itemCount: comments.length,
-                  itemBuilder: (context, index) {
-                    final comment = comments[index];
-
-                    return _AnimatedCommentItem(
-                      delay: index * 100,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 12),
-                        child: _commentTile(comment),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              TweenAnimationBuilder(
-                duration: const Duration(milliseconds: 600),
-                tween: Tween<double>(begin: 50, end: 0),
-                curve: Curves.easeOut,
-                builder: (context, double value, child) {
-                  return Transform.translate(
-                    offset: Offset(0, value),
-                    child: Opacity(
-                      opacity: 1 - (value / 50),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _inputField(),
-              ),
+              _commentListWidget(),
+              _commentInputFieldWidget(),
             ],
           ),
         ),
@@ -190,23 +62,48 @@ class _CommentSheetState extends State<CommentSheet>
     );
   }
 
-  final comments = [
-    {
-      "name": "John Doe",
-      "comment": "This is awesome 🔥",
-      "time": "2h ago"
-    },
-    {
-      "name": "Sarah",
-      "comment": "Loved this post!",
-      "time": "3h ago"
-    },
-    {
-      "name": "Alex",
-      "comment": "Where is this place?",
-      "time": "5h ago"
-    },
-  ];
+  TweenAnimationBuilder<double> _commentInputFieldWidget() {
+    return TweenAnimationBuilder(
+      duration: const Duration(milliseconds: 600),
+      tween: Tween<double>(begin: 50, end: 0),
+      curve: Curves.easeOut,
+      builder: (context, double value, child) {
+        return Transform.translate(
+          offset: Offset(0, value),
+          child: Opacity(
+            opacity: 1 - (value / 50),
+            child: child,
+          ),
+        );
+      },
+      child: CommentInputField(
+          textController: _textController,
+          sendController: _sendController,
+          scaleAnim: _scaleAnim,
+          rotateAnim: _rotateAnim,
+          comments: comments,
+          setState: setState),
+    );
+  }
+
+  Expanded _commentListWidget() {
+    return Expanded(
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: comments.length,
+        itemBuilder: (context, index) {
+          final comment = comments[index];
+
+          return AnimatedCommentItem(
+            delay: index * 100,
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: PostCommentTile(comment: comment)),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -257,64 +154,5 @@ class _CommentSheetState extends State<CommentSheet>
     _sendController.dispose();
     _textController.dispose();
     super.dispose();
-  }
-}
-
-class _AnimatedCommentItem extends StatefulWidget {
-  final Widget child;
-  final int delay;
-
-  const _AnimatedCommentItem({
-    required this.child,
-    required this.delay,
-  });
-
-  @override
-  State<_AnimatedCommentItem> createState() =>
-      _AnimatedCommentItemState();
-}
-
-class _AnimatedCommentItemState
-    extends State<_AnimatedCommentItem>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fade;
-  late Animation<Offset> _slide;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-
-    _fade = CurvedAnimation(
-        parent: _controller, curve: Curves.easeIn);
-
-    _slide = Tween<Offset>(
-      begin: const Offset(0, 0.2),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-          parent: _controller, curve: Curves.easeOut),
-    );
-
-    Future.delayed(Duration(milliseconds: widget.delay),
-        () {
-      if (mounted) _controller.forward();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fade,
-      child: SlideTransition(
-        position: _slide,
-        child: widget.child,
-      ),
-    );
   }
 }

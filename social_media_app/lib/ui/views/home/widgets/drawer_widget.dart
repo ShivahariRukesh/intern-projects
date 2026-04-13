@@ -11,14 +11,15 @@ class DrawerWidget extends StatelessWidget {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(loggedInUser?.username ?? 'Guest User'),
-            accountEmail: Text(loggedInUser?.email ?? 'guest@email.com'),
+            accountName: Text(
+                loggedInUser?.username ?? 'Guest User'),
+            accountEmail: Text(
+                loggedInUser?.email ?? 'guest@email.com'),
             currentAccountPicture: const CircleAvatar(
-                // backgroundImage: NetworkImage(
-                //     viewModel.userAvatarUrl ??
-                //         'https://via.placeholder.com/150',
-                //     ),
-                ),
+              backgroundImage: NetworkImage(
+                'https://picsum.photos/seed/picsum/200/300',
+              ),
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
