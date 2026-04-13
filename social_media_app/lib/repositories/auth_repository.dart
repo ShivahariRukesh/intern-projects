@@ -13,24 +13,22 @@ class AuthRepository {
       locator<SharedPreferenceService>();
 
   Future<Result> loginUser(
-      {required String username,
-      required String password}) async {
+      {required String username, required String password}) async {
     final authResult = await _authService.loginUser(
       username: username,
       password: password,
     );
 
     if (authResult.success != null) {
-      final prefResult = await _sharedPreferenceService
-          .login(userId: authResult.success!.data.id);
+      final prefResult = await _sharedPreferenceService.login(
+          userId: authResult.success!.data.id);
 
       if (prefResult.success != null) {
         return prefResult;
       } else {
         return (
           success: null,
-          error: ErrorResponse(
-              message: prefResult.error!.message)
+          error: ErrorResponse(message: prefResult.error!.message)
         );
       }
     } else {
@@ -41,8 +39,7 @@ class AuthRepository {
   Future<Result> logoutUser() async {
     await _authService.logoutUser();
 
-    final prefResult =
-        await _sharedPreferenceService.logout();
+    final prefResult = await _sharedPreferenceService.logout();
     if (prefResult.success != null) {
       return prefResult;
     } else {
@@ -50,8 +47,7 @@ class AuthRepository {
     }
   }
 
-  Future<Result<Map<int, String>>>
-      getUsernameFromPostId() async {
+  Future<Result<Map<int, String>>> getUsernameFromPostId() async {
     final Map<int, String> usernameById = {};
 
     final postResult = await _postService.fetchAllPosts();
@@ -72,18 +68,15 @@ class AuthRepository {
       } else {
         return (
           error: ErrorResponse(
-              message: userResult.error?.message ??
-                  "Couldn't get user from post"),
+              message:
+                  userResult.error?.message ?? "Couldn't get user from post"),
           success: null
         );
       }
     } else {
       return (error: postResult.error, success: null);
     }
-    return (
-      success: SuccessResponse(data: usernameById),
-      error: null
-    );
+    return (success: SuccessResponse(data: usernameById), error: null);
   }
 
   // Future<Result<Map<int, String>>> getUsernameFromPostId() async {
