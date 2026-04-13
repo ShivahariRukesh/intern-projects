@@ -12,13 +12,10 @@ import 'home_viewmodel.dart';
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
   @override
-  Widget builder(BuildContext context,
-      HomeViewModel viewModel, Widget? child) {
+  Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
     return Scaffold(
-      floatingActionButton:
-          const HomeFloatingActionWidget(),
-      drawer: DrawerWidget(
-          loggedInUser: viewModel.loggedInUser),
+      floatingActionButton: const HomeFloatingActionWidget(),
+      drawer: DrawerWidget(loggedInUser: viewModel.loggedInUser),
       appBar: AppBar(
         title: const Text('The Social Me'),
         actions: [
@@ -34,8 +31,7 @@ class HomeView extends StackedView<HomeViewModel> {
       ),
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Center(
             child: CustomMaterialIndicator(
               onRefresh: () async {
@@ -54,8 +50,7 @@ class HomeView extends StackedView<HomeViewModel> {
                 );
               },
               child: ListView(
-                physics:
-                    const AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   const StoryListWidget(),
                   PostFeedWidget(
@@ -72,8 +67,7 @@ class HomeView extends StackedView<HomeViewModel> {
   }
 
   @override
-  HomeViewModel viewModelBuilder(BuildContext context) =>
-      HomeViewModel();
+  HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
   @override
   void onViewModelReady(HomeViewModel viewModel) {

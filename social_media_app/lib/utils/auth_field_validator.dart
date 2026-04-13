@@ -10,9 +10,7 @@ class AuthFieldValidator {
   }
 
   static String? validatePassword(String? value) {
-    if (value == null ||
-        value.isEmpty ||
-        RegExp(r'^.{8,}$').hasMatch(value)) {
+    if (value == null || value.isEmpty || RegExp(r'^.{8,}$').hasMatch(value)) {
       return null;
     } else {
       return "Enter a valid password";
