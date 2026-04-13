@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/ui/common/base_text_form_field_widget.dart';
+import 'package:social_media_app/ui/common/widgets/base_text_form_field_widget.dart';
 import 'package:social_media_app/ui/views/auth/auth_view.form.dart';
 import 'package:social_media_app/ui/views/auth/auth_viewmodel.dart';
 
