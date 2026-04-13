@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/ui/common/base_text_form_field_widget.dart';
 import 'package:social_media_app/ui/views/auth/auth_view.form.dart';
+import 'package:social_media_app/ui/views/auth/widgets/login_button_widget.dart';
+import 'package:social_media_app/ui/views/auth/widgets/login_text_input_fields.dart';
 import 'package:social_media_app/utils/auth_field_validator.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-
 import 'auth_viewmodel.dart';
 
 @FormView(fields: [
@@ -44,82 +44,17 @@ class AuthView extends StackedView<AuthViewModel>
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
-                  Text("Welcome Back",
-                      style: theme.textTheme.titleLarge),
-                  const SizedBox(height: 8),
+                  _loginTitle(theme),
                   const SizedBox(height: 30),
-                  BaseTextFormFieldWidget(
-                    controller: usernameController,
-                    label: "Username",
-                    errorText:
-                        viewModel.usernameValidationMessage,
-                    prefixIcon: Icons.person_outline,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: BaseTextFormFieldWidget(
-                          controller: passwordController,
-                          label: "Password",
-                          errorText: viewModel
-                              .passwordValidationMessage,
-                          prefixIcon: Icons.lock_outline,
-                          obscureText:
-                              viewModel.isPasswordObscured,
-                          showToggle: true,
-                          onToggleObscure: viewModel
-                              .toggleObscurePassword,
-                        ),
-                      ),
-                    ],
-                  ),
+                  LoginTextInputFields(
+                      usernameController:
+                          usernameController,
+                      passwordController:
+                          passwordController,
+                      viewModel: viewModel),
                   const SizedBox(height: 30),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () async =>
-                          await login(viewModel),
-                      style: ElevatedButton.styleFrom(
-                        disabledBackgroundColor: viewModel
-                                .hasUsernameValidationMessage
-                            ? const Color.fromARGB(
-                                255, 8, 38, 62)
-                            : Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: viewModel.isBusy
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child:
-                                  CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                color: Colors.white,
-                              ),
-                            )
-                          : viewModel.hasError
-                              ? const Text("Try Again")
-                              : const Text("Login"),
-                    ),
-                  ),
-                  if (viewModel.hasError)
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 12),
-                      child: Center(
-                        child: Text(
-                          viewModel.modelError,
-                          style: TextStyle(
-                              color:
-                                  theme.colorScheme.error),
-                        ),
-                      ),
-                    ),
+                  LoginButtonWidget(viewModel: viewModel),
+                  _loginErrorText(viewModel, theme),
                 ],
               ),
             ),
@@ -129,13 +64,26 @@ class AuthView extends StackedView<AuthViewModel>
     );
   }
 
-  Future<void> login(AuthViewModel viewModel) async {
-    if (!viewModel.isBusy &&
-        !viewModel.hasUsernameValidationMessage &&
-        !viewModel.hasPasswordValidationMessage &&
-        viewModel.usernameValue != "" &&
-        viewModel.passwordValue != "") {
-      await viewModel.loginUser();
+  Text _loginTitle(ThemeData theme) {
+    return Text("Welcome Back",
+        style: theme.textTheme.titleLarge);
+  }
+
+  Widget _loginErrorText(
+      AuthViewModel viewModel, ThemeData theme) {
+    if (viewModel.hasError) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Center(
+          child: Text(
+            viewModel.modelError,
+            style:
+                TextStyle(color: theme.colorScheme.error),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
     }
   }
 
