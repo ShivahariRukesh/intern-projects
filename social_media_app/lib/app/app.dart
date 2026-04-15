@@ -1,7 +1,7 @@
 import 'package:social_media_app/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:social_media_app/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:social_media_app/ui/views/home/home_view.dart';
-import 'package:social_media_app/ui/views/home/widgets/comment_sheet.dart';
+import 'package:social_media_app/ui/bottom_sheets/comment/comment_sheet.dart';
 import 'package:social_media_app/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -28,7 +28,8 @@ import 'package:social_media_app/ui/views/story_screen/story_screen_view.dart';
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: ThemeService),
-    InitializableSingleton(classType: SharedPreferenceService),
+    InitializableSingleton(
+        classType: SharedPreferenceService),
     LazySingleton(classType: PostService),
     LazySingleton(classType: ImageCacheService),
 // @stacked-service
