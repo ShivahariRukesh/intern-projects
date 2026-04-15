@@ -79,19 +79,29 @@ class PostCardWidget extends StatelessWidget {
       child: Row(
         children: [
           const BaseActionButton(
-              icon: Icons.favorite_border),
+            icon: Icons.favorite,
+            outlinedIcon: Icons.favorite_outline,
+            color: Colors.red,
+          ),
           const SizedBox(width: 4),
           BaseActionButton(
-              icon: Icons.chat_bubble_outline,
+              // icon: Icons.chat_bubble,
+              outlinedIcon: Icons.chat_bubble_outline,
               handleShowBottomSheet: () =>
                   _bottomSheet.showCustomSheet(
                       title: "All Comments",
                       variant: BottomSheetType.comment)),
           const SizedBox(width: 4),
-          const BaseActionButton(icon: Icons.send_outlined),
+          const BaseActionButton(
+            // icon: Icons.send,
+            outlinedIcon: Icons.send_outlined,
+          ),
           const Spacer(),
           const BaseActionButton(
-              icon: Icons.bookmark_border),
+            icon: Icons.bookmark,
+            outlinedIcon: Icons.bookmark_outline,
+            color: Colors.blue,
+          ),
         ],
       ),
     );

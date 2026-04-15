@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class BaseActionButton extends StatefulWidget {
-  final IconData icon;
+  final IconData? icon;
+  final IconData outlinedIcon;
+  final Color? color;
   final void Function()? handleShowBottomSheet;
 
   const BaseActionButton({
     super.key,
-    required this.icon,
+    this.icon,
+    required this.outlinedIcon,
+    this.color,
     this.handleShowBottomSheet,
   });
 
@@ -21,26 +25,26 @@ class _BaseActionButtonState extends State<BaseActionButton>
   late Animation<double> _scale;
 
   bool isLiked = false;
-
-  bool get isLikeButton =>
-      widget.icon == Icons.favorite_border ||
-      widget.icon == Icons.favorite;
+  bool get isColoredButton => widget.color != null;
 
   @override
   Widget build(BuildContext context) {
-    final iconData = isLikeButton
-        ? (isLiked ? Icons.favorite : Icons.favorite_border)
-        : widget.icon;
+    final iconColor = isColoredButton && isLiked
+        ? widget.color
+        : Colors.black;
 
-    final iconColor =
-        isLikeButton && isLiked ? Colors.red : Colors.black;
+    final icon = widget.icon != null
+        ? isLiked
+            ? widget.icon
+            : widget.outlinedIcon
+        : widget.outlinedIcon;
 
     return ScaleTransition(
       scale: _scale,
       child: IconButton(
         onPressed: _onTap,
         icon: Icon(
-          iconData,
+          icon,
           color: iconColor,
         ),
       ),
@@ -71,13 +75,13 @@ class _BaseActionButtonState extends State<BaseActionButton>
   }
 
   void _onTap() {
-    if (isLikeButton) {
-      setState(() {
-        isLiked = !isLiked;
-      });
+    // if (isColoredButton) {
+    setState(() {
+      isLiked = !isLiked;
+    });
 
-      _controller.forward(from: 0);
-    }
+    _controller.forward(from: 0);
+    // }
     if (widget.handleShowBottomSheet != null) {
       widget.handleShowBottomSheet!();
     }
