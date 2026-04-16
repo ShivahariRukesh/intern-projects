@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager_with_api_sync/ui/features/auth/view/login_screen.dart';
-import 'package:task_manager_with_api_sync/ui/features/home/view/home_screen.dart';
+// import 'package:task_manager_with_api_sync/ui/features/home/view/home_screen.dart';
 import 'package:task_manager_with_api_sync/ui/features/profile/view/profile_screen.dart';
 import 'package:task_manager_with_api_sync/ui/features/task/view/task_screen.dart';
+import 'package:task_manager_with_api_sync/utils/shared_preferences_service.dart';
 
 final GoRouter goRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: PrefService.isLoggedIn
+      ? '/task'
+      : '/login',
   routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      builder:
-          (BuildContext context, GoRouterState state) =>
-              const HomeScreen(),
-    ),
+    // GoRoute(
+    //   path: '/',
+    //   builder:
+    //       (BuildContext context, GoRouterState state) =>
+    //           const HomeScreen(),
+    // ),
     GoRoute(
       path: '/login',
       builder:

@@ -8,8 +8,11 @@ class TaskDatabaseService {
   static const String _tableName = 'tasks';
   final DatabaseService _databaseService = DatabaseService(
     databaseName: _tableName,
-    createDatabaseRawQuery:
+    version: 3,
+    createTableRawQuery:
         'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, title TEXT, description TEXT, status TEXT, priority TEXT, dueDate TEXT )',
+    updateTableRawQuery:
+        'ALTER TABLE $_tableName ADD COLUMN isApiData INTEGER DEFAULT 0',
   );
 
   Future<Result<int>> insertTask(TaskModel task) async {
@@ -43,7 +46,7 @@ class TaskDatabaseService {
       final List<TaskModel> taskData = res
           .map(
             (Map<String, Object?> task) =>
-                TaskModel.fromJSON(task),
+                TaskModel.fromDb(task),
           )
           .toList();
       debugPrint('Task Database : Task retrieve  $res');
@@ -101,6 +104,23 @@ class TaskDatabaseService {
       return Failure(
         message: 'Error in Task Database : Task delete  $e',
       );
+    }
+  }
+
+  Future<Result<int>> deleteApiTasks() async {
+    try {
+      final int res =
+          await (await _databaseService.database).rawDelete(
+            'DELETE FROM tasks WHERE isApiData=?',
+            <Object?>[1],
+          );
+      debugPrint('deleted api tasks successfully $res');
+      return Success<int>(data: res);
+    } catch (e) {
+      debugPrint(
+        'Error occurred when deleting api tasks: $e',
+      );
+      return Failure(message: 'Something went wrong');
     }
   }
 }

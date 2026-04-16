@@ -4,15 +4,21 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   final String _databaseName;
-  final String _databaseCreateRawQuery;
+  final String _createTableRawQuery;
+  final String? _updateTableRawQuery;
+  final int _version;
   late final Future<Database> _database =
       _createTaskDatabase();
 
   DatabaseService({
     required String databaseName,
-    required String createDatabaseRawQuery,
+    required String createTableRawQuery,
+    required int version,
+    String? updateTableRawQuery,
   }) : _databaseName = databaseName,
-       _databaseCreateRawQuery = createDatabaseRawQuery;
+       _createTableRawQuery = createTableRawQuery,
+       _version = version,
+       _updateTableRawQuery = updateTableRawQuery;
 
   Future<Database> get database => _database;
   Future<Database> _createTaskDatabase() async {
@@ -24,9 +30,24 @@ class DatabaseService {
         ),
 
         onCreate: (Database db, int version) {
-          return db.execute(_databaseCreateRawQuery);
+          return db.execute(_createTableRawQuery);
         },
-        version: 1,
+
+        onUpgrade:
+            (
+              Database db,
+              int oldVersion,
+              int newVersion,
+            ) async {
+              if (_updateTableRawQuery != null &&
+                  oldVersion < newVersion) {
+                debugPrint(
+                  'Upgrading database from $oldVersion to $newVersion',
+                );
+                await db.execute(_updateTableRawQuery);
+              }
+            },
+        version: _version,
       );
     } on DatabaseException catch (e) {
       debugPrint('Error when initiating database : $e');
