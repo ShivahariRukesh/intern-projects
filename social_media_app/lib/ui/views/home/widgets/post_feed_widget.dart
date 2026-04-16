@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:social_media_app/models/post_model.dart';
+import 'package:social_media_app/ui/views/home/widgets/post_card_widget.dart';
+
+class PostFeedWidget extends StatelessWidget {
+  final List<PostModel> posts;
+  final Map<int, String> usernameMap;
+
+  const PostFeedWidget({
+    super.key,
+    required this.posts,
+    required this.usernameMap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (posts.isEmpty) {
+      return const Center(
+          child: CircularProgressIndicator());
+    }
+    return SizedBox(
+      height: 900,
+      child: ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (context, index) => PostCardWidget(
+                post: posts[index],
+                username:
+                    usernameMap[posts[index].userId] ??
+                        'Anonymous',
+              )),
+    );
+  }
+}
