@@ -18,7 +18,7 @@ class HomeView extends StackedView<HomeViewModel> {
           const HomeFloatingActionWidget(),
       drawer: DrawerWidget(
           loggedInUser: viewModel.loggedInUser),
-      appBar: _homeAppBar(viewModel),
+      appBar: _homeAppBar(context, viewModel),
       body: SafeArea(
         child: Padding(
           padding:
@@ -32,7 +32,7 @@ class HomeView extends StackedView<HomeViewModel> {
               indicatorBuilder: (context, controller) {
                 return _homeLoadingWidget(controller);
               },
-              child: _homeContentList(viewModel),
+              child: _homeContentList(context, viewModel),
             ),
           ),
         ),
@@ -40,11 +40,13 @@ class HomeView extends StackedView<HomeViewModel> {
     );
   }
 
-  ListView _homeContentList(HomeViewModel viewModel) {
+  ListView _homeContentList(
+      BuildContext context, HomeViewModel viewModel) {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       children: [
-        const StoryListWidget(),
+        StoryListWidget(
+            key: ValueKey(Theme.of(context).brightness)),
         PostFeedWidget(
           posts: viewModel.postList,
           usernameMap: viewModel.usernameMap,
@@ -66,9 +68,13 @@ class HomeView extends StackedView<HomeViewModel> {
     );
   }
 
-  AppBar _homeAppBar(HomeViewModel viewModel) {
+  AppBar _homeAppBar(
+      BuildContext context, HomeViewModel viewModel) {
     return AppBar(
-      title: const Text('The Social Me'),
+      title: Text(
+        'The Social Me',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.sunny),
