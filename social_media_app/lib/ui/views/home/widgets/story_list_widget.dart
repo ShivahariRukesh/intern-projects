@@ -16,6 +16,9 @@ class StoryListWidget
   const StoryListWidget({super.key});
 
   @override
+  bool get reactive => true;
+
+  @override
   Widget build(
       BuildContext context, HomeViewModel viewModel) {
     return SizedBox(

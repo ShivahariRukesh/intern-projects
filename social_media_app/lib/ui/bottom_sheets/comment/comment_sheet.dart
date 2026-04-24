@@ -32,26 +32,23 @@ class _CommentSheetState extends State<CommentSheet>
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Theme.of(context);
     return FadeTransition(
       opacity: _fadeAnimation,
       child: SlideTransition(
         position: _slideAnimation,
         child: Container(
           padding: const EdgeInsets.only(top: 16),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(
+          decoration: BoxDecoration(
+            color: appTheme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20)),
           ),
           height: MediaQuery.of(context).size.height * 0.6,
           child: Column(
             children: [
-              Text(
-                widget.request.title ?? "Comments",
-                style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
+              Text(widget.request.title ?? "Comments",
+                  style: appTheme.textTheme.bodyLarge),
               const SizedBox(height: 16),
               _commentListWidget(),
               _commentInputFieldWidget(),

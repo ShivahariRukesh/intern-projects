@@ -19,7 +19,10 @@ class PostCommentTile extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+              // color: Colors.grey.shade100,
+
+              color:
+                  Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(

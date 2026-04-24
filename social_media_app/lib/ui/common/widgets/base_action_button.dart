@@ -31,7 +31,7 @@ class _BaseActionButtonState extends State<BaseActionButton>
   Widget build(BuildContext context) {
     final iconColor = isColoredButton && isLiked
         ? widget.color
-        : Colors.black;
+        : Theme.of(context).primaryColor;
 
     final icon = widget.icon != null
         ? isLiked

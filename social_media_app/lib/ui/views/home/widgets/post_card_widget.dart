@@ -19,23 +19,21 @@ class PostCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
+    return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
+          _buildHeader(context),
           _buildImage(),
           _buildActions(),
           _buildLikeCount(),
           _buildCaption(),
-          const Divider(height: 15, thickness: 5),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: 12, vertical: 10),
@@ -51,10 +49,7 @@ class PostCardWidget extends StatelessWidget {
           Expanded(
               child: Text(
             username,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           )),
           const Icon(Icons.more_horiz, size: 22),
         ],

@@ -7,21 +7,27 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Theme.of(context);
     return Drawer(
       child: Column(
         children: [
           UserAccountsDrawerHeader(
             accountName: Text(
-                loggedInUser?.username ?? 'Guest User'),
+              loggedInUser?.username ?? 'Guest User',
+              style: appTheme.textTheme.bodyLarge,
+            ),
             accountEmail: Text(
-                loggedInUser?.email ?? 'guest@email.com'),
+              loggedInUser?.email ?? 'guest@email.com',
+              style: appTheme.textTheme.bodyMedium,
+            ),
             currentAccountPicture: const CircleAvatar(
               backgroundImage: NetworkImage(
                 'https://picsum.photos/seed/picsum/200/300',
               ),
             ),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color:
+                  Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const ListTile(

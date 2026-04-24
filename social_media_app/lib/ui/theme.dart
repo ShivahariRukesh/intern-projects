@@ -4,12 +4,19 @@ class AppTheme {
   static const errorColor = Colors.red;
 
   static const lightThemePrimaryColor = Colors.black;
-  static const lightThemeBackgroundColor = Color.fromARGB(255, 169, 189, 217);
-  static const lightThemeSecondaryColor = Color.fromARGB(255, 6, 102, 237);
+  static const lightThemeBackgroundColor =
+      Color.fromARGB(255, 169, 189, 217);
+  static const lightThemeSecondaryColor =
+      Color.fromARGB(246, 255, 255, 255);
+  static const lightThemeTernaryColor =
+      Color.fromARGB(255, 6, 102, 237);
 
   static const darkThemePrimaryColor = Colors.white;
   static const darkThemeBackgroundColor = Colors.black;
-  static const darkThemeSecondaryColor = Color.fromARGB(255, 6, 102, 237);
+  static const darkThemeSecondaryColor =
+      Color.fromARGB(79, 215, 212, 212);
+  static const darkThemeTernaryColor =
+      Color.fromARGB(255, 6, 102, 237);
 
   static ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
@@ -37,18 +44,23 @@ class AppTheme {
           fontSize: 14,
         ),
         titleLarge: TextStyle(
-          color: lightThemeSecondaryColor,
+          color: lightThemeTernaryColor,
           fontSize: 22,
         ),
       ),
+      listTileTheme: const ListTileThemeData(
+          textColor: lightThemePrimaryColor),
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: lightThemeBackgroundColor,
+      ),
       scaffoldBackgroundColor: lightThemeBackgroundColor,
-      appBarTheme:
-          const AppBarThemeData(backgroundColor: lightThemeBackgroundColor));
+      appBarTheme: const AppBarThemeData(
+          backgroundColor: lightThemeBackgroundColor));
 
   static ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-          seedColor: darkThemePrimaryColor,
+          seedColor: darkThemeTernaryColor,
           primary: darkThemePrimaryColor,
           secondary: darkThemeSecondaryColor,
           error: errorColor,
@@ -70,11 +82,21 @@ class AppTheme {
           fontSize: 14,
         ),
         titleLarge: TextStyle(
-          color: darkThemePrimaryColor,
+          color: darkThemeTernaryColor,
           fontSize: 22,
         ),
       ),
+      listTileTheme: const ListTileThemeData(
+          textColor: darkThemePrimaryColor),
+      iconTheme:
+          const IconThemeData(color: darkThemePrimaryColor),
+      cardTheme: const CardThemeData(
+        color: darkThemeSecondaryColor,
+      ),
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: darkThemeBackgroundColor,
+      ),
       scaffoldBackgroundColor: darkThemeBackgroundColor,
-      appBarTheme:
-          const AppBarThemeData(backgroundColor: darkThemeBackgroundColor));
+      appBarTheme: const AppBarThemeData(
+          backgroundColor: darkThemeBackgroundColor));
 }
