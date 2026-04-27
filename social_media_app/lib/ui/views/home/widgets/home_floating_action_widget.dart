@@ -24,17 +24,20 @@ class _HomeFloatingActionWidgetState
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        ..._actions
-            .asMap()
-            .entries
-            .map((entry) {
-              final delay = entry.key * 0.08;
-              final action = entry.value;
-              return _homeFabAnimatedBuilder(
-                  delay, action.label, action.icon);
-            })
-            .toList()
-            .reversed,
+        if (_isExpanded)
+          ..._actions
+              .asMap()
+              .entries
+              .map((entry) {
+                final delay = entry.key * 0.08;
+                final action = entry.value;
+                return _homeFabAnimatedBuilder(
+                    delay, action.label, action.icon);
+              })
+              .toList()
+              .reversed
+        else
+          SizedBox.shrink(),
         RotationTransition(
           turns: _rotateAnim,
           child: FloatingActionButton(
